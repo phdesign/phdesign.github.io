@@ -1,9 +1,5 @@
 /*!
-<<<<<<< HEAD
- * phdesign.com.au v4.0.19
-=======
- * phdesign.com.au v4.0.15
->>>>>>> 6846af5f84cf26533982a3dc3ec63c439cc58308
+ * phdesign.com.au v4.0.21
  * http://www.phdesign.com.au
  *
  * Copyright (C) 2015 Paul Heasley
