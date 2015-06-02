@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>phdesign.com.au</title>
+    <title>phdesign</title>
     <description>Website of Paul Heasley, .NET Web Developer Technical advice, bits of software, maybe some woodworking
 </description>
     <link>http://phdesign.com.au/</link>
     <atom:link href="http://phdesign.com.au/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 02 Jun 2015 18:42:32 +1000</pubDate>
-    <lastBuildDate>Tue, 02 Jun 2015 18:42:32 +1000</lastBuildDate>
+    <pubDate>Tue, 02 Jun 2015 21:05:32 +1000</pubDate>
+    <lastBuildDate>Tue, 02 Jun 2015 21:05:32 +1000</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
