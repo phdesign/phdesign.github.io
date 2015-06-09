@@ -1,157 +1,47 @@
 <!DOCTYPE html>
-<!--[if IE 8 ]><html class="ie ie8" lang="en"><![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"><!--<![endif]-->
+<html lang="en">
   
   <head>
 
-    <!-- Meta
-    ================================================== -->
-
     <meta charset="utf-8">
-    <title>Logging Objects to the Console in Internet Explorer | phdesign</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <!-- Mobile Specific Meta
-    ================================================== -->
+    <title>Logging Objects to the Console in Internet Explorer | phdesign</title>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <!-- Google Web Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 
-    <!-- CSS (Stylesheets)
-    ================================================== -->
-
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="/assets/css/style.css">
 
-    <!-- Google Web Fonts (will be replaced by cdnify)
-    ================================================== -->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
-    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Cantarell:400,700,400italic,700italic|Montserrat:400,700|Crimson+Text:400,400italic">
-
-    <!-- Favicon/Touch Icons
-    ================================================== -->
-
-    <link rel="shortcut icon" href="/assets/img/favicon.ico">
+    <!-- Favicon/Touch Icons  -->
+    <!-- <link rel="shortcut icon" href="/assets/img/favicon.ico">
     <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
 
   </head>
 
-  <body id="inner">
+  <body id="page-top">
 
-    <header id="header-global-inner" role="banner">
+    
+        <header>
+        </header>
 
-      <div class="header-top-inner">
-        
-        <div class="container">
 
-          <div class="logo four columns alpha">
-
-            <h1><a href="/" title="phdesign">PH<span class="logo-muted">DESIGN</span></a></h1>
-
-          </div><!-- end .logo -->
-
-          <div class="twelve columns omega">
-
-            <nav class="main-navigation" role="navigation">
-
-              <ul id="sf" class="sf-menu">
-
-                <li><a href="#" title="Home">Home</a>
-                  <ul>
-                    <li><a href="index-agency.html" title="Agency Style (Default)">Agency Style (Default)</a></li>
-                    <li><a href="index-alternative.html" title="Agency Style (Alternative)">Agency Style (Alternative)</a></li>
-                    <li><a href="index-corporate.html" title="Corporate Style">Corporate Style</a></li>
-                    <li><a href="index-one-page-team.html" title="One Page (Team)">One Page (Team)</a></li>
-                    <li><a href="index-one-page-personal.html" title="One Page (Personal)">One Page (Personal)</a></li>
-                    <li><a href="index-portfolio-full-image.html" title="Portfolio Showcase">Portfolio Showcase</a></li>
-                    <li><a href="index-blog-style.html" title="Blog Style">Blog Style</a></li>
-                  </ul>
-                </li>
-                <li><a href="#" title="Portfolio">Portfolio</a>
-                  <ul>
-                    <li><a href="portfolio-standard.html" title="Portfolio Index (Standard)">Portfolio Index (Standard)</a></li>
-                    <li><a href="portfolio-full-width.html" title="Portfolio Index (Full Width)">Portfolio Index (Full Width)</a></li>
-                    <li><a href="single-project.html" title="Single Project (Images)">Single Project (Images)</a></li>
-                    <li><a href="single-project-slider.html" title="Single Project (Slider)">Single Project (Slider)</a></li>
-                    <li><a href="single-project-video.html" title="Single Project (Video)">Single Project (Video)</a></li>
-                    <li><a href="single-project-audio.html" title="Single Project (Audio)">Single Project (Audio)</a></li>
-                  </ul>
-                </li>
-                <li><a href="#" title="Blog">Blog</a>
-                  <ul>
-                    <li><a href="blog.html" title="Blog (Full Width)">Blog (Full Width)</a></li>
-                    <li><a href="blog-with-sidebar.html" title="Blog (With Sidebar)">Blog (With Sidebar)</a></li>
-                    <li><a href="blog-post.html" title="Post (Full Width)">Post (Full Width)</a></li>
-                    <li><a href="blog-post-with-sidebar.html" title="Post (With Sidebar)">Post (With Sidebar)</a></li>
-                  </ul>
-                </li>
-                <li><a href="#" title="Pages">Pages</a>
-                  <ul>
-                    <li><a href="services.html" title="Services">Services</a></li>
-                    <li><a href="meet-the-team.html" title="Meet the Team">Meet the Team</a></li>
-                    <li><a href="about-me.html" title="About Me">About Me</a></li>
-                  </ul>
-                </li>
-                <li><a href="#" title="Features">Features</a>
-                  <ul>
-                    <li><a href="elements.html" title="Elements">Elements</a></li>
-                    <li><a href="pricing-tables.html" title="Pricing Tables">Pricing Tables</a></li>
-                    <li><a href="pie-charts.html" title="Pie Charts">Pie Charts</a></li>
-                    <li><a href="columns.html" title="Columns">Columns</a></li>
-                    <li><a href="#" title="Third Level Item">Third Level Item</a>
-                      <ul>
-                        <li><a href="#">A third level</a></li>
-                        <li><a href="#">navigation item</a></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </li>
-                <li><a href="contact.html" title="Contact">Contact</a></li>
-
-              </ul><!-- end #sf -->
-
-            </nav><!-- end .main-navigation -->
-
-          </div><!-- end .twelve columns -->
-
-        </div><!-- end .container -->
-
-      </div><!-- end .header-top-inner -->
-
-    </header><!-- end #header-global-inner -->
-
-    <main>
-            <section class="content">
-      <div class="container">
-        <div class="post-index">
-
-          <div class="project-nav post-nav">
-            <a class="back-btn" href="#">back</a>
-            <a class="previous-btn" href="#">< prev</a>
-            <a class="next-btn" href="#">next ></a>
-          </div><!-- end .project-nav -->
-
-          <article class="post-single">
-
-            <div class="date-stamp">
-              <div class="month">Apr</div>
-              <div class="day">24</div>
-            </div>
-
-            <h2>Logging Objects to the Console in Internet Explorer</h2>
-
-            <div class="meta-details">
-              <p>posted on <span>24 April 2015</span> in <span><a href="/programming">programming</a></span> with <span><a data-disqus-identifier="logging-objects-to-the-console-in-internet-explorer" href="#disqus_thread">0 Comments</a></span></p>
-            </div><!-- end .meta-details -->
-
-            
-              <div class="post-thumbnail">
-                <img src="/assets/img/blog/ie7-chalk.jpg" alt="A blank grey placeholder" />
-              </div><!-- end .post-thumbnail -->
-            
-
-            <p>Compared to other browsers, IE’s JavaScript console is pretty lacking in it’s ability to log objects, they just appear as [Object object]. As a work around for this below is a shim that will JSON.stringify any objects that are passed as parameters to console.log (or it’s sister functions like error, warn…).</p>
+    <main class="container-fluid">
+      <div class="row">
+        <p>Compared to other browsers, IE’s JavaScript console is pretty lacking in it’s ability to log objects, they just appear as [Object object]. As a work around for this below is a shim that will JSON.stringify any objects that are passed as parameters to console.log (or it’s sister functions like error, warn…).</p>
 
 <!--more-->
 
@@ -194,87 +84,29 @@
 
 <p>You’ll also find that IE doesn’t record console output while the developer tools are open, to enable this in IE11 go to Settings (The Gear) &gt; Internet options &gt; Advanced &gt; Check ‘Always record developer console messages’.</p>
 
+      </div>
+    </main>
 
-            <ul class="post-tags">
-              
-                <li><a href="/tags/ie" title="View posts tagged with ie">#ie</a></li>
-              
-                <li><a href="/tags/javascript" title="View posts tagged with javascript">#javascript</a></li>
-              
-            </ul>
-
-          </article><!-- end .post-single -->
-
-          <div class="author-bio" >
-            <img src="/assets/img/team/paul-heasley.jpg" width="180px" height="180px" alt="Profile pic of Paul Heasley" />
-            <p class="article-author">article written by <span>Paul Heasley</span></p>
-            <ul class="author-social-icons">
-              <li><a href=""><i class="fa fa-twitter"></i></a></li>
-              <li><a href=""><i class="fa fa-pinterest"></i></a></li>
-              <li><a href=""><i class="fa fa-pagelines"></i></a></li>
-              <li><a href=""><i class="fa fa-dribbble"></i></a></li>
-            </ul><!-- end .author-social-icons -->
-            <p>I love writing about all things tech, design &amp; music. Favourite bands consist of Led Zeppelin, The Beatles, and Black Lace. My ramblings can be found on many tech blogs around the web. I am a great lover of penguins, and own a pet gorilla called Dave.</p>
-          </div><!-- end .author-bio -->
-
-          <div id="comments" class="sixteen columns">
-            <div class="comments-list">
-
-              <div id="disqus_thread"></div>
-              <script type="text/javascript">
-                /* * * CONFIGURATION VARIABLES * * */
-                var disqus_shortname = 'phdesign';
-                var disqus_identifier = 'logging-objects-to-the-console-in-internet-explorer';
-                var disqus_title = 'Logging Objects to the Console in Internet Explorer';
-                var disqus_url = 'http://phdesign.com.au/programming/2015/04/logging-objects-to-the-console-in-internet-explorer/';
-
-                /* * * DON'T EDIT BELOW THIS LINE * * */
-                (function() {
-                  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                  dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-                })();
-              </script>
-              <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
-            </div><!-- end .comments-list -->
-          </div><!-- end #comments -->
-
-        </div><!-- end .post-index -->
-      </div><!-- end .container -->
-    </section><!-- end .content -->
-
-    </main><!-- end main -->
     
-    <footer id="footer-global" role="contentinfo">
-
+    <footer>
       <div class="container">
-
         <div class="row">
 
-          <div class="social-links-container">
+          <ul class="social-icons">
+            <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+            <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+            <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+            <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+            <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+          </ul><!-- end .social-icons -->
 
-            <ul class="social-links">
-              <li><a href="" title="View Twitter Profile">Twitter</a></li>
-              <li><a href="" title="View Facebook Profile">Facebook</a></li>
-              <li><a href="" title="View Linkedin Profile">Linkedin</a></li>
-              <li><a href="" title="View Pinterest Profile">Pinterest</a></li>
-              <li><a href="" title="View Google + Profile">Google +</a></li>
-            </ul>
+          <p class="footer-brand"><a href="/" title="phdesign">phdesign</a></p>
 
-          </div><!-- end .social-links-container -->
-
-          <p class="company-title"><a href="/" title="phdesign">PHDESIGN</a></p>
-
-          <a class="contact-btn" href="mailto:paul@phdesign.com.au">Say hello</a>
-
-          <p id="copyright-details">&copy; 2015 Paul Heasley. All rights reserved.</p>
+          <p class="footer-copyright">&copy; 2015 Paul Heasley. All rights reserved.</p>
 
         </div><!-- end .row -->
-
       </div><!-- end .container -->
-
-    </footer><!-- end #footer-global -->
+    </footer><!-- end footer -->
 
     
     <!-- JS (Javascript Files)
