@@ -32,16 +32,59 @@
 
   </head>
 
-  <body id="page-top">
+  <body>
 
-    
-        <header>
-        </header>
+    <header role="banner">
+      <div class="header-top">
+        
+        <div class="container">
 
+          <div class="row">
+            <div class="logo col-sm-3">
+              <h1><a href="/" title="phdesign">PH<span class="logo-muted">DESIGN</span></a></h1>
+            </div><!-- end .logo -->
+
+            <div class="col-sm-9">
+
+              <nav class="main-navigation" role="navigation">
+
+                <ul>
+
+                  <li><a href="/" title="Home">Home</a></li>
+                  <li><a href="/phreplace/" title="phReplace">phReplace</a></li>
+                  <li><a href="/npptoolbucket/" title="NppToolBucket">NppToolBucket</a></li>
+                  <li><a href="/betternote/" title="BetterNote">BetterNote</a></li>
+                  <li><a href="/contact-me/" title="Contact Me">Contact Me</a></li>
+
+                </ul>
+
+              </nav>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div><!-- end .header-top -->
+    </header>
 
     <main class="container-fluid">
       <div class="row">
-        <p>If your JS function needs to return a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="About Promises by the Mozilla Developer Network">Promise</a> but doesn’t do any asynchronous activity, you may be tempted to use the static Promise.resolve() function rather than instantiating a new Promise object. Be aware that doing this will change the way javascript errors are dealt with.</p>
+            <div class="content">
+      <article class="post">
+        <div class="container">
+
+          <div class="date-stamp">
+            <div class="month">Aug</div>
+            <div class="day">02</div>
+          </div><!-- end .date-stamp -->
+
+          <h2>Catching JavaScript errors with Promises</h2>
+
+          <p class="meta-details">posted on <span class="muted">02 August 2014</span> in <span><a href="/programming">programming</a></span> with <span><a data-disqus-identifier="catching-javascript-errors-with-promises" href="#disqus_thread">0 Comments</a></span></p>
+          <br />
+
+          <p>If your JS function needs to return a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="About Promises by the Mozilla Developer Network">Promise</a> but doesn’t do any asynchronous activity, you may be tempted to use the static Promise.resolve() function rather than instantiating a new Promise object. Be aware that doing this will change the way javascript errors are dealt with.</p>
 
 <!--more-->
 
@@ -72,11 +115,44 @@ Whereas:</p>
 
 <p>Will allow the Promise to handle the error and pass it to the catch function, resulting in ‘there was an error’ in the console.</p>
 
+
+          <ul class="post-tags">
+            
+              <li><a href="/tags/javascript" title="View posts tagged with javascript">#javascript</a></li>
+            
+              <li><a href="/tags/promises" title="View posts tagged with promises">#promises</a></li>
+            
+          </ul>
+        </div><!-- end .container -->
+      </article><!-- end .post -->
+
+      <div class="container comments">
+
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES * * */
+          var disqus_shortname = 'phdesign';
+          var disqus_identifier = 'catching-javascript-errors-with-promises';
+          var disqus_title = 'Catching JavaScript errors with Promises';
+          var disqus_url = 'http://phdesign.com.au/programming/2014/08/catching-javascript-errors-with-promises/';
+
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
       </div>
-    </main>
+
+    </div><!-- end .content -->
+
+      </div><!-- end .row -->
+    </main><!-- end .container-fluid -->
 
     
-    <footer>
+    <footer role="contentinfo">
       <div class="container">
 
         <ul class="social-icons">
@@ -85,14 +161,12 @@ Whereas:</p>
           <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
           <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
           <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
-        </ul><!-- end .social-icons -->
-
-        <p class="footer-brand"><a href="/" title="phdesign">phdesign</a></p>
+        </ul>
 
         <p class="footer-copyright">&copy; 2015 Paul Heasley. All rights reserved.</p>
 
       </div><!-- end .container -->
-    </footer><!-- end footer -->
+    </footer>
 
     
     <!-- JS (Javascript Files)

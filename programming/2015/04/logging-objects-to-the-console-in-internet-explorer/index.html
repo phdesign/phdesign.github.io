@@ -32,16 +32,59 @@
 
   </head>
 
-  <body id="page-top">
+  <body>
 
-    
-        <header>
-        </header>
+    <header role="banner">
+      <div class="header-top">
+        
+        <div class="container">
 
+          <div class="row">
+            <div class="logo col-sm-3">
+              <h1><a href="/" title="phdesign">PH<span class="logo-muted">DESIGN</span></a></h1>
+            </div><!-- end .logo -->
+
+            <div class="col-sm-9">
+
+              <nav class="main-navigation" role="navigation">
+
+                <ul>
+
+                  <li><a href="/" title="Home">Home</a></li>
+                  <li><a href="/phreplace/" title="phReplace">phReplace</a></li>
+                  <li><a href="/npptoolbucket/" title="NppToolBucket">NppToolBucket</a></li>
+                  <li><a href="/betternote/" title="BetterNote">BetterNote</a></li>
+                  <li><a href="/contact-me/" title="Contact Me">Contact Me</a></li>
+
+                </ul>
+
+              </nav>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div><!-- end .header-top -->
+    </header>
 
     <main class="container-fluid">
       <div class="row">
-        <p>Compared to other browsers, IE’s JavaScript console is pretty lacking in it’s ability to log objects, they just appear as [Object object]. As a work around for this below is a shim that will JSON.stringify any objects that are passed as parameters to console.log (or it’s sister functions like error, warn…).</p>
+            <div class="content">
+      <article class="post">
+        <div class="container">
+
+          <div class="date-stamp">
+            <div class="month">Apr</div>
+            <div class="day">24</div>
+          </div><!-- end .date-stamp -->
+
+          <h2>Logging Objects to the Console in Internet Explorer</h2>
+
+          <p class="meta-details">posted on <span class="muted">24 April 2015</span> in <span><a href="/programming">programming</a></span> with <span><a data-disqus-identifier="logging-objects-to-the-console-in-internet-explorer" href="#disqus_thread">0 Comments</a></span></p>
+          <br />
+
+          <p>Compared to other browsers, IE’s JavaScript console is pretty lacking in it’s ability to log objects, they just appear as [Object object]. As a work around for this below is a shim that will JSON.stringify any objects that are passed as parameters to console.log (or it’s sister functions like error, warn…).</p>
 
 <!--more-->
 
@@ -84,11 +127,44 @@
 
 <p>You’ll also find that IE doesn’t record console output while the developer tools are open, to enable this in IE11 go to Settings (The Gear) &gt; Internet options &gt; Advanced &gt; Check ‘Always record developer console messages’.</p>
 
+
+          <ul class="post-tags">
+            
+              <li><a href="/tags/ie" title="View posts tagged with ie">#ie</a></li>
+            
+              <li><a href="/tags/javascript" title="View posts tagged with javascript">#javascript</a></li>
+            
+          </ul>
+        </div><!-- end .container -->
+      </article><!-- end .post -->
+
+      <div class="container comments">
+
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES * * */
+          var disqus_shortname = 'phdesign';
+          var disqus_identifier = 'logging-objects-to-the-console-in-internet-explorer';
+          var disqus_title = 'Logging Objects to the Console in Internet Explorer';
+          var disqus_url = 'http://phdesign.com.au/programming/2015/04/logging-objects-to-the-console-in-internet-explorer/';
+
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
       </div>
-    </main>
+
+    </div><!-- end .content -->
+
+      </div><!-- end .row -->
+    </main><!-- end .container-fluid -->
 
     
-    <footer>
+    <footer role="contentinfo">
       <div class="container">
 
         <ul class="social-icons">
@@ -97,14 +173,12 @@
           <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
           <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
           <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
-        </ul><!-- end .social-icons -->
-
-        <p class="footer-brand"><a href="/" title="phdesign">phdesign</a></p>
+        </ul>
 
         <p class="footer-copyright">&copy; 2015 Paul Heasley. All rights reserved.</p>
 
       </div><!-- end .container -->
-    </footer><!-- end footer -->
+    </footer>
 
     
     <!-- JS (Javascript Files)

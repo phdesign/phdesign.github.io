@@ -32,25 +32,93 @@
 
   </head>
 
-  <body id="page-top">
+  <body class="home">
 
-    
-        <header>
-        </header>
+    <div class="header-background-image"></div>
+    <header role="banner">
 
+      <div class="header-top">
+        
+        <div class="container">
+
+          <div class="row">
+            <div class="logo col-sm-3">
+              <h1><a href="/" title="phdesign">PH<span class="logo-muted">DESIGN</span></a></h1>
+            </div><!-- end .logo -->
+
+            <div class="col-sm-9">
+
+              <nav class="main-navigation" role="navigation">
+
+                <ul>
+
+                  <li><a href="/" title="Home">Home</a></li>
+                  <li><a href="/phreplace/" title="phReplace">phReplace</a></li>
+                  <li><a href="/npptoolbucket/" title="NppToolBucket">NppToolBucket</a></li>
+                  <li><a href="/betternote/" title="BetterNote">BetterNote</a></li>
+                  <li><a href="/contact-me/" title="Contact Me">Contact Me</a></li>
+
+                </ul>
+
+              </nav>
+
+            </div>
+          </div>
+
+        </div>
+
+      </div><!-- end .header-top -->
+
+      <div class="container">
+
+        <div class="row">
+          <div class="col-xs-12">
+            <ul class="social-icons">
+              <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+              <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+              <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+              <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+              <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+            </ul><!-- end .social-icons -->
+          </div><!-- end .col-xs-12 -->
+        </div><!-- end .row -->
+
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="uber-statement">
+              <h2>A love affair with the web and<br/> clean code.</h2>
+              <!-- <h2>I create products that are a joy to use.</h2> -->
+            </div><!-- end .uber-statement -->
+          </div><!-- end .col-xs-12 -->
+        </div><!-- end .row -->
+
+      </div><!-- end. container -->
+
+    </header>
 
     <main class="container-fluid">
       <div class="row">
-            
+            <article class="news-item stripe about-me">
+      <div class="container">
+
+        <img src="assets/img/paul_heasley.jpg" width="180px" height="180px" alt="A profile picture of author Paul Heasley">
+        <p class="meta-details">about the author <span>Paul Heasley</span></p>
+        <p>I’m an expert .NET Developer and Technical Lead with a talent for UI design. I have excellent communication skills, proven leadership ability and I’m passionate about producing products that are a joy to use.</p>
+        <p>I’m also a Microsoft Certified Professional Developer and Certified ScrumMaster.</p>
+
+        <a class="btn btn-default btn-read-more" href="/contact-me" title="Contact me">Contact Me</a>
+
+      </div>
+    </article>
+
     
-    <article class="news-item">
+    
+    <article class="post news-item">
       <div class="container">
 
         <h2><a href="/programming/2015/04/logging-objects-to-the-console-in-internet-explorer/" title="Read full article">Logging Objects to the Console in Internet Explorer</a></h2>
 
-        <div class="meta-details">
-          <p>posted on <span>24 April 2015</span> in <span><a href="/programming">programming</a></span> with <span><a data-disqus-identifier="logging-objects-to-the-console-in-internet-explorer" href="#disqus_thread">0 Comments</a></span></p>
-        </div><!-- end .meta-details -->
+        <p class="meta-details">posted on <span class="muted">24 April 2015</span> in <span><a href="/programming">programming</a></span> with <span><a data-disqus-identifier="logging-objects-to-the-console-in-internet-explorer" href="#disqus_thread">0 Comments</a></span></p>
         <br />
 
         <p>Compared to other browsers, IE’s JavaScript console is pretty lacking in it’s ability to log objects, they just appear as [Object object]. As a work around for this below is a shim that will JSON.stringify any objects that are passed as parameters to console.log (or it’s sister functions like error, warn…).</p>
@@ -63,14 +131,12 @@
     </article>
     
     
-    <article class="news-item stripe">
+    <article class="post news-item stripe">
       <div class="container">
 
         <h2><a href="/programming/2014/08/catching-javascript-errors-with-promises/" title="Read full article">Catching JavaScript errors with Promises</a></h2>
 
-        <div class="meta-details">
-          <p>posted on <span>02 August 2014</span> in <span><a href="/programming">programming</a></span> with <span><a data-disqus-identifier="catching-javascript-errors-with-promises" href="#disqus_thread">0 Comments</a></span></p>
-        </div><!-- end .meta-details -->
+        <p class="meta-details">posted on <span class="muted">02 August 2014</span> in <span><a href="/programming">programming</a></span> with <span><a data-disqus-identifier="catching-javascript-errors-with-promises" href="#disqus_thread">0 Comments</a></span></p>
         <br />
 
         <p>If your JS function needs to return a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="About Promises by the Mozilla Developer Network">Promise</a> but doesn’t do any asynchronous activity, you may be tempted to use the static Promise.resolve() function rather than instantiating a new Promise object. Be aware that doing this will change the way javascript errors are dealt with.</p>
@@ -82,12 +148,38 @@
       </div>
     </article>
     
+    
+    <article class="post news-item">
+      <div class="container">
+
+        <h2><a href="/programming/2014/07/mapping-errors-in-jquery-promises-deferred/" title="Read full article">Mapping errors in jQuery promises / deferred</a></h2>
+
+        <p class="meta-details">posted on <span class="muted">15 July 2014</span> in <span><a href="/programming">programming</a></span> with <span><a data-disqus-identifier="mapping-errors-in-jquery-promises--deferred" href="#disqus_thread">0 Comments</a></span></p>
+        <br />
+
+        <p>For those familiar with JavaScript Promises, jQuery’s Deferred.fail() handling can act unexpectedly. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Mozilla Developer Network: Promise">Standard Promises implementations</a> allow the first catch handler to deal with the error and then return to normal execution flow (see <a href="http://www.html5rocks.com/en/tutorials/es6/promises" title="JavaScript Promises: There and back again">JavaScript Promises: There and back again</a>). jQuery on the other hand appears to execute all fail handlers, in the order they were defined with no chance to recover normal flow.</p>
+
+
+
+        <a class="btn btn-default btn-read-more" href="/programming/2014/07/mapping-errors-in-jquery-promises-deferred/" title="Read full article">Read Article</a>
 
       </div>
-    </main>
+    </article>
+    
+
+    <article class="news-item load-more stripe">
+      <div class="container">
+
+          <p>Fetching more awesome...</p>
+
+      </div>
+    </article>
+
+      </div><!-- end .row -->
+    </main><!-- end .container-fluid -->
 
     
-    <footer>
+    <footer role="contentinfo">
       <div class="container">
 
         <ul class="social-icons">
@@ -96,14 +188,12 @@
           <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
           <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
           <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
-        </ul><!-- end .social-icons -->
-
-        <p class="footer-brand"><a href="/" title="phdesign">phdesign</a></p>
+        </ul>
 
         <p class="footer-copyright">&copy; 2015 Paul Heasley. All rights reserved.</p>
 
       </div><!-- end .container -->
-    </footer><!-- end footer -->
+    </footer>
 
     
     <!-- JS (Javascript Files)
