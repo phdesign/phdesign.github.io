@@ -37,33 +37,42 @@
     <header role="banner">
       <div class="header-top">
         
-        <div class="container">
+        <nav class="navbar navbar-default">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+            </div><!-- end .navbar-header -->
 
-          <div class="row">
-            <div class="logo col-sm-3">
-              <h1><a href="/" title="phdesign">PH<span class="logo-muted">DESIGN</span></a></h1>
-            </div><!-- end .logo -->
-
-            <div class="col-sm-9">
-
-              <nav class="main-navigation" role="navigation">
-
-                <ul>
-
-                  <li><a href="/" title="Home">Home</a></li>
-                  <li><a href="/phreplace/" title="phReplace">phReplace</a></li>
-                  <li><a href="/npptoolbucket/" title="NppToolBucket">NppToolBucket</a></li>
-                  <li><a href="/betternote/" title="BetterNote">BetterNote</a></li>
-                  <li><a href="/contact-me/" title="Contact Me">Contact Me</a></li>
-
-                </ul>
-
-              </nav>
-
-            </div>
-          </div>
-
-        </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    
+                      <li><a href="/programming">programming</a></li>
+                    
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="/phreplace">phReplace</a></li>
+                    <li><a href="/npptoolbucket">NppToolBucket</a></li>
+                    <li><a href="/betternote">BetterNote</a></li>
+                  </ul>
+                </li>
+                <li><a href="/contact-me">Contact me</a></li>
+              </ul>
+            </div><!-- end .navbar-collapse -->
+          </div><!-- end .container -->
+        </nav>
 
       </div><!-- end .header-top -->
     </header>
