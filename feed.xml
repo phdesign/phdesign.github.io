@@ -6,8 +6,8 @@
 </description>
     <link>http://phdesign.com.au/</link>
     <atom:link href="http://phdesign.com.au/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 15 Jun 2015 20:59:39 +1000</pubDate>
-    <lastBuildDate>Mon, 15 Jun 2015 20:59:39 +1000</lastBuildDate>
+    <pubDate>Wed, 17 Jun 2015 08:21:17 +1000</pubDate>
+    <lastBuildDate>Wed, 17 Jun 2015 08:21:17 +1000</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -55,7 +55,7 @@
 
 &lt;p&gt;You’ll also find that IE doesn’t record console output while the developer tools are open, to enable this in IE11 go to Settings (The Gear) &amp;gt; Internet options &amp;gt; Advanced &amp;gt; Check ‘Always record developer console messages’.&lt;/p&gt;
 </description>
-        <pubDate>Fri, 24 Apr 2015 08:20:53 +1000</pubDate>
+        <pubDate>Fri, 24 Apr 2015 00:00:00 +1000</pubDate>
         <link>http://phdesign.com.au/programming/2015/04/logging-objects-to-the-console-in-internet-explorer/</link>
         <guid isPermaLink="true">http://phdesign.com.au/programming/2015/04/logging-objects-to-the-console-in-internet-explorer/</guid>
         
@@ -101,7 +101,7 @@ Whereas:&lt;/p&gt;
 
 &lt;p&gt;Will allow the Promise to handle the error and pass it to the catch function, resulting in ‘there was an error’ in the console.&lt;/p&gt;
 </description>
-        <pubDate>Sat, 02 Aug 2014 12:20:35 +1000</pubDate>
+        <pubDate>Sat, 02 Aug 2014 00:00:00 +1000</pubDate>
         <link>http://phdesign.com.au/programming/2014/08/catching-javascript-errors-with-promises/</link>
         <guid isPermaLink="true">http://phdesign.com.au/programming/2014/08/catching-javascript-errors-with-promises/</guid>
         
@@ -261,7 +261,7 @@ Whereas:&lt;/p&gt;
     &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 </description>
-        <pubDate>Tue, 15 Jul 2014 08:36:55 +1000</pubDate>
+        <pubDate>Tue, 15 Jul 2014 00:00:00 +1000</pubDate>
         <link>http://phdesign.com.au/programming/2014/07/mapping-errors-in-jquery-promises-deferred/</link>
         <guid isPermaLink="true">http://phdesign.com.au/programming/2014/07/mapping-errors-in-jquery-promises-deferred/</guid>
         
