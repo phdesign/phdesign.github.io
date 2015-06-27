@@ -1,0 +1,287 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Logging Messages in Dot Net | phdesign</title>
+
+    <!-- Google Web Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicon/Touch Icons  -->
+    <!-- <link rel="shortcut icon" href="/assets/img/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
+
+  </head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+        <nav class="navbar navbar-default">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+            </div><!-- end .navbar-header -->
+
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    
+                      <li><a href="/programming">programming</a></li>
+                    
+                      <li><a href="/general">general</a></li>
+                    
+                      <li><a href="/uncategorized">uncategorized</a></li>
+                    
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="/phreplace">phReplace</a></li>
+                    <li><a href="/npptoolbucket">NppToolBucket</a></li>
+                    <li><a href="/betternote">BetterNote</a></li>
+                  </ul>
+                </li>
+                <li><a href="/contact-me">Contact me</a></li>
+              </ul>
+            </div><!-- end .navbar-collapse -->
+          </div><!-- end .container -->
+        </nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+
+    <main class="content">
+            <article>
+        <div class="container">
+
+          
+
+          <div class="date-stamp">
+            <div class="month">Jun</div>
+            <div class="day">17</div>
+          </div><!-- end .date-stamp -->
+
+          <h2 class="post-header">Logging Messages in Dot Net</h2>
+
+          <div class="meta-label">posted on <span class="meta-value muted">17 June 2010</span> in <span class="meta-value"><a href="/programming">programming</a></span> with <span class="meta-value"><a data-disqus-identifier="logging-messages-in-dot-net" href="#disqus_thread">0 Comments</a></span></div>
+          <br />
+
+          <p>The .Net Framework provides an easy way to log messages using the System.Diagnostics.Trace class. By using Trace the user can configure where and what to log in the config file.</p>
+
+<p>Below are two simple ways to log a message to a text file.</p>
+
+<!--more-->
+
+<ol>
+  <li>The simplest way if you don’t care about the format of the message is to use a filter on the trace listener in app.config to determine which events to log.</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">system</span><span class="p">.</span><span class="nx">diagnostics</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">trace</span> <span class="nx">autoflush</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">listeners</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">add</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;LogListener&quot;</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;System.Diagnostics.TextWriterTraceListener&quot;</span> <span class="nx">initializeData</span><span class="o">=</span><span class="s2">&quot;trace.log&quot;</span> <span class="nx">traceOutputOptions</span><span class="o">=</span><span class="s2">&quot;DateTime&quot;</span><span class="o">&gt;</span>
+        <span class="c">&lt;!--</span>
+        <span class="nx">EventTypes</span><span class="o">:</span>
+        <span class="nx">Critical</span><span class="o">:</span> <span class="nx">Fatal</span> <span class="nx">error</span> <span class="nx">or</span> <span class="nx">application</span> <span class="nx">crash</span><span class="p">.</span>
+        <span class="nb">Error</span><span class="o">:</span> <span class="nx">Recoverable</span> <span class="nx">error</span><span class="p">.</span>
+        <span class="nx">Warning</span><span class="o">:</span> <span class="nx">Noncritical</span> <span class="nx">problem</span><span class="p">.</span>
+        <span class="nx">Information</span><span class="o">:</span> <span class="nx">Informational</span> <span class="nx">message</span><span class="p">.</span>
+        <span class="nx">Verbose</span><span class="o">:</span> <span class="nx">Debugging</span> <span class="nx">trace</span><span class="p">.</span>
+        <span class="nx">Start</span><span class="o">:</span> <span class="nx">Starting</span> <span class="nx">of</span> <span class="nx">a</span> <span class="nx">logical</span> <span class="nx">operation</span><span class="p">.</span>
+        <span class="nx">Stop</span><span class="o">:</span> <span class="nx">Stopping</span> <span class="nx">of</span> <span class="nx">a</span> <span class="nx">logical</span> <span class="nx">operation</span><span class="p">.</span>
+        <span class="nx">Suspend</span><span class="o">:</span> <span class="nx">Suspension</span> <span class="nx">of</span> <span class="nx">a</span> <span class="nx">logical</span> <span class="nx">operation</span><span class="p">.</span>
+        <span class="nx">Resume</span><span class="o">:</span> <span class="nx">Resumption</span> <span class="nx">of</span> <span class="nx">a</span> <span class="nx">logical</span> <span class="nx">operation</span><span class="p">.</span>
+        <span class="nx">Transfer</span><span class="o">:</span> <span class="nx">Changing</span> <span class="nx">of</span> <span class="nx">correlation</span> <span class="nx">identity</span><span class="p">.</span>
+        <span class="o">--&gt;</span>
+        <span class="o">&lt;</span><span class="nx">filter</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;System.Diagnostics.EventTypeFilter&quot;</span> <span class="nx">initializeData</span><span class="o">=</span><span class="s2">&quot;Error&quot;</span><span class="o">/&gt;</span>
+      <span class="o">&lt;</span><span class="err">/add&gt;</span>
+    <span class="o">&lt;</span><span class="err">/listeners&gt;</span>
+  <span class="o">&lt;</span><span class="err">/trace&gt;</span>
+<span class="o">&lt;</span><span class="err">/system.diagnostics&gt;</span></code></pre></div>
+
+<p>Then you only need to call one of the following methods to log a message with a specific EventType.</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">System</span><span class="p">.</span><span class="nx">Diagnostics</span><span class="p">.</span><span class="nx">Trace</span><span class="p">.</span><span class="nx">TraceInformation</span><span class="p">(</span><span class="s2">&quot;Information messge&quot;</span><span class="p">);</span>
+<span class="nx">System</span><span class="p">.</span><span class="nx">Diagnostics</span><span class="p">.</span><span class="nx">Trace</span><span class="p">.</span><span class="nx">TraceError</span><span class="p">(</span><span class="s2">&quot;Error messge&quot;</span><span class="p">);</span></code></pre></div>
+
+<ol>
+  <li>If you want more control over the format of the message you can use a TraceSwitch in app.config:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">system</span><span class="p">.</span><span class="nx">diagnostics</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">switches</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">clear</span><span class="o">/&gt;</span>
+    <span class="c">&lt;!--</span>
+    <span class="nx">Trace</span> <span class="nx">Levels</span><span class="o">:</span>
+    <span class="nx">Off</span><span class="o">:</span> <span class="mi">0</span><span class="o">:</span> <span class="nx">None</span>
+    <span class="nb">Error</span><span class="o">:</span> <span class="mi">1</span><span class="o">:</span> <span class="nx">Only</span> <span class="nx">error</span> <span class="nx">messages</span>
+    <span class="nx">Warning</span><span class="o">:</span> <span class="mi">2</span><span class="o">:</span> <span class="nx">Warning</span> <span class="nx">messages</span> <span class="nx">and</span> <span class="nx">error</span> <span class="nx">messages</span>
+    <span class="nx">Info</span><span class="o">:</span> <span class="mi">3</span><span class="o">:</span> <span class="nx">Informational</span> <span class="nx">messages</span><span class="p">,</span> <span class="nx">warning</span> <span class="nx">messages</span><span class="p">,</span> <span class="nx">and</span> <span class="nx">error</span> <span class="nx">messages</span>
+    <span class="nx">Verbose</span><span class="o">:</span> <span class="mi">4</span><span class="o">:</span> <span class="nx">Verbose</span> <span class="nx">messages</span><span class="p">,</span> <span class="nx">informational</span> <span class="nx">messages</span><span class="p">,</span> <span class="nx">warning</span> <span class="nx">messages</span><span class="p">,</span> <span class="nx">and</span> <span class="nx">error</span> <span class="nx">messages</span>
+    <span class="o">--&gt;</span>
+    <span class="o">&lt;</span><span class="nx">add</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;LogLevel&quot;</span> <span class="nx">value</span><span class="o">=</span><span class="s2">&quot;Info&quot;</span><span class="o">/&gt;</span>
+  <span class="o">&lt;</span><span class="err">/switches&gt;</span>
+  <span class="o">&lt;</span><span class="nx">trace</span> <span class="nx">autoflush</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">listeners</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">add</span> <span class="nx">name</span><span class="o">=</span><span class="s2">&quot;LogListener&quot;</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;System.Diagnostics.TextWriterTraceListener&quot;</span> <span class="nx">initializeData</span><span class="o">=</span><span class="s2">&quot;trace.log&quot;</span><span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="err">/listeners&gt;</span>
+  <span class="o">&lt;</span><span class="err">/trace&gt;</span>
+<span class="o">&lt;</span><span class="err">/system.diagnostics&gt;</span></code></pre></div>
+
+<p>Then retrieve the TraceSwitch in code as follows:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">TraceSwitch</span> <span class="nx">logLevel</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">TraceSwitch</span><span class="p">(</span><span class="s2">&quot;LogLevel&quot;</span><span class="p">,</span> <span class="s2">&quot;The logging level&quot;</span><span class="p">);</span>
+<span class="nx">Trace</span><span class="p">.</span><span class="nx">WriteLineIf</span><span class="p">(</span><span class="nx">logLevel</span><span class="p">.</span><span class="nx">Level</span> <span class="o">&gt;=</span> <span class="nx">level</span><span class="p">,</span> <span class="nx">string</span><span class="p">.</span><span class="nx">Format</span><span class="p">(</span><span class="s2">&quot;[{0}] [{1}]: {2}&quot;</span><span class="p">,</span> <span class="nx">DateTime</span><span class="p">.</span><span class="nx">Now</span><span class="p">,</span> <span class="nx">level</span><span class="p">,</span> <span class="nx">message</span><span class="p">));</span></code></pre></div>
+
+<p>The examples are for a desktop application, but they would work equally well in a web application by configuring web.config. Note that web applications aren’t compiled with Trace enabled, so you need to enable them in web.config by using the following after the <system.diagnostics> node:</system.diagnostics></p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">system</span><span class="p">.</span><span class="nx">codedom</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">compilers</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">compiler</span> <span class="nx">language</span><span class="o">=</span><span class="s2">&quot;c#;cs;csharp&quot;</span>
+      <span class="nx">extension</span><span class="o">=</span><span class="s2">&quot;.cs&quot;</span>
+      <span class="nx">compilerOptions</span><span class="o">=</span><span class="s2">&quot;/d:TRACE&quot;</span>
+      <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;Microsoft.CSharp.CSharpCodeProvider, System, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;</span> <span class="nx">warningLevel</span><span class="o">=</span><span class="s2">&quot;1&quot;</span> <span class="o">/&gt;</span>
+    <span class="o">&lt;</span><span class="err">/compilers&gt;</span>
+<span class="o">&lt;</span><span class="err">/system.codedom&gt;</span></code></pre></div>
+
+
+
+          <ul class="post-tags">
+            
+          </ul>
+
+          
+
+        </div><!-- end .container -->
+      </article>
+
+      <div class="stripe">
+        <div class="container">
+
+          <div class="comments">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+              /* * * CONFIGURATION VARIABLES * * */
+              var disqus_shortname = 'phdesign';
+              var disqus_identifier = 'logging-messages-in-dot-net';
+              var disqus_title = 'Logging Messages in Dot Net';
+              var disqus_url = 'http://phdesign.com.au/programming/2010/06/logging-messages-in-dot-net/';
+
+              /* * * DON'T EDIT BELOW THIS LINE * * */
+              (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+              })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+          </div><!-- end .comments -->
+
+        </div><!-- end .container -->
+      </div>
+
+      <div class="stripe alt">
+        <div class="container">
+
+          <nav class="row pager">
+            <div class="previous col-xs-6 col-sm-4">
+              
+                <div class="meta-label"><a href="/general/2010/06/phreplace-goes-open-source/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+                <div class="meta-value"><a href="/general/2010/06/phreplace-goes-open-source/">phreplace Goes Open Source</a></div>
+              
+            </div>
+            <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+              
+                <div class="meta-label"><a href="/programming/2010/07/wpf-radiobutton-binding-to-ischecked-property/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+                <div class="meta-value"><a href="/programming/2010/07/wpf-radiobutton-binding-to-ischecked-property/">WPF RadioButton Binding to IsChecked Property</a></div>
+              
+            </div>
+          </nav><!-- end .post_nav -->
+
+        </div><!-- end .container -->
+      </div><!-- end .stripe.alt -->
+
+    </main><!-- end .content -->
+
+    
+    <footer role="contentinfo">
+      <div class="container">
+
+        <ul class="social-icons">
+          <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+          <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+          <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+          <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+        </ul>
+
+        <p class="footer-copyright">
+          &copy; 2015 Paul Heasley. All rights reserved. <br>
+          Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+        </p>
+
+      </div><!-- end .container -->
+    </footer>
+
+    
+    <!-- JS (Javascript Files)
+    ================================================== -->
+
+    <script src="/assets/js/main.js"></script>
+
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'phdesign';
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+      }());
+    </script>
+
+  </body>
+
+</html>

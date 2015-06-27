@@ -6,8 +6,8 @@
 </description>
     <link>http://phdesign.com.au/</link>
     <atom:link href="http://phdesign.com.au/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 17 Jun 2015 08:21:17 +1000</pubDate>
-    <lastBuildDate>Wed, 17 Jun 2015 08:21:17 +1000</lastBuildDate>
+    <pubDate>Sat, 27 Jun 2015 19:55:24 +1000</pubDate>
+    <lastBuildDate>Sat, 27 Jun 2015 19:55:24 +1000</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -156,7 +156,7 @@ Whereas:&lt;/p&gt;
 
 &lt;p&gt;The output of which would be:&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;http://www.phdesign.com.au/wp-content/uploads/2014/07/Screen-Shot-2014-07-15-at-8.30.11-am.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-386&quot; title=&quot;Example output of Promises error handling&quot; src=&quot;assets/Screen-Shot-2014-07-15-at-8.30.11-am.png&quot; alt=&quot;Example output of Promises error handling&quot; width=&quot;164&quot; height=&quot;86&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/Screen-Shot-2014-07-15-at-8.30.11-am.png&quot; alt=&quot;Example output of Promises error handling&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;And a similar jQuery implementation:&lt;/p&gt;
 
@@ -194,7 +194,7 @@ Whereas:&lt;/p&gt;
 
 &lt;p&gt;The output of which would be:&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;http://www.phdesign.com.au/wp-content/uploads/2014/07/Screen-Shot-2014-07-15-at-8.30.37-am.png&quot;&gt;&lt;img class=&quot;alignnone size-full wp-image-387&quot; title=&quot;Example output of jQuery.Deferred error handling&quot; src=&quot;assets/Screen-Shot-2014-07-15-at-8.30.37-am.png&quot; alt=&quot;Example output of jQuery.Deferred error handling&quot; width=&quot;158&quot; height=&quot;86&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/Screen-Shot-2014-07-15-at-8.30.37-am.png&quot; alt=&quot;Example output of jQuery.Deferred error handling&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Note how Chrome’s Promises recovered after the first catch handler was executed and called the ‘recovered’ function. jQuery does not. Another small difference is that Promise.reject() and Promise.resolve() may only return a single object, whereas jQuery passes all parameters to it’s reject or resolve functions onto the then or fail handlers.&lt;/p&gt;
 
@@ -270,6 +270,370 @@ Whereas:&lt;/p&gt;
         <category>jquery</category>
         
         <category>promises</category>
+        
+        
+        <category>programming</category>
+        
+      </item>
+    
+      <item>
+        <title>Excel templates for Scrum Product and Sprint Backlogs</title>
+        <description>&lt;p&gt;Here’s some useful templates for managing Scrum projects using Excel. Why use Excel? For simplicity. Sometimes great software and tools are necessary, sometimes they just over complicate the process.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.phdesign.com.au/wp-content/uploads/2014/05/Product-Backlog-Template.xlsx&quot;&gt;Product Backlog Excel Template (incl. Release Burndown Chart)&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.phdesign.com.au/wp-content/uploads/2014/05/Sprint-Backlog-Template.xlsx&quot;&gt;Sprint Backlog Excel Template (incl. Sprint Burndown Chart)&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;release-burndown-chart&quot;&gt;Release Burndown Chart&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/release-burndown1.png&quot; alt=&quot;Release Burndown Chart&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;sprint-burndown-chart&quot;&gt;Sprint Burndown Chart&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/sprint-burndown.png&quot; alt=&quot;Sprint Burndown Chart&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“Individuals and interactions over processes and tools”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;- &lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;Manifestio for Agile Software&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“Simplicity–the art of maximizing the amount of work not done–is essential.”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;- &lt;a href=&quot;http://agilemanifesto.org/principles.html&quot;&gt;Principles behind the Agile Manifesto&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;“Many time management techniques fail because they subject the people who use them to a higher level of added complexity with respect to the &amp;gt; intrinsic complexity of the task at hand.”&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;- &lt;a href=&quot;http://pomodorotechnique.com/&quot;&gt;The Pomodoro Technique&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 13 May 2014 00:00:00 +1000</pubDate>
+        <link>http://phdesign.com.au/general/2014/05/excel-templates-for-scrum-product-and-sprint-backlogs/</link>
+        <guid isPermaLink="true">http://phdesign.com.au/general/2014/05/excel-templates-for-scrum-product-and-sprint-backlogs/</guid>
+        
+        <category>agile</category>
+        
+        <category>excel</category>
+        
+        <category>scrum</category>
+        
+        <category>templates</category>
+        
+        
+        <category>general</category>
+        
+      </item>
+    
+      <item>
+        <title>Backbone.Spark: Ember style computed properties for Backbone.js</title>
+        <description>&lt;p&gt;Backbone.Spark provides computed property support for Backbone.js, the goal of the extension is to make computed properties behave in the same way as a normal attribute so your other code doesn’t need to know the difference.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/phdesign/Backbone.Spark&amp;quot; title=&amp;quot;Backbone.Spark project on GitHub&quot;&gt;The latest version of Backbone.Spark and examples can be found at GitHub&lt;/a&gt;&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;h3 id=&quot;why-would-you-use-a-computed-property&quot;&gt;Why would you use a computed property?&lt;/h3&gt;
+
+&lt;p&gt;Say you were working with files, and your file model has the full path to the file, e.g. &lt;strong&gt;C:\Users\joe\Documents\thefile.txt&lt;/strong&gt;. Now you want to display only the file name in a templated view, how would you do this?&lt;/p&gt;
+
+&lt;p&gt;You could only store the file path attribute in the model and have the view extract the file name, but what happens when you have mutliple views pointing to the model, you’ll have have to replicate the code to compute the file name, not very DRY.&lt;/p&gt;
+
+&lt;p&gt;Another way you could approach it is to have a file name attribute of the model and watch for changes to the file path, when it changes you update the value of file name. This works but it relies on good code to keep the dependent file path attribute in sync, and as you add more dependent values, say file extension, this code can bloat out. You’re also running code to compute the values of the dependent attributes that may never be used.&lt;/p&gt;
+
+&lt;p&gt;Backbone.Spark provides an alternative, allowing you to specify a the file name as a function, so it gets computed from the file path every time it’s requested and you’re guaranteed to have the correct value.&lt;/p&gt;
+
+&lt;h3 id=&quot;but-backbonemutators-already-exists-why-wouldnt-i-just-use-this&quot;&gt;But Backbone.Mutators already exists, why wouldn’t I just use this?&lt;/h3&gt;
+
+&lt;p&gt;Right you are, and full credit to Backbone.Mutators, it’s a great extension and Backbone.Spark uses about 70% of it’s code. My problem with mutators is that other code needs to know the dependencies for the mutator. If you want to update the view when file name changes, you need to watch for a change to the file path attribute. Backbone.Spark overcomes this by raising change events whenever any of the dependent properties change.&lt;/p&gt;
+
+&lt;h3 id=&quot;enough-of-the-talk-show-me-some-code&quot;&gt;Enough of the talk, show me some code&lt;/h3&gt;
+
+&lt;p&gt;Backbone.Spark defines a new Model class that you can choose to inherit from.&lt;/p&gt;
+
+&lt;h4 id=&quot;basic-usage&quot;&gt;Basic usage&lt;/h4&gt;
+
+&lt;p&gt;To use, declare a new property object called sparks and add function properties for the ‘getter’ accessors.&lt;br /&gt;
+Call dependsOn with the spark to specify which attributes this spark depends on. Whenever the dependent attribute(s) are changed, a change event will also be triggered for this spark.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;App&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;File&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Backbone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Spark&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;extend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;sparks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+        &lt;span class=&quot;nx&quot;&gt;extn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lastIndexOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;substr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;dependsOn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;filePath&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;using-setters&quot;&gt;Using setters&lt;/h4&gt;
+
+&lt;p&gt;When calling set on a spark, the set function arguments are passed to the spark function.&lt;br /&gt;
+You can identify a getter call by testing arguments.length === 0, a setter call has the following arguments:  &lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;key:&lt;/strong&gt; The name of the spark property.&lt;br /&gt;
+&lt;strong&gt;value:&lt;/strong&gt; The new value to be set.&lt;br /&gt;
+&lt;strong&gt;options:&lt;/strong&gt; Any options passed to the set call, including whether this call should raise events or not (silent).&lt;br /&gt;
+&lt;strong&gt;set:&lt;/strong&gt; The base class set function.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;App&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;File&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Backbone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Spark&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;extend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+
+    &lt;span class=&quot;nx&quot;&gt;sparks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+        &lt;span class=&quot;nx&quot;&gt;extn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arguments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lastIndexOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;substr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+                &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;filePath&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
+                    &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lastIndexOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+                    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;filePath&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;substr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;dependsOn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;filePath&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;get-it-here&quot;&gt;Get it here&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/phdesign/Backbone.Spark&quot; title=&quot;Backbone.Spark project on GitHub&quot;&gt;Backbone.Spark and more example code can be found at GitHub&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Backbone.Spark is released under the Apache License, Version 2.0.&lt;/p&gt;
+
+&lt;p&gt;&lt;a class=&quot;btn btn-primary&quot; href=&quot;https://github.com/phdesign/Backbone.Spark&quot; title=&quot;Backbone.Spark project on GitHub&quot;&gt;Download&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Tue, 24 Jul 2012 00:00:00 +1000</pubDate>
+        <link>http://phdesign.com.au/programming/2012/07/backbone-spark/</link>
+        <guid isPermaLink="true">http://phdesign.com.au/programming/2012/07/backbone-spark/</guid>
+        
+        <category>backbonejs</category>
+        
+        <category>javascript</category>
+        
+        
+        <category>programming</category>
+        
+      </item>
+    
+      <item>
+        <title>TFS undo checkout of unedited files</title>
+        <description>&lt;p&gt;It bugs me when developers check in files to TFS that haven’t been modified. It’s easy to do, you open a file, edit it, change your mind and ctrl-z it. Now you have a checked out file with no changes and when you do your next check in you’ll probably check that file in too, unless you’re really on the ball and compare each file manually first. TFS makes no distinction between checked in files that were modified and those that weren’t, which makes the job of reviewing code that much harder.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;Now I’ve found the resolution and it’s so easy it’s stupid, just &lt;strong&gt;undo your changes&lt;/strong&gt;. That’s right, go on, right click your solution and select Undo Pending Changes&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/tfs-undo-unedited-1-148x300.png&quot; alt=&quot;Selecting Undo Pending Changes from the right click menu in Solution Explorer&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;You’ll see see the Undo Pending Changes dialog, &lt;strong&gt;make sure you only select edited files&lt;/strong&gt; (e.g. uncheck add / delete actions), then go ahead and click Undo Changes.&lt;/p&gt;
+
+&lt;p&gt;Now the catch is TFS will go ahead and undo the checkout for any unmodified files, when it hits a modified file it’ll prompt you with Confirm Undo Checkout, select &lt;strong&gt;No to All&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/tfs-undo-unedited-2-300x81.png&quot; alt=&quot;Confirm Undo Changes prompt&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;TFS will continue to undo all unmodified files but leave your modified files alone, now you’re left with only your modified files checked out. Hooraah.&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 13 Apr 2012 00:00:00 +1000</pubDate>
+        <link>http://phdesign.com.au/programming/2012/04/tfs-undo-checkout-of-unedited-files/</link>
+        <guid isPermaLink="true">http://phdesign.com.au/programming/2012/04/tfs-undo-checkout-of-unedited-files/</guid>
+        
+        <category>dotnet</category>
+        
+        <category>howto</category>
+        
+        <category>tfs</category>
+        
+        
+        <category>programming</category>
+        
+      </item>
+    
+      <item>
+        <title>Create branch of modified working copy in TFS</title>
+        <description>&lt;p&gt;Scenario: You’ve been working on your code from Team Foundation Server (TFS), made changes then realised you should really have started a branch for it.&lt;/p&gt;
+
+&lt;p&gt;I couldn’t find a good tutorial anywhere for doing this so here’s how I stumbled through it.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Create a shelveset of your current working copy&lt;/strong&gt;&lt;br /&gt;
+File &amp;gt; Source Control &amp;gt; Shelve Pending Changes
+Uncheck ‘Preserve pending changes locally’. This will undo all your pending changes.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Create branch&lt;/strong&gt;&lt;br /&gt;
+One way to do this is go to the Team Explorer tab &amp;gt; Source Control. Right click on the branch, trunk or root folder and select Branching and Merging &amp;gt; Branch.
+In Branch From Version, select By Workspace Version.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Map branch to a working folder&lt;/strong&gt;&lt;br /&gt;
+Right click on new branch and select Map to Local Folder.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;Unshelve your changes to the new branch&lt;/strong&gt;&lt;br /&gt;
+To do this you need TFS Power Tools ‘unshelve’. More info here:&lt;br /&gt;
+&lt;a href=&quot;http://geekswithblogs.net/TarunArora/archive/2011/06/06/unshelve-shelveset-created-from-one-branch-to-another.aspx&quot;&gt;http://geekswithblogs.net/TarunArora/archive/2011/06/06/unshelve-shelveset-created-from-one-branch-to-another.aspx&lt;/a&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;You can can now check in your changes to the new branch&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 29 Mar 2012 00:00:00 +1100</pubDate>
+        <link>http://phdesign.com.au/programming/2012/03/create-branch-of-modified-working-copy-in-tfs/</link>
+        <guid isPermaLink="true">http://phdesign.com.au/programming/2012/03/create-branch-of-modified-working-copy-in-tfs/</guid>
+        
+        <category>howto</category>
+        
+        <category>tfs</category>
+        
+        
+        <category>programming</category>
+        
+      </item>
+    
+      <item>
+        <title>Win XP copy path to clipboard</title>
+        <description>&lt;p&gt;If you’re still stuck on Windows XP, you might find this script helpful. Save a shortcut to it in your ‘SendTo’ folder and simply right click on any file, select Send to &amp;gt; Copy Path and the full file path will be copied to your clipboard.&lt;/p&gt;
+
+&lt;p&gt;Requires clip.exe.&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 23 Jan 2012 00:00:00 +1100</pubDate>
+        <link>http://phdesign.com.au/uncategorized/2012/01/win-xp-copy-path-to-clipboard/</link>
+        <guid isPermaLink="true">http://phdesign.com.au/uncategorized/2012/01/win-xp-copy-path-to-clipboard/</guid>
+        
+        
+        <category>uncategorized</category>
+        
+      </item>
+    
+      <item>
+        <title>ToolBucket multi-line search plugin for Notepad++</title>
+        <description>&lt;p&gt;ToolBucket is a C# .NET Framework plugin for Notepad++&lt;/p&gt;
+
+&lt;h3&gt;Features&lt;/h3&gt;
+&lt;p&gt;ToolBucket contains the following features:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Multi-line search and replace dialog.&lt;/li&gt;
+&lt;li&gt;Change indentation dialog.&lt;/li&gt;
+&lt;li&gt;Generate GUID&lt;/li&gt;
+&lt;li&gt;Generate Lorem Ipsum&lt;/li&gt;
+&lt;li&gt;Compute MD5 Hash&lt;/li&gt;
+&lt;li&gt;Compute SHA1 Hash&lt;/li&gt;
+&lt;li&gt;Base 64 encode&lt;/li&gt;
+&lt;li&gt;Base 64 decode&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Download&lt;/h3&gt;
+&lt;p&gt;The latest version is available here:&lt;br /&gt;
+&lt;a href=&quot;https://github.com/phdesign/NppToolBucket/downloads&quot;&gt;https://github.com/phdesign/NppToolBucket/downloads&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3&gt;Installation&lt;/h3&gt;
+&lt;p&gt;Copy the NppToolBucket.dll file to your Notepad++\plugins directory.&lt;/p&gt;
+
+&lt;h3&gt;Dependencies&lt;/h3&gt;
+&lt;p&gt;Requires .NET Framework 2.0 or higher to be installed on the system.&lt;/p&gt;
+
+&lt;h3&gt;Screenshots&lt;/h3&gt;
+&lt;p&gt;[gallery link=”file”]&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 23 Jan 2012 00:00:00 +1100</pubDate>
+        <link>http://phdesign.com.au/programming/2012/01/toolbucket-multi-line-search-plugin-for-notepad/</link>
+        <guid isPermaLink="true">http://phdesign.com.au/programming/2012/01/toolbucket-multi-line-search-plugin-for-notepad/</guid>
+        
+        <category>c#</category>
+        
+        <category>dotnet</category>
+        
+        <category>notepad++</category>
+        
+        
+        <category>programming</category>
+        
+      </item>
+    
+      <item>
+        <title>Delete Dependent Entities When Removed From EF Collection</title>
+        <description>&lt;p&gt;I’m using Entity Framework 4.1 Code First Fluent API.&lt;br /&gt;
+The problem. I have an Entity Framework model being used in the business layer called Patient, it has a collection of dependent entities called Responses, when a response needs to be deleted I simply remove it from the collection and expect that it’ll get deleted from the database. It doesn’t.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;img src=&quot;assets/ef-delete-relationship-models.png&quot; alt=&quot;Response and Patient Model Diagram&quot; title=&quot;ef-delete-relationship-models&quot; width=&quot;249&quot; height=&quot;91&quot; class=&quot;alignnone size-full wp-image-268&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// This doesn’t work as expected, it removes the relationship but not the Response entity. &lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;Patient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Responses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Remove&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Patient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Responses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If I try to save this, I get the error:&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;System.InvalidOperationException: The operation failed: The relationship could not be changed because one or more of the foreign-key properties is non-nullable. When a change is made to a relationship, the related foreign-key property is set to a null value. If the foreign-key does not support null values, a new relationship must be defined, the foreign-key property must be assigned another non-null value, or the unrelated object must be deleted.&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;What’s happening is the Response entity does not get deleted, just the relationship to the Patient. However when the relationship is removed, Entity Framework doesn’t know what to do with Response.PatientId, it can’t null it because it’s marked as not null.&lt;/p&gt;
+
+&lt;p&gt;Reading &lt;a title=&quot;Deleting Foreign-Key Relationships in EF4&quot; href=&quot;http://blogs.msdn.com/b/dsimmons/archive/2010/01/31/deleting-foreign-key-relationships-in-ef4.aspx&quot; target=&quot;_blank&quot;&gt;this blog post&lt;/a&gt; helped me understand the issue a bit more. So one solution is to make the Response entity primary key depend on the foreign key field, i.e. PatientId, this will make Entity Framework act as expected and delete the dependent entity when the relationship is deleted.&lt;/p&gt;
+
+&lt;p&gt;We can do this by providing the following Fluent API mapping:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;modelBuilder&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Entity&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;HasKey&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;m&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;PatientId&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;But if you’re not comfortable changing your database structure to suit Entity Framework there is another way. By overriding the SaveChanges method of our DbContext class, we can monitor for changes to Responses where they have been orphaned from a Patient and delete them:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kr&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;override&lt;/span&gt; &lt;span class=&quot;kr&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;SaveChanges&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;// Need to manually delete all responses that have been removed from the patient, otherwise they&amp;#39;ll be orphaned.&lt;/span&gt;
+  &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;orphanedResponses&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ChangeTracker&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Entries&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;().&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Where&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;State&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;EntityState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Modified&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;State&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;EntityState&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Added&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Entity&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Reference&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;Patient&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;CurrentValue&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;foreach&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;orphanedResponse&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;orphanedResponses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;Responses&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Remove&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;orphanedResponse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Entity&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;SaveChanges&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+</description>
+        <pubDate>Tue, 06 Sep 2011 00:00:00 +1000</pubDate>
+        <link>http://phdesign.com.au/programming/2011/09/delete-dependent-entities-when-removed-from-ef-collection/</link>
+        <guid isPermaLink="true">http://phdesign.com.au/programming/2011/09/delete-dependent-entities-when-removed-from-ef-collection/</guid>
+        
+        <category>c#</category>
+        
+        <category>ef</category>
+        
+        <category>howto</category>
         
         
         <category>programming</category>

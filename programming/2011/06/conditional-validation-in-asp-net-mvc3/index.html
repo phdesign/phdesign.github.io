@@ -1,0 +1,488 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Conditional Validation in ASP.NET MVC3 | phdesign</title>
+
+    <!-- Google Web Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicon/Touch Icons  -->
+    <!-- <link rel="shortcut icon" href="/assets/img/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
+
+  </head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+        <nav class="navbar navbar-default">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+            </div><!-- end .navbar-header -->
+
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    
+                      <li><a href="/programming">programming</a></li>
+                    
+                      <li><a href="/general">general</a></li>
+                    
+                      <li><a href="/uncategorized">uncategorized</a></li>
+                    
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="/phreplace">phReplace</a></li>
+                    <li><a href="/npptoolbucket">NppToolBucket</a></li>
+                    <li><a href="/betternote">BetterNote</a></li>
+                  </ul>
+                </li>
+                <li><a href="/contact-me">Contact me</a></li>
+              </ul>
+            </div><!-- end .navbar-collapse -->
+          </div><!-- end .container -->
+        </nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+
+    <main class="content">
+            <article>
+        <div class="container">
+
+          
+
+          <div class="date-stamp">
+            <div class="month">Jun</div>
+            <div class="day">10</div>
+          </div><!-- end .date-stamp -->
+
+          <h2 class="post-header">Conditional Validation in ASP.NET MVC3</h2>
+
+          <div class="meta-label">posted on <span class="meta-value muted">10 June 2011</span> in <span class="meta-value"><a href="/programming">programming</a></span> with <span class="meta-value"><a data-disqus-identifier="conditional-validation-in-aspnet-mvc3" href="#disqus_thread">0 Comments</a></span></div>
+          <br />
+
+          <p>Need to perform validation on a model’s property based on some other state of the model? Here’s a way to achieve it using the IValidatableObject interface and data annotations.</p>
+
+<p>In our example project we want to validate the state field is a valid Australian state if the country field is “Australia”. </p>
+
+<p><img src="assets/ConditionalValidationSmall.png" alt="Conditional validation of state field" title="Conditional validation of state field" width="285" height="324" class="alignnone size-full wp-image-258" /></p>
+
+<!--more-->
+
+<h2>IValidatableObject</h2>
+<p>Any model that implements IValidatableObject in MVC3 (note this doesn’t work in MVC2) will get it’s Validate method called when validating the object.</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">public</span><span class="err"> </span><span class="kr">abstract</span><span class="err"> </span><span class="kr">class</span><span class="err"> </span><span class="nx">ModelBase</span><span class="err"> </span><span class="o">:</span><span class="err"> </span><span class="nx">IValidatableObject</span>
+<span class="p">...</span>
+<span class="kr">public</span> <span class="nx">IEnumerable</span> <span class="nx">Validate</span><span class="p">(</span><span class="nx">ValidationContext</span> <span class="nx">validationContext</span><span class="p">)</span></code></pre></div>
+
+<h2>ConditionalValidationAttribute</h2>
+<p>To define the conditional validation we’ll use a ConditionalValidationAttribute which identifies a method to call to perform the validation. The method must be static, accept at least one parameter (the value of the property to be validated), optionally accept a second context parameter (this will be the object whose property is being validated) and return a ValidationResult.</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">[</span><span class="nx">ConditionalValidation</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="nx">User</span><span class="p">),</span> <span class="s2">&quot;ValidateState&quot;</span><span class="p">)]</span>
+<span class="kr">public</span> <span class="nx">string</span> <span class="nx">State</span> <span class="p">{</span> <span class="nx">get</span><span class="p">;</span> <span class="nx">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">...</span>
+<span class="kr">public</span> <span class="kr">static</span> <span class="nx">ValidationResult</span> <span class="nx">ValidateState</span><span class="p">(</span><span class="nx">string</span> <span class="nx">state</span><span class="p">,</span> <span class="nx">object</span> <span class="nx">context</span><span class="p">)</span></code></pre></div>
+
+<h2>ModelBase</h2>
+<p>The ModelBase class brings this all together. The constructor builds a dictionary of ConditionalValidationAttributes for each property and it implements the IValidatableObject.Validate method to loop through all the ConditionalValidationAttributes and validate them.</p>
+
+<p>Note that the IValidatableObject.Validate method is called after all data annotations have been successfully validated. So if you have some properties with a RequiredAttribute, the required field error message will show and the user will need to fix this before our model’s Validate messages are displayed.</p>
+
+<p>Here’s the full code for <strong>ModelBase.cs</strong>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">public</span> <span class="kr">abstract</span> <span class="kr">class</span> <span class="nx">ModelBase</span> <span class="o">:</span> <span class="nx">IValidatableObject</span>
+<span class="p">{</span>
+  <span class="c1">/// &lt;summary&gt;</span>
+  <span class="c1">/// The list of validations for each property</span>
+  <span class="c1">/// &lt;/summary&gt;</span>
+  <span class="kr">protected</span> <span class="nx">Dictionary</span><span class="o">&lt;</span><span class="nx">string</span><span class="p">,</span> <span class="nx">ConditionalValidationAttribute</span><span class="p">[]</span><span class="o">&gt;</span> <span class="nx">Validations</span> <span class="p">{</span> <span class="nx">get</span><span class="p">;</span> <span class="kr">private</span> <span class="nx">set</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="kr">protected</span> <span class="nx">ModelBase</span><span class="p">()</span>
+  <span class="p">{</span>
+    <span class="nx">Validations</span> <span class="o">=</span> <span class="p">(</span><span class="nx">from</span> <span class="nx">property</span> <span class="k">in</span> <span class="nx">GetType</span><span class="p">().</span><span class="nx">GetProperties</span><span class="p">()</span>
+             <span class="kd">let</span> <span class="nx">validations</span> <span class="o">=</span> <span class="nx">GetValidations</span><span class="p">(</span><span class="nx">property</span><span class="p">)</span>
+             <span class="nx">where</span> <span class="nx">validations</span><span class="p">.</span><span class="nx">Length</span> <span class="o">&gt;</span> <span class="mi">0</span>
+             <span class="nx">select</span> <span class="k">new</span> <span class="p">{</span><span class="nx">PropertyName</span> <span class="o">=</span> <span class="nx">property</span><span class="p">.</span><span class="nx">Name</span><span class="p">,</span> <span class="nx">Validations</span> <span class="o">=</span> <span class="nx">validations</span><span class="p">})</span>
+      <span class="p">.</span><span class="nx">ToDictionary</span><span class="p">(</span><span class="nx">a</span> <span class="o">=&gt;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">PropertyName</span><span class="p">,</span> <span class="nx">a</span> <span class="o">=&gt;</span> <span class="nx">a</span><span class="p">.</span><span class="nx">Validations</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c1">/// &lt;summary&gt;</span>
+  <span class="c1">/// Validates all ConditionalValidationAttributes</span>
+  <span class="c1">/// &lt;/summary&gt;</span>
+  <span class="c1">/// &lt;param name=&amp;quot;validationContext&amp;quot;&gt;&lt;/param&gt;</span>
+  <span class="c1">/// &lt;returns&gt;&lt;/returns&gt;</span>
+  <span class="kr">public</span> <span class="nx">IEnumerable</span><span class="o">&lt;</span><span class="nx">ValidationResult</span><span class="o">&gt;</span> <span class="nx">Validate</span><span class="p">(</span><span class="nx">ValidationContext</span> <span class="nx">validationContext</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">from</span> <span class="nx">property</span> <span class="k">in</span> <span class="nx">Validations</span>
+         <span class="nx">from</span> <span class="nx">validator</span> <span class="k">in</span> <span class="nx">property</span><span class="p">.</span><span class="nx">Value</span>
+         <span class="nx">select</span> <span class="nx">validator</span><span class="p">.</span><span class="nx">IsValid</span><span class="p">(</span><span class="nx">GetPropertyValue</span><span class="p">(</span><span class="nx">property</span><span class="p">.</span><span class="nx">Key</span><span class="p">),</span> <span class="k">this</span><span class="p">)</span>
+         <span class="nx">into</span> <span class="nx">validationResult</span>
+         <span class="nx">where</span> <span class="nx">validationResult</span> <span class="o">!=</span> <span class="nx">ValidationResult</span><span class="p">.</span><span class="nx">Success</span>
+         <span class="nx">select</span> <span class="nx">validationResult</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="err">#</span><span class="nx">region</span> <span class="nx">Private</span> <span class="o">&amp;</span> <span class="nx">Protected</span> <span class="nx">Methods</span>
+
+  <span class="c1">/// &lt;summary&gt;</span>
+  <span class="c1">/// Gets the validation attributes attached to a property.</span>
+  <span class="c1">/// &lt;/summary&gt;</span>
+  <span class="c1">/// &lt;param name=&amp;quot;property&amp;quot;&gt;The property.&lt;/param&gt;</span>
+  <span class="c1">/// &lt;returns&gt;An array of validation attributes.&lt;/returns&gt;</span>
+  <span class="kr">private</span> <span class="kr">static</span> <span class="nx">ConditionalValidationAttribute</span><span class="p">[]</span> <span class="nx">GetValidations</span><span class="p">(</span><span class="nx">PropertyInfo</span> <span class="nx">property</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">property</span><span class="p">.</span><span class="nx">GetCustomAttributes</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="nx">ConditionalValidationAttribute</span><span class="p">),</span> <span class="kc">true</span><span class="p">)</span>
+      <span class="p">.</span><span class="nx">Cast</span><span class="o">&lt;</span><span class="nx">ConditionalValidationAttribute</span><span class="o">&gt;</span><span class="p">().</span><span class="nx">ToArray</span><span class="p">();</span>
+  <span class="p">}</span>
+
+  <span class="c1">/// &lt;summary&gt;</span>
+  <span class="c1">/// Gets the value for a property.</span>
+  <span class="c1">/// &lt;/summary&gt;</span>
+  <span class="c1">/// &lt;param name=&amp;quot;propertyName&amp;quot;&gt;The property name.&lt;/param&gt;</span>
+  <span class="c1">/// &lt;returns&gt;The value of the property as an object.&lt;/returns&gt;</span>
+  <span class="kr">protected</span> <span class="nx">object</span> <span class="nx">GetPropertyValue</span><span class="p">(</span><span class="nx">string</span> <span class="nx">propertyName</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">GetType</span><span class="p">().</span><span class="nx">GetProperty</span><span class="p">(</span><span class="nx">propertyName</span><span class="p">).</span><span class="nx">GetValue</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="kc">null</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="nx">TargetInvocationException</span> <span class="nx">exception</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">exception</span><span class="p">.</span><span class="nx">InnerException</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span>
+        <span class="k">throw</span> <span class="nx">exception</span><span class="p">.</span><span class="nx">InnerException</span><span class="p">;</span>
+      <span class="k">throw</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="err">#</span><span class="nx">endregion</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Note that when we call the ConditionalValidationAttribute.IsValid method we pass in ‘this’ as the context so we have a reference to the object being validated. </p>
+
+<p><strong>ConditionalValidationAttribute.cs</strong>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">[</span><span class="nx">AttributeUsage</span><span class="p">(</span><span class="nx">AttributeTargets</span><span class="p">.</span><span class="nx">Class</span> <span class="o">|</span> <span class="nx">AttributeTargets</span><span class="p">.</span><span class="nx">Property</span><span class="p">)]</span>
+<span class="kr">public</span> <span class="kr">class</span> <span class="nx">ConditionalValidationAttribute</span> <span class="o">:</span> <span class="nx">Attribute</span>
+<span class="p">{</span>
+  <span class="err">#</span><span class="nx">region</span> <span class="nx">Fields</span>
+
+  <span class="kr">private</span> <span class="nx">readonly</span> <span class="nx">MethodInfo</span> <span class="nx">_methodInfo</span><span class="p">;</span>
+  <span class="kr">private</span> <span class="nx">readonly</span> <span class="nx">bool</span> <span class="nx">_isSingleArgumentMethod</span><span class="p">;</span>
+  <span class="kr">private</span> <span class="nx">readonly</span> <span class="nx">Type</span> <span class="nx">_valuesType</span><span class="p">;</span>
+
+  <span class="err">#</span><span class="nx">endregion</span>
+
+  <span class="err">#</span><span class="nx">region</span> <span class="nx">Properties</span>
+
+  <span class="kr">public</span> <span class="nx">string</span> <span class="nx">ErrorMessage</span> <span class="p">{</span> <span class="nx">get</span><span class="p">;</span> <span class="nx">set</span><span class="p">;</span> <span class="p">}</span>
+  <span class="kr">public</span> <span class="nx">string</span> <span class="nx">Method</span> <span class="p">{</span> <span class="nx">get</span><span class="p">;</span> <span class="kr">private</span> <span class="nx">set</span><span class="p">;</span> <span class="p">}</span>
+  <span class="kr">public</span> <span class="nx">Type</span> <span class="nx">ValidatorType</span> <span class="p">{</span> <span class="nx">get</span><span class="p">;</span> <span class="kr">private</span> <span class="nx">set</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="err">#</span><span class="nx">endregion</span>
+
+  <span class="err">#</span><span class="nx">region</span> <span class="nx">Constructor</span>
+
+  <span class="c1">/// &lt;summary&gt;</span>
+  <span class="c1">/// Performs validation by calling a specified static method with one of the following signatures:</span>
+  <span class="c1">/// ValidationResult Method(object value)</span>
+  <span class="c1">/// ValidationResult Method(object value, object context)</span>
+  <span class="c1">/// The value parameter may be strongly typed, if a process passes a value of a different type, type conversion will be attempted.</span>
+  <span class="c1">/// &lt;/summary&gt;</span>
+  <span class="c1">/// &lt;param name=&amp;quot;validatorType&amp;quot;&gt;The type that contains the method that performs custom validation.&lt;/param&gt;</span>
+  <span class="c1">/// &lt;param name=&amp;quot;method&amp;quot;&gt;The method that performs custom validation.&lt;/param&gt;</span>
+  <span class="kr">public</span> <span class="nx">ConditionalValidationAttribute</span><span class="p">(</span><span class="nx">Type</span> <span class="nx">validatorType</span><span class="p">,</span> <span class="nx">string</span> <span class="nx">method</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">string</span><span class="p">.</span><span class="nx">IsNullOrEmpty</span><span class="p">(</span><span class="nx">method</span><span class="p">))</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nx">ArgumentException</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">method</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;);</span>
+
+    <span class="nx">Method</span> <span class="o">=</span> <span class="nx">method</span><span class="p">;</span>
+    <span class="nx">ValidatorType</span> <span class="o">=</span> <span class="nx">validatorType</span><span class="p">;</span>
+    <span class="c1">// Find a matching method - if multiple matching methods, pick the one with 2 parameters.</span>
+    <span class="kd">var</span> <span class="nx">methods</span> <span class="o">=</span> <span class="nx">from</span> <span class="nx">m</span> <span class="k">in</span> <span class="nx">validatorType</span><span class="p">.</span><span class="nx">GetMethods</span><span class="p">(</span><span class="nx">BindingFlags</span><span class="p">.</span><span class="nx">Public</span> <span class="o">|</span> <span class="nx">BindingFlags</span><span class="p">.</span><span class="nx">Static</span><span class="p">)</span>
+            <span class="kd">let</span> <span class="nx">p</span> <span class="o">=</span> <span class="nx">m</span><span class="p">.</span><span class="nx">GetParameters</span><span class="p">().</span><span class="nx">Length</span>
+            <span class="nx">where</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Name</span> <span class="o">==</span> <span class="nx">method</span> <span class="o">&amp;&amp;</span>
+              <span class="nx">m</span><span class="p">.</span><span class="nx">ReturnType</span> <span class="o">==</span> <span class="k">typeof</span><span class="p">(</span><span class="nx">ValidationResult</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+              <span class="p">(</span><span class="nx">p</span> <span class="o">==</span> <span class="mi">1</span> <span class="o">||</span> <span class="nx">p</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="nx">orderby</span> <span class="nx">p</span> <span class="nx">descending</span>
+            <span class="nx">select</span> <span class="nx">m</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="nx">methods</span><span class="p">.</span><span class="nx">Count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nx">InvalidOperationException</span><span class="p">(</span><span class="nx">string</span><span class="p">.</span><span class="nx">Format</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">No</span> <span class="nx">method</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;{</span><span class="mi">0</span><span class="p">}</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span> <span class="nx">found</span> <span class="k">in</span> <span class="kr">class</span> <span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;{</span><span class="mi">1</span><span class="p">}</span><span class="o">&amp;</span><span class="err">#</span><span class="mi">39</span><span class="p">;</span> <span class="kd">with</span> <span class="nx">a</span> <span class="nx">valid</span> <span class="nx">signature</span><span class="p">.</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;,</span> <span class="nx">method</span><span class="p">,</span> <span class="nx">validatorType</span><span class="p">));</span>
+    <span class="nx">_methodInfo</span> <span class="o">=</span> <span class="nx">methods</span><span class="p">.</span><span class="nx">First</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nx">parameters</span> <span class="o">=</span> <span class="nx">_methodInfo</span><span class="p">.</span><span class="nx">GetParameters</span><span class="p">();</span>
+    <span class="nx">_isSingleArgumentMethod</span> <span class="o">=</span> <span class="nx">parameters</span><span class="p">.</span><span class="nx">Length</span> <span class="o">==</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="nx">_valuesType</span> <span class="o">=</span> <span class="nx">parameters</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">ParameterType</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="err">#</span><span class="nx">endregion</span>
+
+  <span class="err">#</span><span class="nx">region</span> <span class="nx">Public</span> <span class="nx">Methods</span>
+
+  <span class="kr">public</span> <span class="nx">ValidationResult</span> <span class="nx">IsValid</span><span class="p">(</span><span class="nx">object</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">object</span> <span class="nx">context</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="nx">object</span> <span class="nx">convertedValue</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">info</span> <span class="o">=</span> <span class="nx">_methodInfo</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">TryConvertValue</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">out</span> <span class="nx">convertedValue</span><span class="p">))</span>
+    <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nx">InvalidOperationException</span><span class="p">(</span>
+        <span class="nx">string</span><span class="p">.</span><span class="nx">Format</span><span class="p">(</span>
+          <span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">Unable</span> <span class="nx">to</span> <span class="nx">convert</span> <span class="nx">value</span> <span class="nx">from</span> <span class="nx">type</span> <span class="p">{</span><span class="mi">0</span><span class="p">}</span> <span class="nx">to</span> <span class="nx">type</span> <span class="p">{</span><span class="mi">1</span><span class="p">}</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;,</span>
+          <span class="p">(</span><span class="nx">value</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span> <span class="o">?</span> <span class="nx">value</span><span class="p">.</span><span class="nx">GetType</span><span class="p">().</span><span class="nx">ToString</span><span class="p">()</span> <span class="o">:</span> <span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="kc">null</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;,</span>
+          <span class="nx">_valuesType</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">parameters</span> <span class="o">=</span> <span class="nx">_isSingleArgumentMethod</span> <span class="o">?</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span> <span class="nx">convertedValue</span> <span class="p">}</span> <span class="o">:</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span> <span class="nx">convertedValue</span><span class="p">,</span> <span class="nx">context</span> <span class="p">};</span>
+      <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">(</span><span class="nx">ValidationResult</span><span class="p">)</span><span class="nx">info</span><span class="p">.</span><span class="nx">Invoke</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">parameters</span><span class="p">);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">result</span> <span class="o">!=</span> <span class="nx">ValidationResult</span><span class="p">.</span><span class="nx">Success</span> <span class="o">&amp;&amp;</span> <span class="nx">result</span><span class="p">.</span><span class="nx">ErrorMessage</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span>
+        <span class="nx">result</span><span class="p">.</span><span class="nx">ErrorMessage</span> <span class="o">=</span> <span class="nx">ErrorMessage</span><span class="p">;</span>
+      <span class="k">return</span> <span class="nx">result</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="nx">TargetInvocationException</span> <span class="nx">exception</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">exception</span><span class="p">.</span><span class="nx">InnerException</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">)</span>
+      <span class="p">{</span>
+        <span class="k">throw</span> <span class="nx">exception</span><span class="p">.</span><span class="nx">InnerException</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="k">throw</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="err">#</span><span class="nx">endregion</span>
+
+  <span class="err">#</span><span class="nx">region</span> <span class="nx">Private</span> <span class="nx">Methods</span>
+
+  <span class="kr">private</span> <span class="nx">bool</span> <span class="nx">TryConvertValue</span><span class="p">(</span><span class="nx">object</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">out</span> <span class="nx">object</span> <span class="nx">convertedValue</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="nx">convertedValue</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="nx">Type</span> <span class="nx">conversionType</span> <span class="o">=</span> <span class="nx">_valuesType</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">value</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="k">return</span> <span class="p">(</span><span class="o">!</span><span class="nx">conversionType</span><span class="p">.</span><span class="nx">IsValueType</span> <span class="o">||</span> <span class="p">(</span><span class="nx">conversionType</span><span class="p">.</span><span class="nx">IsGenericType</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nx">conversionType</span><span class="p">.</span><span class="nx">GetGenericTypeDefinition</span><span class="p">()</span> <span class="o">==</span> <span class="k">typeof</span><span class="p">(</span><span class="nx">Nullable</span><span class="o">&lt;&gt;</span><span class="p">))));</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">conversionType</span><span class="p">.</span><span class="nx">IsAssignableFrom</span><span class="p">(</span><span class="nx">value</span><span class="p">.</span><span class="nx">GetType</span><span class="p">()))</span>
+    <span class="p">{</span>
+      <span class="nx">convertedValue</span> <span class="o">=</span> <span class="nx">value</span><span class="p">;</span>
+      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">try</span>
+    <span class="p">{</span>
+      <span class="nx">convertedValue</span> <span class="o">=</span> <span class="nx">Convert</span><span class="p">.</span><span class="nx">ChangeType</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">conversionType</span><span class="p">,</span> <span class="nx">CultureInfo</span><span class="p">.</span><span class="nx">CurrentCulture</span><span class="p">);</span>
+      <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="nx">FormatException</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="nx">InvalidCastException</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">catch</span> <span class="p">(</span><span class="nx">NotSupportedException</span><span class="p">)</span>
+    <span class="p">{</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="err">#</span><span class="nx">endregion</span>
+<span class="p">}</span></code></pre></div>
+
+<p>A few notes here:</p>
+
+<ul>
+<li>The constructor tries to find an appropriate method using reflection. If there are multiple overloads of the method then the one with 2 parameters will be chosen.</li>
+<li>The first parameter of the validation method can be of any type. Type conversion is attempted on the value to validate to match the method signature. I.e. the first (value) parameter can be object, string, int, etc.</li>
+<li>A generic error message can be supplied to the ConditionalValidationAttribute. If the validation method doesn't set an error message when it returns a validation error, the ConditionalValidationAttribute.ErrorMessage property will be used.</li>
+</ul>
+<p>And a sample model <strong>User.cs</strong>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">public</span> <span class="kr">class</span> <span class="nx">User</span> <span class="o">:</span> <span class="nx">ModelBase</span>
+<span class="p">{</span>
+  <span class="p">[</span><span class="nx">Required</span><span class="p">]</span>
+  <span class="kr">public</span> <span class="kr">int</span> <span class="nx">UserId</span> <span class="p">{</span> <span class="nx">get</span><span class="p">;</span> <span class="nx">set</span><span class="p">;</span> <span class="p">}</span>
+  <span class="p">[</span><span class="nx">Required</span><span class="p">]</span>
+  <span class="kr">public</span> <span class="nx">string</span> <span class="nx">FirstName</span> <span class="p">{</span> <span class="nx">get</span><span class="p">;</span> <span class="nx">set</span><span class="p">;</span> <span class="p">}</span>
+  <span class="p">[</span><span class="nx">Required</span><span class="p">]</span>
+  <span class="kr">public</span> <span class="nx">string</span> <span class="nx">LastName</span> <span class="p">{</span> <span class="nx">get</span><span class="p">;</span> <span class="nx">set</span><span class="p">;</span> <span class="p">}</span>
+  <span class="p">[</span><span class="nx">Required</span><span class="p">]</span>
+  <span class="kr">public</span> <span class="nx">string</span> <span class="nx">Country</span> <span class="p">{</span> <span class="nx">get</span><span class="p">;</span> <span class="nx">set</span><span class="p">;</span> <span class="p">}</span>
+  <span class="p">[</span><span class="nx">Required</span><span class="p">]</span>
+  <span class="p">[</span><span class="nx">ConditionalValidation</span><span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="nx">User</span><span class="p">),</span> <span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">ValidateState</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;)]</span>
+  <span class="kr">public</span> <span class="nx">string</span> <span class="nx">State</span> <span class="p">{</span> <span class="nx">get</span><span class="p">;</span> <span class="nx">set</span><span class="p">;</span> <span class="p">}</span>
+
+  <span class="kr">public</span> <span class="kr">static</span> <span class="nx">ValidationResult</span> <span class="nx">ValidateState</span><span class="p">(</span><span class="nx">string</span> <span class="nx">state</span><span class="p">,</span> <span class="nx">object</span> <span class="nx">context</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">context</span> <span class="nx">as</span> <span class="nx">User</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="o">==</span> <span class="kc">null</span><span class="p">)</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nx">ArgumentException</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">context</span> <span class="nx">is</span> <span class="nx">not</span> <span class="nx">of</span> <span class="nx">type</span> <span class="nx">User</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">context</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;);</span>
+
+    <span class="kd">var</span> <span class="nx">australianStates</span> <span class="o">=</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">VIC</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">TAS</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">NSW</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">ACT</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">QLD</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">NT</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">WA</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;,</span> <span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">SA</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;};</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">user</span><span class="p">.</span><span class="nx">Country</span><span class="p">.</span><span class="nx">Equals</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">Australia</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;,</span> <span class="nx">StringComparison</span><span class="p">.</span><span class="nx">CurrentCultureIgnoreCase</span><span class="p">))</span>
+    <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">australianStates</span><span class="p">.</span><span class="nx">Contains</span><span class="p">(</span><span class="nx">state</span><span class="p">,</span> <span class="nx">StringComparer</span><span class="p">.</span><span class="nx">CurrentCultureIgnoreCase</span><span class="p">))</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nx">ValidationResult</span><span class="p">(</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">Not</span> <span class="nx">a</span> <span class="nx">valid</span> <span class="nx">Australian</span> <span class="nx">state</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;,</span> <span class="k">new</span><span class="p">[]</span> <span class="p">{</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;</span><span class="nx">State</span><span class="o">&amp;</span><span class="nx">quot</span><span class="p">;});</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">ValidationResult</span><span class="p">.</span><span class="nx">Success</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Download the example by clicking the button below.</p>
+
+<p><a href="http://www.phdesign.com.au/wp-content/uploads/2011/06/ConditionalValidationExample.zip"><img class="alignnone size-full wp-image-126" title="Download the source for this example" src="assets/button_download_source.gif" alt="Download the source for this example" width="149" height="25" /></a></p>
+
+
+
+          <ul class="post-tags">
+            
+              <li><a href="/tags/asp" title="View posts tagged with asp">#asp</a></li>
+            
+              <li><a href="/tags/c#" title="View posts tagged with c#">#c#</a></li>
+            
+              <li><a href="/tags/dotnet" title="View posts tagged with dotnet">#dotnet</a></li>
+            
+              <li><a href="/tags/howto" title="View posts tagged with howto">#howto</a></li>
+            
+              <li><a href="/tags/mvc" title="View posts tagged with mvc">#mvc</a></li>
+            
+          </ul>
+
+          
+
+        </div><!-- end .container -->
+      </article>
+
+      <div class="stripe">
+        <div class="container">
+
+          <div class="comments">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+              /* * * CONFIGURATION VARIABLES * * */
+              var disqus_shortname = 'phdesign';
+              var disqus_identifier = 'conditional-validation-in-aspnet-mvc3';
+              var disqus_title = 'Conditional Validation in ASP.NET MVC3';
+              var disqus_url = 'http://phdesign.com.au/programming/2011/06/conditional-validation-in-asp-net-mvc3/';
+
+              /* * * DON'T EDIT BELOW THIS LINE * * */
+              (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+              })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+          </div><!-- end .comments -->
+
+        </div><!-- end .container -->
+      </div>
+
+      <div class="stripe alt">
+        <div class="container">
+
+          <nav class="row pager">
+            <div class="previous col-xs-6 col-sm-4">
+              
+                <div class="meta-label"><a href="/programming/2011/03/using-linq-to-list-all-duplicates/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+                <div class="meta-value"><a href="/programming/2011/03/using-linq-to-list-all-duplicates/">Using LINQ to list all duplicates</a></div>
+              
+            </div>
+            <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+              
+                <div class="meta-label"><a href="/programming/2011/09/delete-dependent-entities-when-removed-from-ef-collection/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+                <div class="meta-value"><a href="/programming/2011/09/delete-dependent-entities-when-removed-from-ef-collection/">Delete Dependent Entities When Removed From EF Collection</a></div>
+              
+            </div>
+          </nav><!-- end .post_nav -->
+
+        </div><!-- end .container -->
+      </div><!-- end .stripe.alt -->
+
+    </main><!-- end .content -->
+
+    
+    <footer role="contentinfo">
+      <div class="container">
+
+        <ul class="social-icons">
+          <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+          <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+          <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+          <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+        </ul>
+
+        <p class="footer-copyright">
+          &copy; 2015 Paul Heasley. All rights reserved. <br>
+          Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+        </p>
+
+      </div><!-- end .container -->
+    </footer>
+
+    
+    <!-- JS (Javascript Files)
+    ================================================== -->
+
+    <script src="/assets/js/main.js"></script>
+
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'phdesign';
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+      }());
+    </script>
+
+  </body>
+
+</html>

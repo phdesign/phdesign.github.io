@@ -1,0 +1,241 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Registering phreplace DLL in Windows Vista | phdesign</title>
+
+    <!-- Google Web Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicon/Touch Icons  -->
+    <!-- <link rel="shortcut icon" href="/assets/img/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
+
+  </head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+        <nav class="navbar navbar-default">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+            </div><!-- end .navbar-header -->
+
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    
+                      <li><a href="/programming">programming</a></li>
+                    
+                      <li><a href="/general">general</a></li>
+                    
+                      <li><a href="/uncategorized">uncategorized</a></li>
+                    
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="/phreplace">phReplace</a></li>
+                    <li><a href="/npptoolbucket">NppToolBucket</a></li>
+                    <li><a href="/betternote">BetterNote</a></li>
+                  </ul>
+                </li>
+                <li><a href="/contact-me">Contact me</a></li>
+              </ul>
+            </div><!-- end .navbar-collapse -->
+          </div><!-- end .container -->
+        </nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+
+    <main class="content">
+            <article>
+        <div class="container">
+
+          
+
+          <div class="date-stamp">
+            <div class="month">Mar</div>
+            <div class="day">17</div>
+          </div><!-- end .date-stamp -->
+
+          <h2 class="post-header">Registering phreplace DLL in Windows Vista</h2>
+
+          <div class="meta-label">posted on <span class="meta-value muted">17 March 2010</span> in <span class="meta-value"><a href="/programming">programming</a></span> with <span class="meta-value"><a data-disqus-identifier="registering-phreplace-dll-in-windows-vista" href="#disqus_thread">0 Comments</a></span></div>
+          <br />
+
+          <p>[permalink href=”phreplace” title=”phreplace Multiline search / replace for PSPad”]phreplace[/permalink] is a VB6 DLL which is called from a vbscript plugin for <a title="PSPad editor for developers" href="http://www.pspad.com/">PSPad</a>. The script tests to see if the correct version of the DLL is registered on this computer, if not it registers it using regsvr32. This works fine in XP but not Vista where the script will error.</p>
+
+<p>A while ago a user pointed out to me <a title="Self Registering DLL's" href="http://www.experts-exchange.com/Programming/System/Windows__Programming/Q_21243930.html">this article on Experts Exchange</a> explaining why administrative rights are required to register a DLL in Windows Vista, in the hopes that we could automate the registration of phreplace in Vista.</p>
+
+<!--more-->
+
+<p>Feeling defeated, I decided to explain why I haven’t been able to do this yet.</p>
+
+<p>The fundamental problem is that Vista requires administrative privledges to write to the registry key required to register DLLs:</p>
+
+<p>HKEY_CLASSES_ROOT\</p>
+
+<p>However the user can register DLLs in their own section of the registry:</p>
+
+<p>HKEY_CURRENT_USER\SOFTWARE\Classes\</p>
+
+<p>So all is well right? Well not if you’re using VB6, you see when you run regsvr32, it calls the methods DllRegisterSever and DllUnregisterSever  to add / remove entries from the registry, these methods are generated automatically by VB6 to register to HKEY_CLASSES_ROOT, and there is no way to change this.</p>
+
+<p>Well, there is one way. Apparently the <a title="vbAdvance Visual Basic addon" href="http://vb.mvps.org/tools/vbAdvance/">vbAdvance</a> addon for VB6 allowed a user to customise DllRegisterServer / DllUnregisterServer, this sounds great, except that it doesn’t work. I tried modifying these methods according to the instruction, but the resulting DLL just wont register. I even tried registering the included example DLL in the download package, but this threw the same error.</p>
+
+<p>I’m certain it must have worked at some stage, they wouldn’t have included an example that didn’t work, so I can’t figure out what’s different. Did it only work in Windows 98 or 2000?</p>
+
+<p>So in summary, for as long as I’m using VB6 I don’t think I can change where phreplace tries to register the DLL, the only other workaround is to use RegOverridePredefKey to tell the registry to redirect any calls to HKEY_CLASSES_ROOT to HKEY_CURRENT_USER\SOFTWARE\Classes, this would work but I don’t think it can be done with vbscript, so I would need to add another executable to phreplace to use in registering / unregistering the DLL from the registry, seems pretty messy.</p>
+
+<p>If you’ve got any tips for me (especially how I can customise DllRegisterServer) feel free to email me. I haven’t setup the facility for leaving comments on this site yet, sorry.</p>
+
+
+
+          <ul class="post-tags">
+            
+              <li><a href="/tags/dll" title="View posts tagged with dll">#dll</a></li>
+            
+              <li><a href="/tags/phreplace" title="View posts tagged with phreplace">#phreplace</a></li>
+            
+              <li><a href="/tags/vb6" title="View posts tagged with vb6">#vb6</a></li>
+            
+          </ul>
+
+          
+
+        </div><!-- end .container -->
+      </article>
+
+      <div class="stripe">
+        <div class="container">
+
+          <div class="comments">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+              /* * * CONFIGURATION VARIABLES * * */
+              var disqus_shortname = 'phdesign';
+              var disqus_identifier = 'registering-phreplace-dll-in-windows-vista';
+              var disqus_title = 'Registering phreplace DLL in Windows Vista';
+              var disqus_url = 'http://phdesign.com.au/programming/2010/03/registering-phreplace-dll-in-windows-vista/';
+
+              /* * * DON'T EDIT BELOW THIS LINE * * */
+              (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+              })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+          </div><!-- end .comments -->
+
+        </div><!-- end .container -->
+      </div>
+
+      <div class="stripe alt">
+        <div class="container">
+
+          <nav class="row pager">
+            <div class="previous col-xs-6 col-sm-4">
+              
+                <div class="meta-label"><a href="/programming/2010/03/no-validation-messages-when-disabling-enabling-asp-net-validator-in-javascript/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+                <div class="meta-value"><a href="/programming/2010/03/no-validation-messages-when-disabling-enabling-asp-net-validator-in-javascript/">No Validation Messages when Disabling & Enabling ASP.Net Validator in Javascript</a></div>
+              
+            </div>
+            <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+              
+                <div class="meta-label"><a href="/programming/2010/04/ie-autocomplete-doesnt-fire-onchange-event-handler/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+                <div class="meta-value"><a href="/programming/2010/04/ie-autocomplete-doesnt-fire-onchange-event-handler/">IE Autocomplete Doesn't Fire onchange Event Handler</a></div>
+              
+            </div>
+          </nav><!-- end .post_nav -->
+
+        </div><!-- end .container -->
+      </div><!-- end .stripe.alt -->
+
+    </main><!-- end .content -->
+
+    
+    <footer role="contentinfo">
+      <div class="container">
+
+        <ul class="social-icons">
+          <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+          <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+          <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+          <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+        </ul>
+
+        <p class="footer-copyright">
+          &copy; 2015 Paul Heasley. All rights reserved. <br>
+          Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+        </p>
+
+      </div><!-- end .container -->
+    </footer>
+
+    
+    <!-- JS (Javascript Files)
+    ================================================== -->
+
+    <script src="/assets/js/main.js"></script>
+
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'phdesign';
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+      }());
+    </script>
+
+  </body>
+
+</html>

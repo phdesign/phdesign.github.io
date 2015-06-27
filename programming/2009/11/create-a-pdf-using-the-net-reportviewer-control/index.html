@@ -1,0 +1,368 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Create a PDF using the .Net ReportViewer control | phdesign</title>
+
+    <!-- Google Web Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicon/Touch Icons  -->
+    <!-- <link rel="shortcut icon" href="/assets/img/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
+
+  </head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+        <nav class="navbar navbar-default">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+            </div><!-- end .navbar-header -->
+
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    
+                      <li><a href="/programming">programming</a></li>
+                    
+                      <li><a href="/general">general</a></li>
+                    
+                      <li><a href="/uncategorized">uncategorized</a></li>
+                    
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="/phreplace">phReplace</a></li>
+                    <li><a href="/npptoolbucket">NppToolBucket</a></li>
+                    <li><a href="/betternote">BetterNote</a></li>
+                  </ul>
+                </li>
+                <li><a href="/contact-me">Contact me</a></li>
+              </ul>
+            </div><!-- end .navbar-collapse -->
+          </div><!-- end .container -->
+        </nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+
+    <main class="content">
+            <article>
+        <div class="container">
+
+          
+
+          <div class="date-stamp">
+            <div class="month">Nov</div>
+            <div class="day">25</div>
+          </div><!-- end .date-stamp -->
+
+          <h2 class="post-header">Create a PDF using the .Net ReportViewer control</h2>
+
+          <div class="meta-label">posted on <span class="meta-value muted">25 November 2009</span> in <span class="meta-value"><a href="/programming">programming</a></span> with <span class="meta-value"><a data-disqus-identifier="create-a-pdf-using-the-net-reportviewer-control" href="#disqus_thread">0 Comments</a></span></div>
+          <br />
+
+          <p>Need to generate a pdf programmatically in dot net? You could purchase an HTML to PDF converter and worry about getting the page to format nicely for paper, or you could use the freely available ReportViewer control from Microsoft.</p>
+
+<p>Microsoft offers SQL Server Reporting Services (SSRS) with SQL Server 2005 and later editions to generate and publish reports using the Report Definition Language (RDL), as an alternative to Crystal Reports. SSRS requires a Report Server to publish reports to so they can be useful, however they also offer a ASP.Net or Windows Forms component called the <a title="ReportViewer Controls on MSDN" href="http://msdn.microsoft.com/en-us/library/ms251671(VS.80).aspx">ReportViewer</a> which we can use in our code without the need for any SQL database to generate reports, and these reports can be saved as Excel files, PDF’s or images.</p>
+
+<!--more-->
+
+<p>The ReportViewer uses a modified version of RDL called RDLC, which does not save any information about the data source along with the report, which makes it perfect for generating reports from objects that aren’t a database. For instance, I recently needed to generate PDF letters with custom information in them, so this solution proved perfect.</p>
+
+<p>I’m going to demonstrate how to pass parameters to an ASP.Net page and return a PDF with that information in it, this could just as easily be done in a Windows Forms project. I’m using Visual Studio 2005, in my preferred language of c#.</p>
+
+<p>Start by creating a new Web Site in Visual Studio. We are going to use a collection of custom business objects as the data source for our report, so add a new class to our project and call it Person.cs. Copy the following code into your Person.cs file.</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">using</span> <span class="nx">System</span><span class="p">;</span>
+<span class="nx">using</span> <span class="nx">System</span><span class="p">.</span><span class="nx">Collections</span><span class="p">.</span><span class="nx">Generic</span><span class="p">;</span>
+
+<span class="c1">/// &lt;summary&gt;</span>
+<span class="c1">/// The business object we want to use in our report.</span>
+<span class="c1">/// &lt;/summary&gt;</span>
+<span class="kr">public</span> <span class="kr">class</span> <span class="nx">Person</span>
+<span class="p">{</span>
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// Some fields to hold information about this person.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="kr">private</span> <span class="nx">string</span> <span class="nx">_title</span><span class="p">;</span>
+    <span class="kr">private</span> <span class="nx">string</span> <span class="nx">_firstName</span><span class="p">;</span>
+    <span class="kr">private</span> <span class="nx">string</span> <span class="nx">_lastName</span><span class="p">;</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// The person properties are only able to be set at instantiation.</span>
+    <span class="c1">/// After the object is created the properties are read only.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="kr">public</span> <span class="nx">string</span> <span class="nx">Title</span>
+    <span class="p">{</span>
+        <span class="nx">get</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">_title</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kr">public</span> <span class="nx">string</span> <span class="nx">FirstName</span>
+    <span class="p">{</span>
+        <span class="nx">get</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">_firstName</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kr">public</span> <span class="nx">string</span> <span class="nx">LastName</span>
+    <span class="p">{</span>
+        <span class="nx">get</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">_lastName</span><span class="p">;</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// The person constructor.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;title&quot;&gt;The person&#39;s title&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;firstName&quot;&gt;Their first name&lt;/param&gt;</span>
+    <span class="c1">/// &lt;param name=&quot;lastname&quot;&gt;Their last name&lt;/param&gt;</span>
+    <span class="kr">public</span> <span class="nx">Person</span><span class="p">(</span><span class="nx">string</span> <span class="nx">title</span><span class="p">,</span> <span class="nx">string</span> <span class="nx">firstName</span><span class="p">,</span> <span class="nx">string</span> <span class="nx">lastname</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">_title</span> <span class="o">=</span> <span class="nx">title</span><span class="p">;</span>
+        <span class="nx">_firstName</span> <span class="o">=</span> <span class="nx">firstName</span><span class="p">;</span>
+        <span class="nx">_lastName</span> <span class="o">=</span> <span class="nx">lastname</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">/// &lt;summary&gt;</span>
+<span class="c1">/// Creates a data source for our report.</span>
+<span class="c1">/// &lt;/summary&gt;</span>
+<span class="kr">public</span> <span class="kr">class</span> <span class="nx">PersonDataSource</span>
+<span class="p">{</span>
+    <span class="c1">/// &lt;summary&gt;</span>
+    <span class="c1">/// This method creates a new person object and adds them to a new collection that</span>
+    <span class="c1">/// can be used as a data source for the report.</span>
+    <span class="c1">/// &lt;/summary&gt;</span>
+    <span class="c1">/// &lt;returns&gt;A collection of person objects.&lt;/returns&gt;</span>
+    <span class="kr">public</span> <span class="kr">static</span> <span class="nx">List</span><span class="o">&lt;</span><span class="nx">Person</span><span class="o">&gt;</span> <span class="nx">GetPerson</span><span class="p">(</span><span class="nx">string</span> <span class="nx">title</span><span class="p">,</span> <span class="nx">string</span> <span class="nx">firstName</span><span class="p">,</span> <span class="nx">string</span> <span class="nx">lastName</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">List</span><span class="o">&lt;</span><span class="nx">Person</span><span class="o">&gt;</span> <span class="nx">people</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">List</span><span class="o">&lt;</span><span class="nx">Person</span><span class="o">&gt;</span><span class="p">();</span>
+        <span class="nx">people</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="k">new</span> <span class="nx">Person</span><span class="p">(</span><span class="nx">title</span><span class="p">,</span> <span class="nx">firstName</span><span class="p">,</span> <span class="nx">lastName</span><span class="p">));</span>
+        <span class="k">return</span> <span class="nx">people</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Now that we have our business object we can create the report. Click add item on the project and select Report. Call this item Report.rdlc.</p>
+
+<p>In the left hand toolbar you should see <em>Website Data Sources</em> (if not select <em>Data &gt; Show Data Sources</em> from the file menu) and in the data sources you should see our Person object. You can now build a report using the fields from our person object and the tools in the toobox. For simplicity just drag some Textboxes onto the report from the toolbox and enter any static text in them that you want, then drag on the Person’s title, firstName and lastName and arrange them appropriately.</p>
+
+<p><img src="/assets/img/blog/report_viewer_demo_1.jpg" alt="ReportViewer business object data source" /></p>
+
+<p>Finally we need to write the code which will create the person data source and generate the report. Before we do this we need a reference to the ReportViewer control, right click on the project and <em>Add Reference</em>, in the .Net tab, select <em>Microsoft.ReportViewer.WebForms</em>.Now copy the following code into the Default.aspx source.</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;%</span><span class="err">@</span> <span class="nx">Page</span> <span class="nx">Language</span><span class="o">=</span><span class="s2">&quot;C#&quot;</span> <span class="nx">AutoEventWireup</span><span class="o">=</span><span class="s2">&quot;true&quot;</span>  <span class="nx">CodeFile</span><span class="o">=</span><span class="s2">&quot;Default.aspx.cs&quot;</span> <span class="nx">Inherits</span><span class="o">=</span><span class="s2">&quot;_Default&quot;</span> <span class="o">%&gt;</span>
+<span class="o">&lt;!</span><span class="nx">DOCTYPE</span> <span class="nx">html</span> <span class="nx">PUBLIC</span> <span class="s2">&quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;</span> <span class="s2">&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">html</span> <span class="nx">xmlns</span><span class="o">=</span><span class="s2">&quot;http://www.w3.org/1999/xhtml&quot;</span> <span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="nx">head</span> <span class="nx">runat</span><span class="o">=</span><span class="s2">&quot;server&quot;</span><span class="o">&gt;</span>
+	<span class="o">&lt;</span><span class="nx">title</span><span class="o">&gt;</span><span class="nx">Untitled</span> <span class="nx">Page</span><span class="o">&lt;</span><span class="err">/title&gt;</span>
+<span class="o">&lt;</span><span class="err">/head&gt;</span>
+<span class="o">&lt;</span><span class="nx">body</span><span class="o">&gt;</span>
+	<span class="o">&lt;</span><span class="nx">form</span> <span class="nx">id</span><span class="o">=</span><span class="s2">&quot;form1&quot;</span> <span class="nx">runat</span><span class="o">=</span><span class="s2">&quot;server&quot;</span><span class="o">&gt;</span>
+	<span class="o">&lt;</span><span class="nx">div</span><span class="o">&gt;</span>
+	<span class="o">&lt;</span><span class="nx">asp</span><span class="o">:</span><span class="nx">Label</span> <span class="nx">ID</span><span class="o">=</span><span class="s2">&quot;lblTitle&quot;</span> <span class="nx">runat</span><span class="o">=</span><span class="s2">&quot;server&quot;</span> <span class="nx">Text</span><span class="o">=</span><span class="s2">&quot;Title: &quot;</span><span class="o">&gt;&lt;</span><span class="err">/asp:Label&gt;</span>
+	<span class="o">&lt;</span><span class="nx">asp</span><span class="o">:</span><span class="nx">TextBox</span> <span class="nx">ID</span><span class="o">=</span><span class="s2">&quot;txtTitle&quot;</span> <span class="nx">runat</span><span class="o">=</span><span class="s2">&quot;server&quot;</span><span class="o">&gt;</span><span class="nx">Mr</span><span class="o">&lt;</span><span class="sr">/asp:TextBox&gt;&lt;br /</span><span class="o">&gt;</span>
+	<span class="o">&lt;</span><span class="nx">asp</span><span class="o">:</span><span class="nx">Label</span> <span class="nx">ID</span><span class="o">=</span><span class="s2">&quot;lblFirstName&quot;</span> <span class="nx">runat</span><span class="o">=</span><span class="s2">&quot;server&quot;</span> <span class="nx">Text</span><span class="o">=</span><span class="s2">&quot;First Name: &quot;</span><span class="o">&gt;&lt;</span><span class="err">/asp:Label&gt;</span>
+	<span class="o">&lt;</span><span class="nx">asp</span><span class="o">:</span><span class="nx">TextBox</span> <span class="nx">ID</span><span class="o">=</span><span class="s2">&quot;txtFirstName&quot;</span> <span class="nx">runat</span><span class="o">=</span><span class="s2">&quot;server&quot;</span><span class="o">&gt;</span><span class="nx">John</span><span class="o">&lt;</span><span class="sr">/asp:TextBox&gt;&lt;br /</span><span class="o">&gt;</span>
+	<span class="o">&lt;</span><span class="nx">asp</span><span class="o">:</span><span class="nx">Label</span> <span class="nx">ID</span><span class="o">=</span><span class="s2">&quot;lblLastName&quot;</span> <span class="nx">runat</span><span class="o">=</span><span class="s2">&quot;server&quot;</span> <span class="nx">Text</span><span class="o">=</span><span class="s2">&quot;Last Name: &quot;</span><span class="o">&gt;&lt;</span><span class="err">/asp:Label&gt;</span>
+	<span class="o">&lt;</span><span class="nx">asp</span><span class="o">:</span><span class="nx">TextBox</span> <span class="nx">ID</span><span class="o">=</span><span class="s2">&quot;txtLastName&quot;</span> <span class="nx">runat</span><span class="o">=</span><span class="s2">&quot;server&quot;</span><span class="o">&gt;</span><span class="nx">Smith</span><span class="o">&lt;</span><span class="sr">/asp:TextBox&gt;&lt;br /</span><span class="o">&gt;</span>
+	<span class="o">&lt;</span><span class="nx">asp</span><span class="o">:</span><span class="nx">Button</span> <span class="nx">ID</span><span class="o">=</span><span class="s2">&quot;Button1&quot;</span> <span class="nx">runat</span><span class="o">=</span><span class="s2">&quot;server&quot;</span> <span class="nx">Text</span><span class="o">=</span><span class="s2">&quot;Submit&quot;</span> <span class="o">/&gt;&lt;</span><span class="err">/div&gt;</span>
+	<span class="o">&lt;</span><span class="err">/form&gt;</span>
+<span class="o">&lt;</span><span class="err">/body&gt;</span>
+<span class="o">&lt;</span><span class="err">/html&gt;</span></code></pre></div>
+
+<p>And copy the following into the Code View of Default.aspx (Default.aspx.cs).</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">using</span> <span class="nx">System</span><span class="p">;</span>
+<span class="nx">using</span> <span class="nx">System</span><span class="p">.</span><span class="nx">Web</span><span class="p">;</span>
+<span class="nx">using</span> <span class="nx">Microsoft</span><span class="p">.</span><span class="nx">Reporting</span><span class="p">.</span><span class="nx">WebForms</span><span class="p">;</span>
+<span class="nx">using</span> <span class="nx">System</span><span class="p">.</span><span class="nx">IO</span><span class="p">;</span>
+<span class="nx">using</span> <span class="nx">System</span><span class="p">.</span><span class="nx">Text</span><span class="p">;</span>
+<span class="nx">using</span> <span class="nx">System</span><span class="p">.</span><span class="nx">Collections</span><span class="p">.</span><span class="nx">Generic</span><span class="p">;</span>
+<span class="kr">public</span> <span class="nx">partial</span> <span class="kr">class</span> <span class="nx">_Default</span> <span class="o">:</span> <span class="nx">System</span><span class="p">.</span><span class="nx">Web</span><span class="p">.</span><span class="nx">UI</span><span class="p">.</span><span class="nx">Page</span>
+<span class="p">{</span>
+	<span class="kr">protected</span> <span class="k">void</span> <span class="nx">Page_Load</span><span class="p">(</span><span class="nx">object</span> <span class="nx">sender</span><span class="p">,</span> <span class="nx">EventArgs</span> <span class="nx">e</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="nx">Page</span><span class="p">.</span><span class="nx">IsPostBack</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nx">LocalReport</span> <span class="nx">report</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">LocalReport</span><span class="p">();</span>
+			<span class="nx">string</span> <span class="nx">reportName</span> <span class="o">=</span> <span class="s2">&quot;CompletionCertificate&quot;</span><span class="p">;</span>
+			<span class="nx">string</span> <span class="nx">deviceInfo</span> <span class="o">=</span>
+				<span class="s2">&quot;&lt;DeviceInfo&gt;&quot;</span> <span class="o">+</span>
+				<span class="s2">&quot;  &lt;OutputFormat&gt;EMF&lt;/OutputFormat&gt;&quot;</span> <span class="o">+</span>
+				<span class="s2">&quot;  &lt;PageWidth&gt;8.5in&lt;/PageWidth&gt;&quot;</span> <span class="o">+</span>
+				<span class="s2">&quot;  &lt;PageHeight&gt;11in&lt;/PageHeight&gt;&quot;</span> <span class="o">+</span>
+				<span class="s2">&quot;  &lt;MarginTop&gt;0.25in&lt;/MarginTop&gt;&quot;</span> <span class="o">+</span>
+				<span class="s2">&quot;  &lt;MarginLeft&gt;0.25in&lt;/MarginLeft&gt;&quot;</span> <span class="o">+</span>
+				<span class="s2">&quot;  &lt;MarginRight&gt;0.25in&lt;/MarginRight&gt;&quot;</span> <span class="o">+</span>
+				<span class="s2">&quot;  &lt;MarginBottom&gt;0.25in&lt;/MarginBottom&gt;&quot;</span> <span class="o">+</span>
+				<span class="s2">&quot;&lt;/DeviceInfo&gt;&quot;</span><span class="p">;</span>
+			<span class="nx">Warning</span><span class="p">[]</span> <span class="nx">warnings</span><span class="p">;</span>
+			<span class="nx">string</span><span class="p">[]</span> <span class="nx">streamids</span><span class="p">;</span>
+			<span class="nx">string</span> <span class="nx">mimeType</span><span class="p">;</span>
+			<span class="nx">string</span> <span class="nx">encoding</span><span class="p">;</span>
+			<span class="nx">string</span> <span class="nx">extension</span><span class="p">;</span>
+
+			<span class="nx">report</span><span class="p">.</span><span class="nx">ReportPath</span> <span class="o">=</span> <span class="s2">&quot;Report.rdlc&quot;</span><span class="p">;</span>
+			<span class="nx">report</span><span class="p">.</span><span class="nx">DataSources</span><span class="p">.</span><span class="nx">Add</span><span class="p">(</span><span class="k">new</span> <span class="nx">ReportDataSource</span><span class="p">(</span><span class="s2">&quot;Person&quot;</span><span class="p">,</span> <span class="nx">PersonDataSource</span><span class="p">.</span><span class="nx">GetPerson</span><span class="p">(</span><span class="nx">txtTitle</span><span class="p">.</span><span class="nx">Text</span><span class="p">,</span> <span class="nx">txtFirstName</span><span class="p">.</span><span class="nx">Text</span><span class="p">,</span> <span class="nx">txtLastName</span><span class="p">.</span><span class="nx">Text</span><span class="p">)));</span>
+			<span class="kr">byte</span><span class="p">[]</span> <span class="nx">bytes</span> <span class="o">=</span> <span class="nx">report</span><span class="p">.</span><span class="nx">Render</span><span class="p">(</span><span class="s2">&quot;PDF&quot;</span><span class="p">,</span> <span class="nx">deviceInfo</span><span class="p">,</span> <span class="nx">out</span> <span class="nx">mimeType</span><span class="p">,</span> <span class="nx">out</span> <span class="nx">encoding</span><span class="p">,</span> <span class="nx">out</span> <span class="nx">extension</span><span class="p">,</span> <span class="nx">out</span> <span class="nx">streamids</span><span class="p">,</span> <span class="nx">out</span> <span class="nx">warnings</span><span class="p">);</span>
+
+			<span class="nx">Response</span><span class="p">.</span><span class="nx">Clear</span><span class="p">();</span>
+			<span class="nx">Response</span><span class="p">.</span><span class="nx">ContentType</span> <span class="o">=</span> <span class="nx">mimeType</span><span class="p">;</span>
+			<span class="nx">Response</span><span class="p">.</span><span class="nx">AddHeader</span><span class="p">(</span><span class="s2">&quot;Content-Disposition&quot;</span><span class="p">,</span> <span class="s2">&quot;attachment; filename=&quot;</span> <span class="o">+</span> <span class="nx">reportName</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="nx">extension</span><span class="p">);</span>
+			<span class="nx">Response</span><span class="p">.</span><span class="nx">OutputStream</span><span class="p">.</span><span class="nx">Write</span><span class="p">(</span><span class="nx">bytes</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">bytes</span><span class="p">.</span><span class="nx">Length</span><span class="p">);</span>
+			<span class="nx">Response</span><span class="p">.</span><span class="nx">End</span><span class="p">();</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Now run your project, enter some person data into the form and click submit. Open the PDF file and verify that the report is addressed to your person.</p>
+
+<p><a class="btn btn-primary" href="http://www.phdesign.com.au/wp-content/uploads/2009/11/ReportViewerDemo.zip" title="Download the source for this tutorial">Download source</a></p>
+
+
+          <ul class="post-tags">
+            
+              <li><a href="/tags/asp" title="View posts tagged with asp">#asp</a></li>
+            
+              <li><a href="/tags/c#" title="View posts tagged with c#">#c#</a></li>
+            
+              <li><a href="/tags/dotnet" title="View posts tagged with dotnet">#dotnet</a></li>
+            
+              <li><a href="/tags/howto" title="View posts tagged with howto">#howto</a></li>
+            
+          </ul>
+
+          
+
+        </div><!-- end .container -->
+      </article>
+
+      <div class="stripe">
+        <div class="container">
+
+          <div class="comments">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+              /* * * CONFIGURATION VARIABLES * * */
+              var disqus_shortname = 'phdesign';
+              var disqus_identifier = 'create-a-pdf-using-the-net-reportviewer-control';
+              var disqus_title = 'Create a PDF using the .Net ReportViewer control';
+              var disqus_url = 'http://phdesign.com.au/programming/2009/11/create-a-pdf-using-the-net-reportviewer-control/';
+
+              /* * * DON'T EDIT BELOW THIS LINE * * */
+              (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+              })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+          </div><!-- end .comments -->
+
+        </div><!-- end .container -->
+      </div>
+
+      <div class="stripe alt">
+        <div class="container">
+
+          <nav class="row pager">
+            <div class="previous col-xs-6 col-sm-4">
+              
+            </div>
+            <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+              
+                <div class="meta-label"><a href="/general/2009/12/phreplace-version-2-0-24-released/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+                <div class="meta-value"><a href="/general/2009/12/phreplace-version-2-0-24-released/">phreplace version 2.0.24 released</a></div>
+              
+            </div>
+          </nav><!-- end .post_nav -->
+
+        </div><!-- end .container -->
+      </div><!-- end .stripe.alt -->
+
+    </main><!-- end .content -->
+
+    
+    <footer role="contentinfo">
+      <div class="container">
+
+        <ul class="social-icons">
+          <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+          <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+          <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+          <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+        </ul>
+
+        <p class="footer-copyright">
+          &copy; 2015 Paul Heasley. All rights reserved. <br>
+          Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+        </p>
+
+      </div><!-- end .container -->
+    </footer>
+
+    
+    <!-- JS (Javascript Files)
+    ================================================== -->
+
+    <script src="/assets/js/main.js"></script>
+
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'phdesign';
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+      }());
+    </script>
+
+  </body>
+
+</html>

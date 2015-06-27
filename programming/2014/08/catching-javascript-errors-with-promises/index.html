@@ -1,3 +1,8 @@
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   
@@ -32,7 +37,7 @@
 
   </head>
 
-  <body>
+  <body class="post">
 
     <div class="header-background-image"></div>
     <header role="banner">
@@ -59,6 +64,10 @@
                     
                       <li><a href="/programming">programming</a></li>
                     
+                      <li><a href="/general">general</a></li>
+                    
+                      <li><a href="/uncategorized">uncategorized</a></li>
+                    
                   </ul>
                 </li>
                 <li class="dropdown">
@@ -81,20 +90,20 @@
 
     </header>
 
-    <main class="container-fluid">
-      <div class="row">
-            <div class="content">
-      <article class="post">
+    <main class="content">
+            <article>
         <div class="container">
+
+          
 
           <div class="date-stamp">
             <div class="month">Aug</div>
             <div class="day">02</div>
           </div><!-- end .date-stamp -->
 
-          <h2>Catching JavaScript errors with Promises</h2>
+          <h2 class="post-header">Catching JavaScript errors with Promises</h2>
 
-          <p class="meta-details">posted on <span class="muted">02 August 2014</span> in <span><a href="/programming">programming</a></span> with <span><a data-disqus-identifier="catching-javascript-errors-with-promises" href="#disqus_thread">0 Comments</a></span></p>
+          <div class="meta-label">posted on <span class="meta-value muted">02 August 2014</span> in <span class="meta-value"><a href="/programming">programming</a></span> with <span class="meta-value"><a data-disqus-identifier="catching-javascript-errors-with-promises" href="#disqus_thread">0 Comments</a></span></div>
           <br />
 
           <p>If your JS function needs to return a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="About Promises by the Mozilla Developer Network">Promise</a> but doesn’t do any asynchronous activity, you may be tempted to use the static Promise.resolve() function rather than instantiating a new Promise object. Be aware that doing this will change the way javascript errors are dealt with.</p>
@@ -136,32 +145,59 @@ Whereas:</p>
               <li><a href="/tags/promises" title="View posts tagged with promises">#promises</a></li>
             
           </ul>
+
+          
+
         </div><!-- end .container -->
-      </article><!-- end .post -->
+      </article>
 
-      <div class="container comments">
+      <div class="stripe">
+        <div class="container">
 
-        <div id="disqus_thread"></div>
-        <script type="text/javascript">
-          /* * * CONFIGURATION VARIABLES * * */
-          var disqus_shortname = 'phdesign';
-          var disqus_identifier = 'catching-javascript-errors-with-promises';
-          var disqus_title = 'Catching JavaScript errors with Promises';
-          var disqus_url = 'http://phdesign.com.au/programming/2014/08/catching-javascript-errors-with-promises/';
+          <div class="comments">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+              /* * * CONFIGURATION VARIABLES * * */
+              var disqus_shortname = 'phdesign';
+              var disqus_identifier = 'catching-javascript-errors-with-promises';
+              var disqus_title = 'Catching JavaScript errors with Promises';
+              var disqus_url = 'http://phdesign.com.au/programming/2014/08/catching-javascript-errors-with-promises/';
 
-          /* * * DON'T EDIT BELOW THIS LINE * * */
-          (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-          })();
-        </script>
-        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-      </div><!-- end .comments -->
-    </div><!-- end .content -->
+              /* * * DON'T EDIT BELOW THIS LINE * * */
+              (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+              })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+          </div><!-- end .comments -->
 
-      </div><!-- end .row -->
-    </main><!-- end .container-fluid -->
+        </div><!-- end .container -->
+      </div>
+
+      <div class="stripe alt">
+        <div class="container">
+
+          <nav class="row pager">
+            <div class="previous col-xs-6 col-sm-4">
+              
+                <div class="meta-label"><a href="/programming/2014/07/mapping-errors-in-jquery-promises-deferred/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+                <div class="meta-value"><a href="/programming/2014/07/mapping-errors-in-jquery-promises-deferred/">Mapping errors in jQuery promises / deferred</a></div>
+              
+            </div>
+            <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+              
+                <div class="meta-label"><a href="/programming/2015/04/logging-objects-to-the-console-in-internet-explorer/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+                <div class="meta-value"><a href="/programming/2015/04/logging-objects-to-the-console-in-internet-explorer/">Logging Objects to the Console in Internet Explorer</a></div>
+              
+            </div>
+          </nav><!-- end .post_nav -->
+
+        </div><!-- end .container -->
+      </div><!-- end .stripe.alt -->
+
+    </main><!-- end .content -->
 
     
     <footer role="contentinfo">
@@ -175,7 +211,10 @@ Whereas:</p>
           <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
         </ul>
 
-        <p class="footer-copyright">&copy; 2015 Paul Heasley. All rights reserved.</p>
+        <p class="footer-copyright">
+          &copy; 2015 Paul Heasley. All rights reserved. <br>
+          Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+        </p>
 
       </div><!-- end .container -->
     </footer>

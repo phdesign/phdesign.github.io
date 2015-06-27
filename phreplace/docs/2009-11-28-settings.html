@@ -1,0 +1,155 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Settings | phdesign</title>
+
+    <!-- Google Web Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicon/Touch Icons  -->
+    <!-- <link rel="shortcut icon" href="/assets/img/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
+
+  </head>
+
+  <body>
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+        <nav class="navbar navbar-default">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+            </div><!-- end .navbar-header -->
+
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    
+                      <li><a href="/programming">programming</a></li>
+                    
+                      <li><a href="/general">general</a></li>
+                    
+                      <li><a href="/uncategorized">uncategorized</a></li>
+                    
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="/phreplace">phReplace</a></li>
+                    <li><a href="/npptoolbucket">NppToolBucket</a></li>
+                    <li><a href="/betternote">BetterNote</a></li>
+                  </ul>
+                </li>
+                <li><a href="/contact-me">Contact me</a></li>
+              </ul>
+            </div><!-- end .navbar-collapse -->
+          </div><!-- end .container -->
+        </nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+
+    <main class="content">
+      <p>Settings for phreplace can be changed in the settings drop down menu. Settings that are turned on have a check mark (tick) beside them, click on a setting to toggle it on or off.</p>
+<h3>Use Ini File</h3>
+<p>If set, phreplace uses an ini file to store all history and setting information. If off phreplace uses the registry to store all history and settings. Toggling this open on and off copies all history and settings to the new location and deletes all records in the old location (i.e. turning on creates an ini file, copies all history and settings, then deletes all registry keys associated with phreplace). To decide whether phreplace is using an ini file or the registry, it checks for the existance of a phreplace.ini file in the same folder as the phreplace.dll file. If it exists it assumes it should use an ini file, if it does not exist then it uses the registry. This means if you delete the phreplace.ini file (or rename it), phreplace will not create a new file, it will use the registry. To restore the ini file, either select the <em>Use Ini File </em>option in the settings menu, or close phreplace, create an empty file called phreplace.ini in the same folder as phreplace.dll and restart phreplace.</p>
+<h3>Save Layout</h3>
+<p>If set, phreplace records the size and position of the phreplace window on the screen so that it appears at the same position the next time phreplace is started. If not set phreplace uses the default size and window position each time it starts.</p>
+<h3>Save Search History</h3>
+<p>If set, records the last 10 search  and replace terms for reuse. When this option is turned off it deletes all currently saved search history (so don't toggle it on and off if you don't want to lose your search history). When this setting is off, search history is still recorded for as long as phreplace is kept open, but as soon as phreplace is closed the histroy is lost. See [permalink href="search-history"]Search History[/permalink] for more information.</p>
+<h3>Always On Top</h3>
+<p>If set, the phreplace windows is always kept on top of other windows, including PSPad.</p>
+<h3>Tab Inserts Tab</h3>
+<p>If set, pressing tab when in the Search For or Replace With field inserts a tab character into the field. If off pressing tab changes the keyboard focus to the next control on the phreplace window.</p>
+<h3>Reset to Defaults</h3>
+<p>Selecting this menu item resets all options back to their original defaults (all options set on) including resetting the saved size and position of the phreplace window.</p>
+<h3>See Also</h3>
+<ul>
+<li>[permalink href="search-history"]Search History[/permalink]</li>
+</ul>
+
+    </main><!-- end .content -->
+
+    
+    <footer role="contentinfo">
+      <div class="container">
+
+        <ul class="social-icons">
+          <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+          <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+          <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+          <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+        </ul>
+
+        <p class="footer-copyright">
+          &copy; 2015 Paul Heasley. All rights reserved. <br>
+          Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+        </p>
+
+      </div><!-- end .container -->
+    </footer>
+
+    
+    <!-- JS (Javascript Files)
+    ================================================== -->
+
+    <script src="/assets/js/main.js"></script>
+
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'phdesign';
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+      }());
+    </script>
+
+  </body>
+
+</html>

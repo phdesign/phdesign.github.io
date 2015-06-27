@@ -1,0 +1,227 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Version History | phdesign</title>
+
+    <!-- Google Web Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicon/Touch Icons  -->
+    <!-- <link rel="shortcut icon" href="/assets/img/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
+
+  </head>
+
+  <body>
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+        <nav class="navbar navbar-default">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+            </div><!-- end .navbar-header -->
+
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    
+                      <li><a href="/programming">programming</a></li>
+                    
+                      <li><a href="/general">general</a></li>
+                    
+                      <li><a href="/uncategorized">uncategorized</a></li>
+                    
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="/phreplace">phReplace</a></li>
+                    <li><a href="/npptoolbucket">NppToolBucket</a></li>
+                    <li><a href="/betternote">BetterNote</a></li>
+                  </ul>
+                </li>
+                <li><a href="/contact-me">Contact me</a></li>
+              </ul>
+            </div><!-- end .navbar-collapse -->
+          </div><!-- end .container -->
+        </nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+
+    <main class="content">
+      <h3>2.0</h3>
+<ul>
+<li>Major redesign of code base.</li>
+<li>Created file menu to turn settings on and off as well as access help files.</li>
+<li>Created .chm help files.</li>
+<li>Added search history buttons to recall last 10 search / replace terms.</li>
+<li>Fixed the insert tabs functionality. When set on, pressing tab key inserts a tab character.<br />
+If off, pressing tabs moves to the next control on the window.</li>
+<li>Configured keyboard shortcuts so they work properly now.</li>
+<li>Improved handling large files. Doesn't crash when doing search / replace on a huge file,<br />
+although performance could still be improved.</li>
+<li>Handled an error being thrown by the vbscript Regex object when passing in some badly formed regular expressions.</li>
+<li>Added Write to Log setting (which defaults to off) to write some debugging log events to a ‘phreplace.log’ file in the same folder as the ‘phreplace.dll’ library.</li>
+</ul>
+<h3>1.4</h3>
+<ul>
+<li>Released new stable version, only know bug is when word wrap is on.</li>
+<li>Stop phreplace defaulting to 'Start from Begining' everytime it is opened.</li>
+<li>Display the search match in the middle of the screen.</li>
+</ul>
+<h3>1.3</h3>
+<ul>
+<li>Changed the way phreplace handles open files in PSPad, you can now<br />
+change the active file or open and close files while phreplace is<br />
+running without phreplace crashing.</li>
+<li>After completing a replace all, you can now undo all changes with just<br />
+one undo step.</li>
+<li>Replace All runs much faster.</li>
+<li>Regular Expressions now run in Multiline mode.</li>
+<li>When matching a new line with Regular Expressions, the first character<br />
+on the new line was highlighted, this should be fixed.</li>
+<li>Fixed bug when using replace all on selected text, phreplace truncates<br />
+some of the following text.</li>
+<li>Added ability to use $1 in Regular Expression replaces.</li>
+<li>Fixed bug when resizing phreplace, the Close button does not update<br />
+it's position.</li>
+<li>Previously using $1, $2 substitutions in phreplace only worked when<br />
+using replace all, it now works for a single replace as well.</li>
+<li>Fixed bug when doing a search in selection, the length of the selection<br />
+didn't take into account line feeds.</li>
+<li>Fixed bug when performing a reverse search, phreplace kept finding the<br />
+same match (didn't move past it).</li>
+<li>Fixed bug when doing a Replace All on All Open Docs, the last document<br />
+isn't searched.</li>
+<li>Fixed bug when doing a Replace All on All Open Docs, the last document<br />
+isn't searched.</li>
+</ul>
+<h3>1.2</h3>
+<ul>
+<li>Fixed Buffer Overflow error when searching through large files.</li>
+<li>Save Settings in INI file rather than registry.</li>
+<li>Added support for regular expressions.</li>
+<li>When opening phreplace, if text is selected and is longer than 200 chars<br />
+or is more than one line, 'Search in Selection' is checked, otherwise if<br />
+a small amount of text is selected this text is used as the search.</li>
+<li>Added Modeless support for phreplace. You can now have phreplace open<br />
+and still be able to use PSPad.</li>
+<li>phreplace window is always on top.</li>
+<li>Added ability to set the options of save layout, modeless form and<br />
+always on top in the ini file.</li>
+<li>Fixed bug, shouldn't allow search / replace / replace all when search<br />
+field is empty.</li>
+<li>When doing a Regular Expression search, unless the highlighted text is<br />
+exactly the same as the search text, you can't replace it.</li>
+<li>Show error message if user tries to search on an editor which is closed.</li>
+</ul>
+<h3>1.1</h3>
+<ul>
+<li>Used better hack for getting the starting point of the current<br />
+selection, previously when searching in a selection it would add a redo<br />
+step to PSPad, this no longer happens.</li>
+<li>When pressing tab in textbox the tab character is inserted rather than<br />
+focus moving to the next control on the screen.</li>
+<li>phreplace now utilises the PSPad icon.</li>
+<li>Fixed Bug: When starting phreplace with no editors open, phreplace<br />
+throws an error.</li>
+<li>Esc key closes phreplace.</li>
+<li>Keyboard shortcuts setup on buttons.</li>
+<li>Default text in Search field is highlighted when phreplace starts.</li>
+<li>Set Ctrl+Alt+F as shortcut key to start phreplace.</li>
+<li>Removed Minimise and Maximise buttons.</li>
+<li>Saves window position and size when closing.</li>
+<li>If user has selected text when starting phreplace the 'Search in<br />
+Selection' option is ticked.</li>
+</ul>
+<h3>1.0</h3>
+<ul>
+<li>Inital application release.</li>
+</ul>
+
+    </main><!-- end .content -->
+
+    
+    <footer role="contentinfo">
+      <div class="container">
+
+        <ul class="social-icons">
+          <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+          <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+          <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+          <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+        </ul>
+
+        <p class="footer-copyright">
+          &copy; 2015 Paul Heasley. All rights reserved. <br>
+          Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+        </p>
+
+      </div><!-- end .container -->
+    </footer>
+
+    
+    <!-- JS (Javascript Files)
+    ================================================== -->
+
+    <script src="/assets/js/main.js"></script>
+
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'phdesign';
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+      }());
+    </script>
+
+  </body>
+
+</html>

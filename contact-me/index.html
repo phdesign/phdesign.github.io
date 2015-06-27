@@ -1,3 +1,8 @@
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   
@@ -59,6 +64,10 @@
                     
                       <li><a href="/programming">programming</a></li>
                     
+                      <li><a href="/general">general</a></li>
+                    
+                      <li><a href="/uncategorized">uncategorized</a></li>
+                    
                   </ul>
                 </li>
                 <li class="dropdown">
@@ -81,14 +90,15 @@
 
     </header>
 
-    <main class="container-fluid">
-      <div class="row">
-            <div class="content">
-      <div class="container">
-        <h1>Contact Me</h1>
+    <main class="content">
+              <div class="container contact">
 
-                  <div class="row">
-            <div class="col-sm-6">
+          <div class="row">
+            <div class="col-md-6">
+
+              <h1>Got something to say?</h1>
+
+              <p>Fill out the form to get in touch with me.</p>
               <form action="https://getsimpleform.com/messages?form_api_token=099d0e93522d09e540cee9a09d50647b" method="post">
                 <input type='hidden' name='redirect_to' value='http://phdesign.com.au/thank-you' />
                 <div class="form-group">
@@ -105,15 +115,35 @@
                 </div>
                 <button type="submit" class="btn btn-primary" title="Send contact form">Send</button>
               </form>
-            </div>
-          </div>
 
+            </div><!-- end .col-md-6 -->
+            <div class="col-md-6 contact-about-me">
 
-      </div><!-- end .container -->
-    </div><!-- end .content -->
+              <div class="row">
+                <img class="profile-pic" src="/assets/img/paul_heasley.jpg" width="180px" height="180px" alt="A profile picture of author Paul Heasley">
+              </div>
 
-      </div><!-- end .row -->
-    </main><!-- end .container-fluid -->
+              <div class="row">
+                <div class="meta-label">author <span class="meta-value">Paul Heasley</span></div>
+                <div class="meta-label"><i class="fa fa-map-marker"></i>Based in <span class="meta-value">Melbourne, Australia</span></div>
+              </div>
+
+              <div class="row">
+                <ul class="social-icons">
+                  <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+                  <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+                  <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+                  <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+                  <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+                </ul><!-- end .social-icons -->
+              </div>
+
+            </div><!-- end .col-md-6 -->
+          </div><!-- end .row -->
+
+        </div><!-- end .container -->
+
+    </main><!-- end .content -->
 
     
     <footer role="contentinfo">
@@ -127,7 +157,10 @@
           <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
         </ul>
 
-        <p class="footer-copyright">&copy; 2015 Paul Heasley. All rights reserved.</p>
+        <p class="footer-copyright">
+          &copy; 2015 Paul Heasley. All rights reserved. <br>
+          Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+        </p>
 
       </div><!-- end .container -->
     </footer>

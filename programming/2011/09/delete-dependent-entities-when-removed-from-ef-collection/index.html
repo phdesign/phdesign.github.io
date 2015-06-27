@@ -1,0 +1,254 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Delete Dependent Entities When Removed From EF Collection | phdesign</title>
+
+    <!-- Google Web Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicon/Touch Icons  -->
+    <!-- <link rel="shortcut icon" href="/assets/img/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
+
+  </head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+        <nav class="navbar navbar-default">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+            </div><!-- end .navbar-header -->
+
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    
+                      <li><a href="/programming">programming</a></li>
+                    
+                      <li><a href="/general">general</a></li>
+                    
+                      <li><a href="/uncategorized">uncategorized</a></li>
+                    
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="/phreplace">phReplace</a></li>
+                    <li><a href="/npptoolbucket">NppToolBucket</a></li>
+                    <li><a href="/betternote">BetterNote</a></li>
+                  </ul>
+                </li>
+                <li><a href="/contact-me">Contact me</a></li>
+              </ul>
+            </div><!-- end .navbar-collapse -->
+          </div><!-- end .container -->
+        </nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+
+    <main class="content">
+            <article>
+        <div class="container">
+
+          
+
+          <div class="date-stamp">
+            <div class="month">Sep</div>
+            <div class="day">06</div>
+          </div><!-- end .date-stamp -->
+
+          <h2 class="post-header">Delete Dependent Entities When Removed From EF Collection</h2>
+
+          <div class="meta-label">posted on <span class="meta-value muted">06 September 2011</span> in <span class="meta-value"><a href="/programming">programming</a></span> with <span class="meta-value"><a data-disqus-identifier="delete-dependent-entities-when-removed-from-ef-collection" href="#disqus_thread">0 Comments</a></span></div>
+          <br />
+
+          <p>I’m using Entity Framework 4.1 Code First Fluent API.<br />
+The problem. I have an Entity Framework model being used in the business layer called Patient, it has a collection of dependent entities called Responses, when a response needs to be deleted I simply remove it from the collection and expect that it’ll get deleted from the database. It doesn’t.</p>
+
+<!--more-->
+
+<p><img src="assets/ef-delete-relationship-models.png" alt="Response and Patient Model Diagram" title="ef-delete-relationship-models" width="249" height="91" class="alignnone size-full wp-image-268" /></p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// This doesn’t work as expected, it removes the relationship but not the Response entity. </span>
+<span class="nx">Patient</span><span class="p">.</span><span class="nx">Responses</span><span class="p">.</span><span class="nx">Remove</span><span class="p">(</span><span class="nx">Patient</span><span class="p">.</span><span class="nx">Responses</span><span class="p">.</span><span class="nx">Where</span><span class="p">(</span><span class="nx">r</span> <span class="o">=&gt;</span> <span class="nx">r</span><span class="p">.</span><span class="nx">Id</span> <span class="o">==</span> <span class="mi">1</span><span class="p">));</span></code></pre></div>
+
+<p>If I try to save this, I get the error:</p>
+
+<p><em>System.InvalidOperationException: The operation failed: The relationship could not be changed because one or more of the foreign-key properties is non-nullable. When a change is made to a relationship, the related foreign-key property is set to a null value. If the foreign-key does not support null values, a new relationship must be defined, the foreign-key property must be assigned another non-null value, or the unrelated object must be deleted.</em></p>
+
+<p>What’s happening is the Response entity does not get deleted, just the relationship to the Patient. However when the relationship is removed, Entity Framework doesn’t know what to do with Response.PatientId, it can’t null it because it’s marked as not null.</p>
+
+<p>Reading <a title="Deleting Foreign-Key Relationships in EF4" href="http://blogs.msdn.com/b/dsimmons/archive/2010/01/31/deleting-foreign-key-relationships-in-ef4.aspx" target="_blank">this blog post</a> helped me understand the issue a bit more. So one solution is to make the Response entity primary key depend on the foreign key field, i.e. PatientId, this will make Entity Framework act as expected and delete the dependent entity when the relationship is deleted.</p>
+
+<p>We can do this by providing the following Fluent API mapping:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">modelBuilder</span><span class="p">.</span><span class="nx">Entity</span><span class="p">().</span><span class="nx">HasKey</span><span class="p">(</span><span class="nx">m</span> <span class="o">=&gt;</span> <span class="k">new</span> <span class="p">{</span> <span class="nx">m</span><span class="p">.</span><span class="nx">Id</span><span class="p">,</span> <span class="nx">m</span><span class="p">.</span><span class="nx">PatientId</span> <span class="p">});</span></code></pre></div>
+
+<p>But if you’re not comfortable changing your database structure to suit Entity Framework there is another way. By overriding the SaveChanges method of our DbContext class, we can monitor for changes to Responses where they have been orphaned from a Patient and delete them:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">public</span> <span class="nx">override</span> <span class="kr">int</span> <span class="nx">SaveChanges</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="c1">// Need to manually delete all responses that have been removed from the patient, otherwise they&#39;ll be orphaned.</span>
+  <span class="kd">var</span> <span class="nx">orphanedResponses</span> <span class="o">=</span> <span class="nx">ChangeTracker</span><span class="p">.</span><span class="nx">Entries</span><span class="p">().</span><span class="nx">Where</span><span class="p">(</span>
+    <span class="nx">e</span> <span class="o">=&gt;</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">State</span> <span class="o">==</span> <span class="nx">EntityState</span><span class="p">.</span><span class="nx">Modified</span> <span class="o">||</span> <span class="nx">e</span><span class="p">.</span><span class="nx">State</span> <span class="o">==</span> <span class="nx">EntityState</span><span class="p">.</span><span class="nx">Added</span><span class="p">)</span> <span class="o">&amp;&amp;</span>
+      <span class="nx">e</span><span class="p">.</span><span class="nx">Entity</span> <span class="nx">is</span> <span class="nx">Response</span> <span class="o">&amp;&amp;</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">Reference</span><span class="p">(</span><span class="s2">&quot;Patient&quot;</span><span class="p">).</span><span class="nx">CurrentValue</span> <span class="o">==</span> <span class="kc">null</span><span class="p">);</span>
+  <span class="nx">foreach</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">orphanedResponse</span> <span class="k">in</span> <span class="nx">orphanedResponses</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="nx">Responses</span><span class="p">.</span><span class="nx">Remove</span><span class="p">(</span><span class="nx">orphanedResponse</span><span class="p">.</span><span class="nx">Entity</span> <span class="nx">as</span> <span class="nx">Response</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="nx">base</span><span class="p">.</span><span class="nx">SaveChanges</span><span class="p">();</span>
+<span class="p">}</span></code></pre></div>
+
+
+
+          <ul class="post-tags">
+            
+              <li><a href="/tags/c#" title="View posts tagged with c#">#c#</a></li>
+            
+              <li><a href="/tags/ef" title="View posts tagged with ef">#ef</a></li>
+            
+              <li><a href="/tags/howto" title="View posts tagged with howto">#howto</a></li>
+            
+          </ul>
+
+          
+
+        </div><!-- end .container -->
+      </article>
+
+      <div class="stripe">
+        <div class="container">
+
+          <div class="comments">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+              /* * * CONFIGURATION VARIABLES * * */
+              var disqus_shortname = 'phdesign';
+              var disqus_identifier = 'delete-dependent-entities-when-removed-from-ef-collection';
+              var disqus_title = 'Delete Dependent Entities When Removed From EF Collection';
+              var disqus_url = 'http://phdesign.com.au/programming/2011/09/delete-dependent-entities-when-removed-from-ef-collection/';
+
+              /* * * DON'T EDIT BELOW THIS LINE * * */
+              (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+              })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+          </div><!-- end .comments -->
+
+        </div><!-- end .container -->
+      </div>
+
+      <div class="stripe alt">
+        <div class="container">
+
+          <nav class="row pager">
+            <div class="previous col-xs-6 col-sm-4">
+              
+                <div class="meta-label"><a href="/programming/2011/06/conditional-validation-in-asp-net-mvc3/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+                <div class="meta-value"><a href="/programming/2011/06/conditional-validation-in-asp-net-mvc3/">Conditional Validation in ASP.NET MVC3</a></div>
+              
+            </div>
+            <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+              
+                <div class="meta-label"><a href="/programming/2012/01/toolbucket-multi-line-search-plugin-for-notepad/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+                <div class="meta-value"><a href="/programming/2012/01/toolbucket-multi-line-search-plugin-for-notepad/">ToolBucket multi-line search plugin for Notepad++</a></div>
+              
+            </div>
+          </nav><!-- end .post_nav -->
+
+        </div><!-- end .container -->
+      </div><!-- end .stripe.alt -->
+
+    </main><!-- end .content -->
+
+    
+    <footer role="contentinfo">
+      <div class="container">
+
+        <ul class="social-icons">
+          <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+          <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+          <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+          <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+        </ul>
+
+        <p class="footer-copyright">
+          &copy; 2015 Paul Heasley. All rights reserved. <br>
+          Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+        </p>
+
+      </div><!-- end .container -->
+    </footer>
+
+    
+    <!-- JS (Javascript Files)
+    ================================================== -->
+
+    <script src="/assets/js/main.js"></script>
+
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'phdesign';
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+      }());
+    </script>
+
+  </body>
+
+</html>

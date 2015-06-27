@@ -1,0 +1,255 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Converting Topfield PVR Recordings | phdesign</title>
+
+    <!-- Google Web Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Favicon/Touch Icons  -->
+    <!-- <link rel="shortcut icon" href="/assets/img/favicon.ico">
+    <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
+
+  </head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+        <nav class="navbar navbar-default">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+            </div><!-- end .navbar-header -->
+
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    
+                      <li><a href="/programming">programming</a></li>
+                    
+                      <li><a href="/general">general</a></li>
+                    
+                      <li><a href="/uncategorized">uncategorized</a></li>
+                    
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="/phreplace">phReplace</a></li>
+                    <li><a href="/npptoolbucket">NppToolBucket</a></li>
+                    <li><a href="/betternote">BetterNote</a></li>
+                  </ul>
+                </li>
+                <li><a href="/contact-me">Contact me</a></li>
+              </ul>
+            </div><!-- end .navbar-collapse -->
+          </div><!-- end .container -->
+        </nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+
+    <main class="content">
+            <article>
+        <div class="container">
+
+          
+
+          <div class="date-stamp">
+            <div class="month">Feb</div>
+            <div class="day">14</div>
+          </div><!-- end .date-stamp -->
+
+          <h2 class="post-header">Converting Topfield PVR Recordings</h2>
+
+          <div class="meta-label">posted on <span class="meta-value muted">14 February 2010</span> in <span class="meta-value"><a href="/general">general</a></span> with <span class="meta-value"><a data-disqus-identifier="converting-topfield-pvr-recordings" href="#disqus_thread">0 Comments</a></span></div>
+          <br />
+
+          <p>This weekend I’ve been having fun moving some recording off the full hard drive of my Topfield Masterpiece and trying to convert them into the formats I want. Below is what I’ve learnt in the process, this is only going to be useful to those using Windows.</p>
+
+<!--more-->
+
+<h2>Moving data off the PVR</h2>
+<p>If you want to use your recordings on devices other than your Toppy, you’re going to need to get the recordings off it. Fortunately this is the simplest step. For me there were really two options:</p>
+
+<ul>
+  <li>Use the provided USB link from the Toppy and the official <a title="Topfield tools, Altair USB transfer software." href="http://www.itopfield.com.au/download-utilities.asp?idx=15&amp;tb=">ALTAIR software</a> to download the recordings. For one or two recording this will be fine, although for me it took around 4 hours for a normal sized movie.</li>
+  <li>Attach the hard drive to your computer use <a title="TopfHD Read-Write to copy data from a Topfield hard drive" href="http://topfield.abock.de/TF5000/tf5000.html">TopfHD Read-Write</a> to copy the recordings over to your PC hard drive.<br />
+WARNING! To do this you will need to open your Topfield up to remove the hard drive, in doing so you will void your warrenty. I wouldn’t recommend doing this unless your Toppy is out of warrenty anyway.<br />
+You need to use the TopfHD application to transfer files because Windows won’t recognise the file format of the Toppy hard drive. Be very careful not let Windows modify the disk in any way.<br />
+Transferring about 8 recorded shows and 4 movies took under 30 mins, this takes longer to set up but is well worth it if you’re trying to move a bit of data.</li>
+</ul>
+
+<h2>Watching / Converting the Recordings</h2>
+<p>Once you’ve got the recordings on your PC they will be in Topfield’s .rec format, which Windows Media nor Quicktime can recognise. My traditional way of converting these files for buring to a DVD went;</p>
+
+<ul>
+  <li>Use <a title="Project X - DVB demux Tool" href="http://sourceforge.net/projects/project-x/">ProjectX</a> to convert to m2v file</li>
+  <li>Use TMPGEnc DVD Author to convert to DVD format</li>
+  <li>Use Nero to burn to DVD.</li>
+</ul>
+
+<p>If you just want to watch them on your computer I’ve got some great news which took me a while to realise: the .rec files can be played directly by the ever useful <a title="VLC Media Player" href="http://www.videolan.org/">VLC Media Player</a>.</p>
+
+<p>If you want to convert them to another format, VLC can help you there too. Use the Media &gt; Convert / Save option to convert it into many different formats. Supposedly it can convert to H264 / mp4 format  compatible with iPods, however I had real problems with this, the video would be distorted or the audio would be way out of sync. So, after playing around for a while, I thought I give it a go converting directly form <a title="Handbrake iPod video conversion" href="http://handbrake.fr/">Handbrake</a> which I do most of my iPod video conversions with… and this works great!</p>
+
+<p>In summary,</p>
+
+<p><strong>To convert to DVD</strong>: Probably still use ProjectX &gt; TMPGEnc DVD Author &gt; DVD.</p>
+
+<p><strong>To convert to iPod:</strong> Use Handbrake.</p>
+
+<p><strong>To watch or convert to other media formats:</strong> Use VLC Media Player.</p>
+
+<p>Hope this is useful.</p>
+
+
+
+          <ul class="post-tags">
+            
+              <li><a href="/tags/howto" title="View posts tagged with howto">#howto</a></li>
+            
+              <li><a href="/tags/ipod" title="View posts tagged with ipod">#ipod</a></li>
+            
+              <li><a href="/tags/topfield" title="View posts tagged with topfield">#topfield</a></li>
+            
+              <li><a href="/tags/video" title="View posts tagged with video">#video</a></li>
+            
+          </ul>
+
+          
+
+        </div><!-- end .container -->
+      </article>
+
+      <div class="stripe">
+        <div class="container">
+
+          <div class="comments">
+            <div id="disqus_thread"></div>
+            <script type="text/javascript">
+              /* * * CONFIGURATION VARIABLES * * */
+              var disqus_shortname = 'phdesign';
+              var disqus_identifier = 'converting-topfield-pvr-recordings';
+              var disqus_title = 'Converting Topfield PVR Recordings';
+              var disqus_url = 'http://phdesign.com.au/general/2010/02/converting-topfield-pvr-recordings/';
+
+              /* * * DON'T EDIT BELOW THIS LINE * * */
+              (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+              })();
+            </script>
+            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+          </div><!-- end .comments -->
+
+        </div><!-- end .container -->
+      </div>
+
+      <div class="stripe alt">
+        <div class="container">
+
+          <nav class="row pager">
+            <div class="previous col-xs-6 col-sm-4">
+              
+                <div class="meta-label"><a href="/general/2009/12/phreplace-version-2-0-24-released/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+                <div class="meta-value"><a href="/general/2009/12/phreplace-version-2-0-24-released/">phreplace version 2.0.24 released</a></div>
+              
+            </div>
+            <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+              
+                <div class="meta-label"><a href="/programming/2010/03/no-validation-messages-when-disabling-enabling-asp-net-validator-in-javascript/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+                <div class="meta-value"><a href="/programming/2010/03/no-validation-messages-when-disabling-enabling-asp-net-validator-in-javascript/">No Validation Messages when Disabling & Enabling ASP.Net Validator in Javascript</a></div>
+              
+            </div>
+          </nav><!-- end .post_nav -->
+
+        </div><!-- end .container -->
+      </div><!-- end .stripe.alt -->
+
+    </main><!-- end .content -->
+
+    
+    <footer role="contentinfo">
+      <div class="container">
+
+        <ul class="social-icons">
+          <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+          <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+          <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+          <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+        </ul>
+
+        <p class="footer-copyright">
+          &copy; 2015 Paul Heasley. All rights reserved. <br>
+          Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+        </p>
+
+      </div><!-- end .container -->
+    </footer>
+
+    
+    <!-- JS (Javascript Files)
+    ================================================== -->
+
+    <script src="/assets/js/main.js"></script>
+
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES * * */
+      var disqus_shortname = 'phdesign';
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+      }());
+    </script>
+
+  </body>
+
+</html>
