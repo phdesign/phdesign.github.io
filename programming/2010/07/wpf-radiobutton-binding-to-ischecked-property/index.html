@@ -6,36 +6,36 @@
 <!DOCTYPE html>
 <html lang="en">
   
-  <head>
+<head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
 
-    <title>WPF RadioButton Binding to IsChecked Property | phdesign</title>
+  <title>WPF RadioButton Binding to IsChecked Property | phdesign</title>
 
-    <!-- Google Web Fonts -->
-    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+  <!-- Google Web Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="/assets/css/style.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/assets/css/style.css">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
 
-    <!-- Favicon/Touch Icons  -->
-    <!-- <link rel="shortcut icon" href="/assets/img/favicon.ico">
-    <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
+  <!-- Favicon/Touch Icons  -->
+  <!-- <link rel="shortcut icon" href="/assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
 
-  </head>
+</head>
 
   <body class="post">
 
@@ -43,46 +43,44 @@
     <header role="banner">
       <div class="header-top">
         
-        <nav class="navbar navbar-default">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
-            </div><!-- end .navbar-header -->
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
 
-            <div class="collapse navbar-collapse" id="navbar-collapse">
-              <ul class="nav navbar-nav">
-                <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                    
-                      <li><a href="/programming">programming</a></li>
-                    
-                      <li><a href="/general">general</a></li>
-                    
-                      <li><a href="/uncategorized">uncategorized</a></li>
-                    
-                  </ul>
-                </li>
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="/phreplace">phReplace</a></li>
-                    <li><a href="/npptoolbucket">NppToolBucket</a></li>
-                    <li><a href="/betternote">BetterNote</a></li>
-                  </ul>
-                </li>
-                <li><a href="/contact-me">Contact me</a></li>
-              </ul>
-            </div><!-- end .navbar-collapse -->
-          </div><!-- end .container -->
-        </nav>
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/programming">programming</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/phreplace">phReplace</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+          </ul>
+        </li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
 
       </div><!-- end .header-top -->
 
@@ -91,187 +89,193 @@
     </header>
 
     <main class="content">
-            <article>
-        <div class="container">
+      <article>
+  <div class="container">
 
-          
+    
 
-          <div class="date-stamp">
-            <div class="month">Jul</div>
-            <div class="day">08</div>
-          </div><!-- end .date-stamp -->
+    <div class="date-stamp">
+      <div class="month">Jul</div>
+      <div class="day">08</div>
+    </div><!-- end .date-stamp -->
 
-          <h2 class="post-header">WPF RadioButton Binding to IsChecked Property</h2>
+    <h2 class="post-header">WPF RadioButton Binding to IsChecked Property</h2>
 
-          <div class="meta-label">posted on <span class="meta-value muted">08 July 2010</span> in <span class="meta-value"><a href="/programming">programming</a></span> with <span class="meta-value"><a data-disqus-identifier="wpf-radiobutton-binding-to-ischecked-property" href="#disqus_thread">0 Comments</a></span></div>
-          <br />
+    <div class="meta-label">
+      posted on <span class="meta-value muted">08 July 2010</span>
+      
+        in <span class="meta-value"><a href="/programming">programming</a></span>
+      
+      with <span class="meta-value"><a data-disqus-identifier="wpf-radiobutton-binding-to-ischecked-property" href="#disqus_thread">0 Comments</a></span>
+    </div><!-- end .meta-label -->
+    <br />
 
-          <p>I wasted a few development hours discovering this strange behaviour when binding to the IsChecked property of a RadioButton in WPF when using MVVM. You can <a title="RadioButton unchecked bindings issue still not resolved?" href="http://social.msdn.microsoft.com/forums/en-US/wpf/thread/8eb8280a-19c4-4502-8260-f74633a9e2f2/">read about the issue on the MSDN forum</a>, but from my experience if you have a two way binding on the is IsChecked property of a RadioButton which is part of a group, then after you set the bound property in code a couple of times, the RadioButton loses it’s binding all together.</p>
+    <p>I wasted a few development hours discovering this strange behaviour when binding to the IsChecked property of a RadioButton in WPF when using MVVM. You can <a href="http://social.msdn.microsoft.com/forums/en-US/wpf/thread/8eb8280a-19c4-4502-8260-f74633a9e2f2/" title="RadioButton unchecked bindings issue still not resolved?">read about the issue on the MSDN forum</a>, but from my experience if you have a two way binding on the is IsChecked property of a RadioButton which is part of a group, then after you set the bound property in code a couple of times, the RadioButton loses it’s binding all together.</p>
 
 <!--more-->
 
 <p>Here is my original code that kept losing it’s binding:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">ItemsControl</span> <span class="nx">ItemsSource</span><span class="o">=</span><span class="s2">&quot;{Binding Elements}&quot;</span> <span class="nx">Margin</span><span class="o">=</span><span class="s2">&quot;0,10,0,10&quot;</span><span class="o">&gt;</span>
-  <span class="o">&lt;</span><span class="nx">ItemsControl</span><span class="p">.</span><span class="nx">ItemTemplate</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="nx">DataTemplate</span><span class="o">&gt;</span>
-      <span class="o">&lt;</span><span class="nx">RadioButton</span> <span class="nx">Content</span><span class="o">=</span><span class="s2">&quot;{Binding Key}&quot;</span>
-        <span class="nx">GroupName</span><span class="o">=</span><span class="s2">&quot;{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Title}&quot;</span>
-        <span class="nx">IsChecked</span><span class="o">=</span><span class="s2">&quot;{Binding Path=IsSelected}&quot;</span>
-        <span class="nx">Margin</span><span class="o">=</span><span class="s2">&quot;0,5,0,5&quot;</span><span class="o">/&gt;</span>
-    <span class="o">&lt;</span><span class="err">/DataTemplate&gt;</span>
-  <span class="o">&lt;</span><span class="err">/ItemsControl.ItemTemplate&gt;</span>
-<span class="o">&lt;</span><span class="err">/ItemsControl&gt;</span></code></pre></div>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;ItemsControl</span> <span class="na">ItemsSource=</span><span class="s">&quot;{Binding Elements}&quot;</span> <span class="na">Margin=</span><span class="s">&quot;0,10,0,10&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;ItemsControl.ItemTemplate&gt;</span>
+    <span class="nt">&lt;DataTemplate&gt;</span>
+      <span class="nt">&lt;RadioButton</span> <span class="na">Content=</span><span class="s">&quot;{Binding Key}&quot;</span>
+        <span class="na">GroupName=</span><span class="s">&quot;{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Title}&quot;</span>
+        <span class="na">IsChecked=</span><span class="s">&quot;{Binding Path=IsSelected}&quot;</span>
+        <span class="na">Margin=</span><span class="s">&quot;0,5,0,5&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/DataTemplate&gt;</span>
+  <span class="nt">&lt;/ItemsControl.ItemTemplate&gt;</span>
+<span class="nt">&lt;/ItemsControl&gt;</span></code></pre></div>
 
 <p>There a couple of ways to solve this,</p>
 
 <ul>
-  <li><a title="Binding IsChecked property of RadioButton in WPF" href="http://pstaev.blogspot.com/2008/10/binding-ischecked-property-of.html">You can subclass the RadioButton</a></li>
-  <li><a title="Binding IsChecked property of RadioButton in WPF" href="http://pstaev.blogspot.com/2008/10/binding-ischecked-property-of.html"></a>You could use OneWay binding on IsChecked to set the RadioButton state from code, then bind the Command property to a  Command when user clicks on the RadioButton.</li>
+  <li><a href="http://pstaev.blogspot.com/2008/10/binding-ischecked-property-of.html" title="Binding IsChecked property of RadioButton in WPF">You can subclass the RadioButton</a></li>
+  <li>You could use OneWay binding on IsChecked to set the RadioButton state from code, then bind the Command property to a  Command when user clicks on the RadioButton.</li>
 </ul>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">ItemsControl</span> <span class="nx">ItemsSource</span><span class="o">=</span><span class="s2">&quot;{Binding Elements}&quot;</span> <span class="nx">Margin</span><span class="o">=</span><span class="s2">&quot;0,10,0,10&quot;</span><span class="o">&gt;</span>
-  <span class="o">&lt;</span><span class="nx">ItemsControl</span><span class="p">.</span><span class="nx">ItemTemplate</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="nx">DataTemplate</span><span class="o">&gt;</span>
-      <span class="o">&lt;</span><span class="nx">RadioButton</span> <span class="nx">Content</span><span class="o">=</span><span class="s2">&quot;{Binding Key}&quot;</span>
-        <span class="nx">GroupName</span><span class="o">=</span><span class="s2">&quot;{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Title}&quot;</span>
-        <span class="nx">IsChecked</span><span class="o">=</span><span class="s2">&quot;{Binding Path=IsSelected, Mode=OneWay}&quot;</span>
-        <span class="nx">Command</span><span class="o">=</span><span class="s2">&quot;{Binding IsSelectedCommand}&quot;</span>
-        <span class="nx">CommandParameter</span><span class="o">=</span><span class="s2">&quot;{Binding}&quot;</span>
-        <span class="nx">Margin</span><span class="o">=</span><span class="s2">&quot;0,5,0,5&quot;</span><span class="o">/&gt;</span>
-    <span class="o">&lt;</span><span class="err">/DataTemplate&gt;</span>
-  <span class="o">&lt;</span><span class="err">/ItemsControl.ItemTemplate&gt;</span>
-<span class="o">&lt;</span><span class="err">/ItemsControl&gt;</span></code></pre></div>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;ItemsControl</span> <span class="na">ItemsSource=</span><span class="s">&quot;{Binding Elements}&quot;</span> <span class="na">Margin=</span><span class="s">&quot;0,10,0,10&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;ItemsControl.ItemTemplate&gt;</span>
+    <span class="nt">&lt;DataTemplate&gt;</span>
+      <span class="nt">&lt;RadioButton</span> <span class="na">Content=</span><span class="s">&quot;{Binding Key}&quot;</span>
+        <span class="na">GroupName=</span><span class="s">&quot;{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Title}&quot;</span>
+        <span class="na">IsChecked=</span><span class="s">&quot;{Binding Path=IsSelected, Mode=OneWay}&quot;</span>
+        <span class="na">Command=</span><span class="s">&quot;{Binding IsSelectedCommand}&quot;</span>
+        <span class="na">CommandParameter=</span><span class="s">&quot;{Binding}&quot;</span>
+        <span class="na">Margin=</span><span class="s">&quot;0,5,0,5&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/DataTemplate&gt;</span>
+  <span class="nt">&lt;/ItemsControl.ItemTemplate&gt;</span>
+<span class="nt">&lt;/ItemsControl&gt;</span></code></pre></div>
 
 <ul>
-  <li>My preferred option: (<a title="RadioButton unchecked bindings issue still not resolved?" href="http://social.msdn.microsoft.com/forums/en-US/wpf/thread/8eb8280a-19c4-4502-8260-f74633a9e2f2/">as suggested by karliwatson</a>) use a ListBox for the grouping and bind the ListBoxItem’s IsSelected property to your ViewModel, then bind the RadioButton’s IsChecked property to the list box item’s IsSelected property. Don’t set a group on the RadioButton.</li>
+  <li>My preferred option: (<a href="http://social.msdn.microsoft.com/forums/en-US/wpf/thread/8eb8280a-19c4-4502-8260-f74633a9e2f2/" title="RadioButton unchecked bindings issue still not resolved?">as suggested by karliwatson</a>) use a ListBox for the grouping and bind the ListBoxItem’s IsSelected property to your ViewModel, then bind the RadioButton’s IsChecked property to the list box item’s IsSelected property. Don’t set a group on the RadioButton.</li>
 </ul>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">ListBox</span> <span class="nx">ItemsSource</span><span class="o">=</span><span class="s2">&quot;{Binding Elements}&quot;</span> <span class="nx">Margin</span><span class="o">=</span><span class="s2">&quot;0,10,0,10&quot;</span> <span class="nx">BorderThickness</span><span class="o">=</span><span class="s2">&quot;0&quot;</span> <span class="nx">Background</span><span class="o">=</span><span class="s2">&quot;Transparent&quot;</span><span class="o">&gt;</span>
-  <span class="o">&lt;</span><span class="nx">ListBox</span><span class="p">.</span><span class="nx">ItemContainerStyle</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="nx">Style</span> <span class="nx">TargetType</span><span class="o">=</span><span class="s2">&quot;{x:Type ListBoxItem}&quot;</span><span class="o">&gt;</span>
-      <span class="o">&lt;</span><span class="nx">Setter</span> <span class="nx">Property</span><span class="o">=</span><span class="s2">&quot;IsSelected&quot;</span> <span class="nx">Value</span><span class="o">=</span><span class="s2">&quot;{Binding Path=IsSelected, Mode=TwoWay}&quot;</span> <span class="o">/&gt;</span>
-      <span class="o">&lt;</span><span class="nx">Setter</span> <span class="nx">Property</span><span class="o">=</span><span class="s2">&quot;Template&quot;</span><span class="o">&gt;</span>
-        <span class="o">&lt;</span><span class="nx">Setter</span><span class="p">.</span><span class="nx">Value</span><span class="o">&gt;</span>
-          <span class="o">&lt;</span><span class="nx">ControlTemplate</span> <span class="nx">TargetType</span><span class="o">=</span><span class="s2">&quot;ListBoxItem&quot;</span><span class="o">&gt;</span>
-            <span class="o">&lt;</span><span class="nx">ContentPresenter</span><span class="o">/&gt;</span>
-          <span class="o">&lt;</span><span class="err">/ControlTemplate&gt;</span>
-        <span class="o">&lt;</span><span class="err">/Setter.Value&gt;</span>
-      <span class="o">&lt;</span><span class="err">/Setter&gt;</span>
-    <span class="o">&lt;</span><span class="err">/Style&gt;</span>
-  <span class="o">&lt;</span><span class="err">/ListBox.ItemContainerStyle&gt;</span>
-  <span class="o">&lt;</span><span class="nx">ListBox</span><span class="p">.</span><span class="nx">ItemTemplate</span><span class="o">&gt;</span>
-    <span class="o">&lt;</span><span class="nx">DataTemplate</span><span class="o">&gt;</span>
-        <span class="o">&lt;</span><span class="nx">RadioButton</span> <span class="nx">Content</span><span class="o">=</span><span class="s2">&quot;{Binding Key}&quot;</span>
-            <span class="nx">IsChecked</span><span class="o">=</span><span class="s2">&quot;{Binding Path=IsSelected, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}&quot;</span>
-            <span class="nx">Margin</span><span class="o">=</span><span class="s2">&quot;0,5,0,5&quot;</span><span class="o">/&gt;</span>
-    <span class="o">&lt;</span><span class="err">/DataTemplate&gt;</span>
-  <span class="o">&lt;</span><span class="err">/ListBox.ItemTemplate&gt;</span>
-<span class="o">&lt;</span><span class="err">/ListBox&gt;</span></code></pre></div>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;ListBox</span> <span class="na">ItemsSource=</span><span class="s">&quot;{Binding Elements}&quot;</span> <span class="na">Margin=</span><span class="s">&quot;0,10,0,10&quot;</span> <span class="na">BorderThickness=</span><span class="s">&quot;0&quot;</span> <span class="na">Background=</span><span class="s">&quot;Transparent&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;ListBox.ItemContainerStyle&gt;</span>
+    <span class="nt">&lt;Style</span> <span class="na">TargetType=</span><span class="s">&quot;{x:Type ListBoxItem}&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;Setter</span> <span class="na">Property=</span><span class="s">&quot;IsSelected&quot;</span> <span class="na">Value=</span><span class="s">&quot;{Binding Path=IsSelected, Mode=TwoWay}&quot;</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;Setter</span> <span class="na">Property=</span><span class="s">&quot;Template&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;Setter.Value&gt;</span>
+          <span class="nt">&lt;ControlTemplate</span> <span class="na">TargetType=</span><span class="s">&quot;ListBoxItem&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;ContentPresenter/&gt;</span>
+          <span class="nt">&lt;/ControlTemplate&gt;</span>
+        <span class="nt">&lt;/Setter.Value&gt;</span>
+      <span class="nt">&lt;/Setter&gt;</span>
+    <span class="nt">&lt;/Style&gt;</span>
+  <span class="nt">&lt;/ListBox.ItemContainerStyle&gt;</span>
+  <span class="nt">&lt;ListBox.ItemTemplate&gt;</span>
+    <span class="nt">&lt;DataTemplate&gt;</span>
+        <span class="nt">&lt;RadioButton</span> <span class="na">Content=</span><span class="s">&quot;{Binding Key}&quot;</span>
+            <span class="na">IsChecked=</span><span class="s">&quot;{Binding Path=IsSelected, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}&quot;</span>
+            <span class="na">Margin=</span><span class="s">&quot;0,5,0,5&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/DataTemplate&gt;</span>
+  <span class="nt">&lt;/ListBox.ItemTemplate&gt;</span>
+<span class="nt">&lt;/ListBox&gt;</span></code></pre></div>
 
 
 
-          <ul class="post-tags">
-            
-              <li><a href="/tags/dotnet" title="View posts tagged with dotnet">#dotnet</a></li>
-            
-              <li><a href="/tags/howto" title="View posts tagged with howto">#howto</a></li>
-            
-              <li><a href="/tags/wpf" title="View posts tagged with wpf">#wpf</a></li>
-            
-          </ul>
+    <ul class="post-tags">
+      
+        <li><a href="/tags/dotnet" title="View posts tagged with dotnet">#dotnet</a></li>
+      
+        <li><a href="/tags/howto" title="View posts tagged with howto">#howto</a></li>
+      
+        <li><a href="/tags/wpf" title="View posts tagged with wpf">#wpf</a></li>
+      
+    </ul>
 
-          
+    
 
-        </div><!-- end .container -->
-      </article>
+  </div><!-- end .container -->
+</article>
 
-      <div class="stripe">
-        <div class="container">
+<div class="stripe">
+  <div class="container">
 
-          <div class="comments">
-            <div id="disqus_thread"></div>
-            <script type="text/javascript">
-              /* * * CONFIGURATION VARIABLES * * */
-              var disqus_shortname = 'phdesign';
-              var disqus_identifier = 'wpf-radiobutton-binding-to-ischecked-property';
-              var disqus_title = 'WPF RadioButton Binding to IsChecked Property';
-              var disqus_url = 'http://phdesign.com.au/programming/2010/07/wpf-radiobutton-binding-to-ischecked-property/';
+    <div class="comments">
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES * * */
+        var disqus_shortname = 'phdesign';
+        var disqus_identifier = 'wpf-radiobutton-binding-to-ischecked-property';
+        var disqus_title = 'WPF RadioButton Binding to IsChecked Property';
+        var disqus_url = 'http://phdesign.com.au/programming/2010/07/wpf-radiobutton-binding-to-ischecked-property/';
 
-              /* * * DON'T EDIT BELOW THIS LINE * * */
-              (function() {
-                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-              })();
-            </script>
-            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-          </div><!-- end .comments -->
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    </div><!-- end .comments -->
 
-        </div><!-- end .container -->
+  </div><!-- end .container -->
+</div>
+
+<div class="stripe alt">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/programming/2010/06/logging-messages-in-dot-net/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/programming/2010/06/logging-messages-in-dot-net/">Logging Messages in Dot Net</a></div>
+        
       </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+          <div class="meta-label"><a href="/programming/2011/02/unindent-in-expression-blend/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/programming/2011/02/unindent-in-expression-blend/">Unindent in Expression Blend</a></div>
+        
+      </div>
+    </nav><!-- end .post_nav -->
 
-      <div class="stripe alt">
-        <div class="container">
-
-          <nav class="row pager">
-            <div class="previous col-xs-6 col-sm-4">
-              
-                <div class="meta-label"><a href="/programming/2010/06/logging-messages-in-dot-net/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
-                <div class="meta-value"><a href="/programming/2010/06/logging-messages-in-dot-net/">Logging Messages in Dot Net</a></div>
-              
-            </div>
-            <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
-              
-                <div class="meta-label"><a href="/programming/2011/02/unindent-in-expression-blend/">Next post <span aria-hidden="true">&raquo;</span></a></div>
-                <div class="meta-value"><a href="/programming/2011/02/unindent-in-expression-blend/">Unindent in Expression Blend</a></div>
-              
-            </div>
-          </nav><!-- end .post_nav -->
-
-        </div><!-- end .container -->
-      </div><!-- end .stripe.alt -->
+  </div><!-- end .container -->
+</div><!-- end .stripe.alt -->
 
     </main><!-- end .content -->
 
     
-    <footer role="contentinfo">
-      <div class="container">
+<footer role="contentinfo">
+  <div class="container">
 
-        <ul class="social-icons">
-          <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
-          <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
-          <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
-          <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
-          <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
-        </ul>
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
 
-        <p class="footer-copyright">
-          &copy; 2015 Paul Heasley. All rights reserved. <br>
-          Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
-        </p>
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
 
-      </div><!-- end .container -->
-    </footer>
+  </div><!-- end .container -->
+</footer>
 
     
-    <!-- JS (Javascript Files)
-    ================================================== -->
+<!-- JS (Javascript Files)
+================================================== -->
 
-    <script src="/assets/js/main.js"></script>
+<script src="/assets/js/main.js"></script>
 
-    <script type="text/javascript">
-      /* * * CONFIGURATION VARIABLES * * */
-      var disqus_shortname = 'phdesign';
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = 'phdesign';
 
-      /* * * DON'T EDIT BELOW THIS LINE * * */
-      (function () {
-        var s = document.createElement('script'); s.async = true;
-        s.type = 'text/javascript';
-        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-      }());
-    </script>
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  }());
+</script>
 
   </body>
 
