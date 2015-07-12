@@ -112,15 +112,15 @@
 
     <p>Backbone.Spark provides computed property support for Backbone.js, the goal of the extension is to make computed properties behave in the same way as a normal attribute so your other code doesn’t need to know the difference.</p>
 
-<p><a href="https://github.com/phdesign/Backbone.Spark&quot; title=&quot;Backbone.Spark project on GitHub">The latest version of Backbone.Spark and examples can be found at GitHub</a></p>
+<p><a href="https://github.com/phdesign/Backbone.Spark" title="Backbone.Spark project on GitHub">The latest version of Backbone.Spark and examples can be found at GitHub</a></p>
 
 <!--more-->
 
 <h3 id="why-would-you-use-a-computed-property">Why would you use a computed property?</h3>
 
-<p>Say you were working with files, and your file model has the full path to the file, e.g. <strong>C:\Users\joe\Documents\thefile.txt</strong>. Now you want to display only the file name in a templated view, how would you do this?</p>
+<p>Say you were working with files, and your file model has the full path to the file, e.g. <code>C:\Users\joe\Documents\thefile.txt</code>. Now you want to display only the file name in a templated view, how would you do this?</p>
 
-<p>You could only store the file path attribute in the model and have the view extract the file name, but what happens when you have mutliple views pointing to the model, you’ll have have to replicate the code to compute the file name, not very DRY.</p>
+<p>You could only store the file path attribute in the model and have the view extract the file name, but what happens when you have mutliple views pointing to the model, you’ll have have to replicate the code to compute the file name, not very <a href="https://en.wikipedia.org/wiki/Don't_repeat_yourself" title="Read about Don't Repeat Yourself">DRY</a>.</p>
 
 <p>Another way you could approach it is to have a file name attribute of the model and watch for changes to the file path, when it changes you update the value of file name. This works but it relies on good code to keep the dependent file path attribute in sync, and as you add more dependent values, say file extension, this code can bloat out. You’re also running code to compute the values of the dependent attributes that may never be used.</p>
 
@@ -128,7 +128,7 @@
 
 <h3 id="but-backbonemutators-already-exists-why-wouldnt-i-just-use-this">But Backbone.Mutators already exists, why wouldn’t I just use this?</h3>
 
-<p>Right you are, and full credit to Backbone.Mutators, it’s a great extension and Backbone.Spark uses about 70% of it’s code. My problem with mutators is that other code needs to know the dependencies for the mutator. If you want to update the view when file name changes, you need to watch for a change to the file path attribute. Backbone.Spark overcomes this by raising change events whenever any of the dependent properties change.</p>
+<p>Right you are, and full credit to <a href="https://github.com/asciidisco/Backbone.Mutators">Backbone.Mutators</a>, it’s a great extension and Backbone.Spark is based on it. My problem with mutators is that other code needs to know the dependencies for the mutator. If you want to update the view when file name changes, you need to watch for a change to the file path attribute. Backbone.Spark overcomes this by raising change events whenever any of the dependent properties change.</p>
 
 <h3 id="enough-of-the-talk-show-me-some-code">Enough of the talk, show me some code</h3>
 
@@ -197,13 +197,11 @@ You can identify a getter call by testing arguments.length === 0, a setter call 
 
 <span class="p">});</span></code></pre></div>
 
-<h3 id="get-it-here">Get it here</h3>
-
-<p><a href="https://github.com/phdesign/Backbone.Spark" title="Backbone.Spark project on GitHub">Backbone.Spark and more example code can be found at GitHub</a></p>
+<h3 id="using">Using</h3>
 
 <p>Backbone.Spark is released under the Apache License, Version 2.0.</p>
 
-<p><a class="btn btn-primary" href="https://github.com/phdesign/Backbone.Spark" title="Backbone.Spark project on GitHub">Download</a></p>
+<p><a class="btn btn-primary" href="https://github.com/phdesign/Backbone.Spark" title="Backbone.Spark project on GitHub">Get on GitHub</a></p>
 
 
 

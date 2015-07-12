@@ -6,8 +6,8 @@
 </description>
     <link>http://phdesign.com.au/</link>
     <atom:link href="http://phdesign.com.au/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 02 Jul 2015 09:37:32 +1000</pubDate>
-    <lastBuildDate>Thu, 02 Jul 2015 09:37:32 +1000</lastBuildDate>
+    <pubDate>Sun, 12 Jul 2015 20:19:51 +1000</pubDate>
+    <lastBuildDate>Sun, 12 Jul 2015 20:19:51 +1000</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -156,7 +156,7 @@ Whereas:&lt;/p&gt;
 
 &lt;p&gt;The output of which would be:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/img/blog/Screen-Shot-2014-07-15-at-8.30.11-am.png&quot; alt=&quot;Example output of Promises error handling&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/js_native_promises_error_handling.png&quot; alt=&quot;Example output of Promises error handling&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;And a similar jQuery implementation:&lt;/p&gt;
 
@@ -194,7 +194,7 @@ Whereas:&lt;/p&gt;
 
 &lt;p&gt;The output of which would be:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/img/blog/Screen-Shot-2014-07-15-at-8.30.37-am.png&quot; alt=&quot;Example output of jQuery.Deferred error handling&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/jquery_promises_error_handling.png&quot; alt=&quot;Example output of jQuery.Deferred error handling&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Note how Chrome’s Promises recovered after the first catch handler was executed and called the ‘recovered’ function. jQuery does not. Another small difference is that Promise.reject() and Promise.resolve() may only return a single object, whereas jQuery passes all parameters to it’s reject or resolve functions onto the then or fail handlers.&lt;/p&gt;
 
@@ -282,35 +282,32 @@ Whereas:&lt;/p&gt;
 
 &lt;!--more--&gt;
 
-&lt;p&gt;&lt;a href=&quot;http://www.phdesign.com.au/wp-content/uploads/2014/05/Product-Backlog-Template.xlsx&quot;&gt;Product Backlog Excel Template (incl. Release Burndown Chart)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;“Individuals and interactions over processes and tools”&lt;br /&gt;
+- &lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;Manifestio for Agile Software&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;p&gt;&lt;a href=&quot;http://www.phdesign.com.au/wp-content/uploads/2014/05/Sprint-Backlog-Template.xlsx&quot;&gt;Sprint Backlog Excel Template (incl. Sprint Burndown Chart)&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;“Simplicity–the art of maximizing the amount of work not done–is essential.”&lt;br /&gt;
+- &lt;a href=&quot;http://agilemanifesto.org/principles.html&quot;&gt;Principles behind the Agile Manifesto&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 
-&lt;h3 id=&quot;release-burndown-chart&quot;&gt;Release Burndown Chart&lt;/h3&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;“Many time management techniques fail because they subject the people who use them to a higher level of added complexity with respect to the &amp;gt; intrinsic complexity of the task at hand.”&lt;br /&gt;
+- &lt;a href=&quot;http://pomodorotechnique.com/&quot;&gt;The Pomodoro Technique&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;product-backlog&quot;&gt;Product Backlog&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/files/Product-Backlog-Template.xlsx&quot;&gt;Download the Product Backlog Excel Template (incl. Release Burndown Chart)&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/img/blog/release-burndown1.png&quot; alt=&quot;Release Burndown Chart&quot; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&quot;sprint-burndown-chart&quot;&gt;Sprint Burndown Chart&lt;/h3&gt;
+&lt;h3 id=&quot;sprint-backlog&quot;&gt;Sprint Backlog&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;/assets/files/Sprint-Backlog-Template.xlsx&quot;&gt;Download the Sprint Backlog Excel Template (incl. Sprint Burndown Chart)&lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/img/blog/sprint-burndown.png&quot; alt=&quot;Sprint Burndown Chart&quot; /&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;“Individuals and interactions over processes and tools”&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;- &lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;Manifestio for Agile Software&lt;/a&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;“Simplicity–the art of maximizing the amount of work not done–is essential.”&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;- &lt;a href=&quot;http://agilemanifesto.org/principles.html&quot;&gt;Principles behind the Agile Manifesto&lt;/a&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;“Many time management techniques fail because they subject the people who use them to a higher level of added complexity with respect to the &amp;gt; intrinsic complexity of the task at hand.”&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;- &lt;a href=&quot;http://pomodorotechnique.com/&quot;&gt;The Pomodoro Technique&lt;/a&gt;&lt;/p&gt;
 
 </description>
         <pubDate>Tue, 13 May 2014 00:00:00 +1000</pubDate>
@@ -334,15 +331,15 @@ Whereas:&lt;/p&gt;
         <title>Backbone.Spark: Ember style computed properties for Backbone.js</title>
         <description>&lt;p&gt;Backbone.Spark provides computed property support for Backbone.js, the goal of the extension is to make computed properties behave in the same way as a normal attribute so your other code doesn’t need to know the difference.&lt;/p&gt;
 
-&lt;p&gt;&lt;a href=&quot;https://github.com/phdesign/Backbone.Spark&amp;quot; title=&amp;quot;Backbone.Spark project on GitHub&quot;&gt;The latest version of Backbone.Spark and examples can be found at GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://github.com/phdesign/Backbone.Spark&quot; title=&quot;Backbone.Spark project on GitHub&quot;&gt;The latest version of Backbone.Spark and examples can be found at GitHub&lt;/a&gt;&lt;/p&gt;
 
 &lt;!--more--&gt;
 
 &lt;h3 id=&quot;why-would-you-use-a-computed-property&quot;&gt;Why would you use a computed property?&lt;/h3&gt;
 
-&lt;p&gt;Say you were working with files, and your file model has the full path to the file, e.g. &lt;strong&gt;C:\Users\joe\Documents\thefile.txt&lt;/strong&gt;. Now you want to display only the file name in a templated view, how would you do this?&lt;/p&gt;
+&lt;p&gt;Say you were working with files, and your file model has the full path to the file, e.g. &lt;code&gt;C:\Users\joe\Documents\thefile.txt&lt;/code&gt;. Now you want to display only the file name in a templated view, how would you do this?&lt;/p&gt;
 
-&lt;p&gt;You could only store the file path attribute in the model and have the view extract the file name, but what happens when you have mutliple views pointing to the model, you’ll have have to replicate the code to compute the file name, not very DRY.&lt;/p&gt;
+&lt;p&gt;You could only store the file path attribute in the model and have the view extract the file name, but what happens when you have mutliple views pointing to the model, you’ll have have to replicate the code to compute the file name, not very &lt;a href=&quot;https://en.wikipedia.org/wiki/Don&#39;t_repeat_yourself&quot; title=&quot;Read about Don&#39;t Repeat Yourself&quot;&gt;DRY&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;Another way you could approach it is to have a file name attribute of the model and watch for changes to the file path, when it changes you update the value of file name. This works but it relies on good code to keep the dependent file path attribute in sync, and as you add more dependent values, say file extension, this code can bloat out. You’re also running code to compute the values of the dependent attributes that may never be used.&lt;/p&gt;
 
@@ -350,7 +347,7 @@ Whereas:&lt;/p&gt;
 
 &lt;h3 id=&quot;but-backbonemutators-already-exists-why-wouldnt-i-just-use-this&quot;&gt;But Backbone.Mutators already exists, why wouldn’t I just use this?&lt;/h3&gt;
 
-&lt;p&gt;Right you are, and full credit to Backbone.Mutators, it’s a great extension and Backbone.Spark uses about 70% of it’s code. My problem with mutators is that other code needs to know the dependencies for the mutator. If you want to update the view when file name changes, you need to watch for a change to the file path attribute. Backbone.Spark overcomes this by raising change events whenever any of the dependent properties change.&lt;/p&gt;
+&lt;p&gt;Right you are, and full credit to &lt;a href=&quot;https://github.com/asciidisco/Backbone.Mutators&quot;&gt;Backbone.Mutators&lt;/a&gt;, it’s a great extension and Backbone.Spark is based on it. My problem with mutators is that other code needs to know the dependencies for the mutator. If you want to update the view when file name changes, you need to watch for a change to the file path attribute. Backbone.Spark overcomes this by raising change events whenever any of the dependent properties change.&lt;/p&gt;
 
 &lt;h3 id=&quot;enough-of-the-talk-show-me-some-code&quot;&gt;Enough of the talk, show me some code&lt;/h3&gt;
 
@@ -419,13 +416,11 @@ You can identify a getter call by testing arguments.length === 0, a setter call 
 
 &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;h3 id=&quot;get-it-here&quot;&gt;Get it here&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/phdesign/Backbone.Spark&quot; title=&quot;Backbone.Spark project on GitHub&quot;&gt;Backbone.Spark and more example code can be found at GitHub&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;using&quot;&gt;Using&lt;/h3&gt;
 
 &lt;p&gt;Backbone.Spark is released under the Apache License, Version 2.0.&lt;/p&gt;
 
-&lt;p&gt;&lt;a class=&quot;btn btn-primary&quot; href=&quot;https://github.com/phdesign/Backbone.Spark&quot; title=&quot;Backbone.Spark project on GitHub&quot;&gt;Download&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a class=&quot;btn btn-primary&quot; href=&quot;https://github.com/phdesign/Backbone.Spark&quot; title=&quot;Backbone.Spark project on GitHub&quot;&gt;Get on GitHub&lt;/a&gt;&lt;/p&gt;
 
 </description>
         <pubDate>Tue, 24 Jul 2012 00:00:00 +1000</pubDate>
@@ -582,11 +577,11 @@ The problem. I have an Entity Framework model being used in the business layer c
         <title>Conditional Validation in ASP.NET MVC3</title>
         <description>&lt;p&gt;Need to perform validation on a model’s property based on some other state of the model? Here’s a way to achieve it using the IValidatableObject interface and data annotations.&lt;/p&gt;
 
+&lt;!--more--&gt;
+
 &lt;p&gt;In our example project we want to validate the state field is a valid Australian state if the country field is “Australia”.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/img/blog/ConditionalValidationSmall.png&quot; alt=&quot;Conditional validation of state field&quot; /&gt;&lt;/p&gt;
-
-&lt;!--more--&gt;
 
 &lt;h2 id=&quot;ivalidatableobject&quot;&gt;IValidatableObject&lt;/h2&gt;
 &lt;p&gt;Any model that implements IValidatableObject in MVC3 (note this doesn’t work in MVC2) will get it’s Validate method called when validating the object.&lt;/p&gt;
