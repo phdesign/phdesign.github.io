@@ -304,9 +304,9 @@
       </div><!-- end .meta-label -->
       <br />
 
-      <p>Scenario: You’ve been working on your code from Team Foundation Server (TFS), made changes then realised you should really have started a branch for it.</p>
+      <p>So you’ve been working on your code from Team Foundation Server (TFS), made changes then realised you should really have started a branch for it.</p>
 
-<p>I couldn’t find a good tutorial anywhere for doing this so here’s how I stumbled through it.</p>
+<p>I couldn’t find a good tutorial anywhere for how to do this so here’s the best workflow I found.</p>
 
 
 
@@ -320,19 +320,19 @@
   <article class="stripe alt">
     <div class="container">
 
-      <h2 class="post-header"><a href="/programming/2011/09/delete-dependent-entities-when-removed-from-ef-collection/" title="Read full article">Delete Dependent Entities When Removed From EF Collection</a></h2>
+      <h2 class="post-header"><a href="/programming/2011/09/delete-dependent-entities-when-removed-from-ef-collection/" title="Read full article">Delete Dependents When Removing an Entity From Entity Framework</a></h2>
 
       <div class="meta-label">
         posted on <span class="meta-value muted">06 September 2011</span>
         
           in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="delete-dependent-entities-when-removed-from-ef-collection" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="delete-dependents-when-removing-an-entity-from-entity-framework" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
-      <p>I’m using Entity Framework 4.1 Code First Fluent API.<br />
-The problem. I have an Entity Framework model being used in the business layer called Patient, it has a collection of dependent entities called Responses, when a response needs to be deleted I simply remove it from the collection and expect that it’ll get deleted from the database. It doesn’t.</p>
+      <p>This post is based on Entity Framework 4.1 Code First Fluent API.<br />
+I have an Entity Framework model being used in the business layer called Patient, it has a collection of dependent entities called Responses, when a response needs to be deleted I simply remove it from the collection and expect that it’ll get deleted from the database. It doesn’t.</p>
 
 
 

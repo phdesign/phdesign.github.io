@@ -1,5 +1,5 @@
 /*!
- * phdesign.com.au v4.16.0
+ * phdesign.com.au v4.17.0
  * http://www.phdesign.com.au
  *
  * Copyright (C) 2015 Paul Heasley
