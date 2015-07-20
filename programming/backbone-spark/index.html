@@ -1,0 +1,310 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Backbone.Spark: Ember style computed properties for Backbone.js | phdesign</title>
+
+  <!-- Google Web Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Favicon/Touch Icons  -->
+  <!-- <link rel="shortcut icon" href="/assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
+
+</head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/programming">programming</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/phreplace">phReplace</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+          </ul>
+        </li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+
+    <main class="content">
+      <article>
+  <div class="container">
+
+    
+
+    <div class="date-stamp">
+      <div class="month">Jul</div>
+      <div class="day">24</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">Backbone.Spark: Ember style computed properties for Backbone.js</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">24 July 2012</span>
+      
+        in <span class="meta-value"><a href="/programming">programming</a></span>
+      
+      with <span class="meta-value"><a data-disqus-identifier="backbonespark-ember-style-computed-properties-for-backbonejs" href="#disqus_thread">0 Comments</a></span>
+    </div><!-- end .meta-label -->
+    <br />
+
+    <p>Backbone.Spark provides computed property support for Backbone.js, the goal of the extension is to make computed properties behave in the same way as a normal attribute so your other code doesn’t need to know the difference.</p>
+
+<p><a href="https://github.com/phdesign/Backbone.Spark" title="Backbone.Spark project on GitHub">The latest version of Backbone.Spark and examples can be found at GitHub</a></p>
+
+<!--more-->
+
+<h3 id="why-would-you-use-a-computed-property">Why would you use a computed property?</h3>
+
+<p>Say you were working with files, and your file model has the full path to the file, e.g. <code>C:\Users\joe\Documents\thefile.txt</code>. Now you want to display only the file name in a templated view, how would you do this?</p>
+
+<p>You could only store the file path attribute in the model and have the view extract the file name, but what happens when you have mutliple views pointing to the model, you’ll have have to replicate the code to compute the file name, not very <a href="https://en.wikipedia.org/wiki/Don't_repeat_yourself" title="Read about Don't Repeat Yourself">DRY</a>.</p>
+
+<p>Another way you could approach it is to have a file name attribute of the model and watch for changes to the file path, when it changes you update the value of file name. This works but it relies on good code to keep the dependent file path attribute in sync, and as you add more dependent values, say file extension, this code can bloat out. You’re also running code to compute the values of the dependent attributes that may never be used.</p>
+
+<p>Backbone.Spark provides an alternative, allowing you to specify a the file name as a function, so it gets computed from the file path every time it’s requested and you’re guaranteed to have the correct value.</p>
+
+<h3 id="but-backbonemutators-already-exists-why-wouldnt-i-just-use-this">But Backbone.Mutators already exists, why wouldn’t I just use this?</h3>
+
+<p>Right you are, and full credit to <a href="https://github.com/asciidisco/Backbone.Mutators">Backbone.Mutators</a>, it’s a great extension and Backbone.Spark is based on it. My problem with mutators is that other code needs to know the dependencies for the mutator. If you want to update the view when file name changes, you need to watch for a change to the file path attribute. Backbone.Spark overcomes this by raising change events whenever any of the dependent properties change.</p>
+
+<h3 id="enough-of-the-talk-show-me-some-code">Enough of the talk, show me some code</h3>
+
+<p>Backbone.Spark defines a new Model class that you can choose to inherit from.</p>
+
+<h4 id="basic-usage">Basic usage</h4>
+
+<p>To use, declare a new property object called sparks and add function properties for the ‘getter’ accessors.<br />
+Call dependsOn with the spark to specify which attributes this spark depends on. Whenever the dependent attribute(s) are changed, a change event will also be triggered for this spark.</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">App</span><span class="p">.</span><span class="nx">File</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Spark</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+
+    <span class="nx">defaults</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">content</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="nx">filePath</span><span class="o">:</span> <span class="kc">null</span>
+      <span class="p">};</span>
+    <span class="p">},</span>
+
+    <span class="nx">sparks</span><span class="o">:</span> <span class="p">{</span>
+
+        <span class="nx">extn</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">filePath</span><span class="p">.</span><span class="nx">lastIndexOf</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
+            <span class="k">return</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">filePath</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+        <span class="p">}.</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">&#39;filePath&#39;</span><span class="p">)</span>
+
+    <span class="p">}</span>
+
+<span class="p">});</span></code></pre></div>
+
+<h4 id="using-setters">Using setters</h4>
+
+<p>When calling set on a spark, the set function arguments are passed to the spark function.<br />
+You can identify a getter call by testing arguments.length === 0, a setter call has the following arguments:</p>
+
+<p><strong>key:</strong> The name of the spark property.<br />
+<strong>value:</strong> The new value to be set.<br />
+<strong>options:</strong> Any options passed to the set call, including whether this call should raise events or not (silent).<br />
+<strong>set:</strong> The base class set function.</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">App</span><span class="p">.</span><span class="nx">File</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Spark</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+
+    <span class="nx">defaults</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">content</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="nx">filePath</span><span class="o">:</span> <span class="kc">null</span>
+      <span class="p">};</span>
+    <span class="p">},</span>
+
+    <span class="nx">sparks</span><span class="o">:</span> <span class="p">{</span>
+
+        <span class="nx">extn</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">set</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">filePath</span><span class="p">.</span><span class="nx">lastIndexOf</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
+                <span class="k">return</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">filePath</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">filePath</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;filePath&#39;</span><span class="p">),</span>
+                    <span class="nx">i</span> <span class="o">=</span> <span class="nx">filePath</span><span class="p">.</span><span class="nx">lastIndexOf</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
+
+                <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;filePath&#39;</span><span class="p">,</span> <span class="nx">filePath</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="o">+</span> <span class="nx">value</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}.</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">&#39;filePath&#39;</span><span class="p">)</span>
+
+    <span class="p">}</span>
+
+<span class="p">});</span></code></pre></div>
+
+<h3 id="using">Using</h3>
+
+<p>Backbone.Spark is released under the Apache License, Version 2.0.</p>
+
+<p><a class="btn btn-primary" href="https://github.com/phdesign/Backbone.Spark" title="Backbone.Spark project on GitHub">Get on GitHub</a></p>
+
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tags/backbonejs" title="View posts tagged with backbonejs">#backbonejs</a></li>
+      
+        <li><a href="/tags/javascript" title="View posts tagged with javascript">#javascript</a></li>
+      
+    </ul>
+
+    
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <div class="comments">
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES * * */
+        var disqus_shortname = 'phdesign';
+        var disqus_identifier = 'backbonespark-ember-style-computed-properties-for-backbonejs';
+        var disqus_title = 'Backbone.Spark: Ember style computed properties for Backbone.js';
+        var disqus_url = 'http://phdesign.com.au/programming/backbone-spark/';
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    </div><!-- end .comments -->
+
+  </div><!-- end .container -->
+</div>
+
+<div class="stripe alt">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/programming/tfs-undo-checkout-of-unedited-files/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/programming/tfs-undo-checkout-of-unedited-files/">TFS undo checkout of unedited files</a></div>
+        
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+          <div class="meta-label"><a href="/general/excel-templates-for-scrum-product-and-sprint-backlogs/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/general/excel-templates-for-scrum-product-and-sprint-backlogs/">Excel templates for Scrum Product and Sprint Backlogs</a></div>
+        
+      </div>
+    </nav><!-- end .post_nav -->
+
+  </div><!-- end .container -->
+</div><!-- end .stripe.alt -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="/assets/js/main.js"></script>
+
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = 'phdesign';
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  }());
+</script>
+
+  </body>
+
+</html>

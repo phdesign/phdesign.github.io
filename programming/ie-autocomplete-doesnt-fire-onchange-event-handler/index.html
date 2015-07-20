@@ -1,0 +1,278 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>IE Autocomplete Doesn't Fire onchange Event Handler | phdesign</title>
+
+  <!-- Google Web Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Favicon/Touch Icons  -->
+  <!-- <link rel="shortcut icon" href="/assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
+
+</head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/programming">programming</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/phreplace">phReplace</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+          </ul>
+        </li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+
+    <main class="content">
+      <article>
+  <div class="container">
+
+    
+
+    <div class="date-stamp">
+      <div class="month">Apr</div>
+      <div class="day">17</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">IE Autocomplete Doesn't Fire onchange Event Handler</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">17 April 2010</span>
+      
+        in <span class="meta-value"><a href="/programming">programming</a></span>
+      
+      with <span class="meta-value"><a data-disqus-identifier="ie-autocomplete-doesnt-fire-onchange-event-handler" href="#disqus_thread">0 Comments</a></span>
+    </div><!-- end .meta-label -->
+    <br />
+
+    <p>While testing an ASP validation control in Internet Explorer I found that the validation wasn’t triggered if I selected an item from the autocomplete list for a text box, this was the same in Safari for Windows, but worked fine in Mozilla Firefox. What?!</p>
+
+<p><img src="/assets/img/blog/autocomplete.png" alt="IE form autocomplete feature" /></p>
+
+<!--more-->
+
+<p>Turns out that when selecting an item from the autocomplete list the onchange event handler doesn’t fire, therefore the validation scripts don’t fire. The onblur event does fire however, meaning we can do a check to see if the data has changed and if so, manually fire the onchange event handler.</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="cm">/*</span>
+<span class="cm">Author:     Paul Heasley</span>
+<span class="cm">Date:       15.04.2010</span>
+<span class="cm">Version:    0.1</span>
+<span class="cm">Description:</span>
+<span class="cm">IE and safari do not trigger the onchange events for textboxes when using autocomplete,</span>
+<span class="cm">so validation events don&#39;t trigger. The blur event does trigger however so this script</span>
+<span class="cm">checks to see if the value has changed (by saving the value on focus) and manually</span>
+<span class="cm">calling onchange.</span>
+<span class="cm">*/</span>
+<span class="kd">function</span> <span class="nx">onChangeFix</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">previousValue</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="c1">// Get all input elements</span>
+    <span class="kd">var</span> <span class="nx">inputs</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;input&#39;</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">inputs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">elt</span> <span class="o">=</span> <span class="nx">inputs</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+
+        <span class="c1">// Only update text boxes. Depending on your application you</span>
+        <span class="c1">// may also need to fix text areas.</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">elt</span><span class="p">.</span><span class="nx">type</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;text&quot;</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// Save old value.</span>
+            <span class="nx">addEvent</span><span class="p">(</span><span class="nx">elt</span><span class="p">,</span> <span class="s1">&#39;focus&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="nx">previousValue</span><span class="p">[</span><span class="k">this</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+            <span class="p">});</span>
+
+            <span class="c1">// Compare to old value, do we need to trigger an onchange event?</span>
+            <span class="nx">addEvent</span><span class="p">(</span><span class="nx">elt</span><span class="p">,</span> <span class="s1">&#39;blur&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">previousValue</span><span class="p">[</span><span class="k">this</span><span class="p">]</span> <span class="o">!=</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">onchange</span><span class="p">)</span>
+                        <span class="k">this</span><span class="p">.</span><span class="nx">onchange</span><span class="p">();</span>
+                <span class="p">}</span>
+            <span class="p">});</span>
+
+            <span class="c1">// Set old value = new value to stop the blur event triggering</span>
+            <span class="c1">// another onchange.</span>
+            <span class="nx">addEvent</span><span class="p">(</span><span class="nx">elt</span><span class="p">,</span> <span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="nx">previousValue</span><span class="p">[</span><span class="k">this</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">value</span><span class="p">;</span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Alternatively, you can disable the autocomplete feature by adding the attrribute <code>autocomplete="off"</code> for either a specific input or for the entire form.</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;form</span> <span class="na">id=</span><span class="s">&quot;theForm&quot;</span> <span class="na">name=</span><span class="s">&quot;theForm&quot;</span> <span class="na">method=</span><span class="s">&quot;post&quot;</span> <span class="na">autocomplete=</span><span class="s">&quot;off&quot;</span><span class="nt">&gt;</span></code></pre></div>
+
+<p>Download the entire code sample including the addEvent() function.</p>
+
+<p><a class="btn btn-primary" href="http://www.phdesign.com.au/wp-content/uploads/2010/04/autocomplete_fix.js" title="Download the source">Download source</a></p>
+
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tags/howto" title="View posts tagged with howto">#howto</a></li>
+      
+        <li><a href="/tags/javascript" title="View posts tagged with javascript">#javascript</a></li>
+      
+    </ul>
+
+    
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <div class="comments">
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES * * */
+        var disqus_shortname = 'phdesign';
+        var disqus_identifier = 'ie-autocomplete-doesnt-fire-onchange-event-handler';
+        var disqus_title = 'IE Autocomplete Doesn't Fire onchange Event Handler';
+        var disqus_url = 'http://phdesign.com.au/programming/ie-autocomplete-doesnt-fire-onchange-event-handler/';
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    </div><!-- end .comments -->
+
+  </div><!-- end .container -->
+</div>
+
+<div class="stripe alt">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/programming/registering-phreplace-dll-in-windows-vista/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/programming/registering-phreplace-dll-in-windows-vista/">Registering phreplace DLL in Windows Vista</a></div>
+        
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+          <div class="meta-label"><a href="/general/phreplace-goes-open-source/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/general/phreplace-goes-open-source/">phreplace Goes Open Source</a></div>
+        
+      </div>
+    </nav><!-- end .post_nav -->
+
+  </div><!-- end .container -->
+</div><!-- end .stripe.alt -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="/assets/js/main.js"></script>
+
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = 'phdesign';
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  }());
+</script>
+
+  </body>
+
+</html>
