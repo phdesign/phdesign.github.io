@@ -141,26 +141,22 @@
   <article class="stripe">
     <div class="container">
 
-      <h2 class="post-header"><a href="/programming/unindent-in-expression-blend/" title="Read full article">Unindent in Expression Blend</a></h2>
+      <h2 class="post-header"><a href="/programming/logging-objects-to-the-console-in-internet-explorer/" title="Read full article">Logging Objects to the Console in Internet Explorer</a></h2>
 
       <div class="meta-label">
-        posted on <span class="meta-value muted">14 February 2011</span>
+        posted on <span class="meta-value muted">24 April 2015</span>
         
           in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="unindent-in-expression-blend" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="logging-objects-to-the-console-in-internet-explorer" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
-      <p>Unindenting in Expression Blend drove me mad, I just couldn’t get it to work. Today I figured out why.</p>
-
-<p>The code I am copying from Visual Studio uses spaces for indentation, in Blend I was using tabs, this means when I paste code from VS, Blend doesn’t see any tabs to ‘unindent’.</p>
-
-<p>Simple solution - make sure your Visual Studio indentation settings match your Blend settings.</p>
+      <p>Compared to other browsers, IE’s JavaScript console is pretty lacking in it’s ability to log objects, they just appear as [Object object]. As a work around for this below is a shim that will JSON.stringify any objects that are passed as parameters to console.log (or it’s sister functions like error, warn…).</p>
 
 
 
-      <a class="btn btn-default btn-read-more" href="/programming/unindent-in-expression-blend/" title="Read full article">Read Article</a>
+      <a class="btn btn-default btn-read-more" href="/programming/logging-objects-to-the-console-in-internet-explorer/" title="Read full article">Read Article</a>
 
     </div><!-- end .container -->
   </article><!-- end .stripe -->
@@ -170,22 +166,22 @@
   <article class="stripe alt">
     <div class="container">
 
-      <h2 class="post-header"><a href="/programming/wpf-radiobutton-binding-to-ischecked-property/" title="Read full article">WPF RadioButton Binding to IsChecked Property</a></h2>
+      <h2 class="post-header"><a href="/programming/catching-javascript-errors-with-promises/" title="Read full article">Catching JavaScript errors with Promises</a></h2>
 
       <div class="meta-label">
-        posted on <span class="meta-value muted">08 July 2010</span>
+        posted on <span class="meta-value muted">02 August 2014</span>
         
           in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="wpf-radiobutton-binding-to-ischecked-property" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="catching-javascript-errors-with-promises" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
-      <p>I wasted a few development hours discovering this strange behaviour when binding to the IsChecked property of a RadioButton in WPF when using MVVM. You can <a href="http://social.msdn.microsoft.com/forums/en-US/wpf/thread/8eb8280a-19c4-4502-8260-f74633a9e2f2/" title="RadioButton unchecked bindings issue still not resolved?">read about the issue on the MSDN forum</a>, but from my experience if you have a two way binding on the is IsChecked property of a RadioButton which is part of a group, then after you set the bound property in code a couple of times, the RadioButton loses it’s binding all together.</p>
+      <p>If your JS function needs to return a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="About Promises by the Mozilla Developer Network">Promise</a> but doesn’t do any asynchronous activity, you may be tempted to use the static Promise.resolve() function rather than instantiating a new Promise object. Be aware that doing this will change the way javascript errors are dealt with.</p>
 
 
 
-      <a class="btn btn-default btn-read-more" href="/programming/wpf-radiobutton-binding-to-ischecked-property/" title="Read full article">Read Article</a>
+      <a class="btn btn-default btn-read-more" href="/programming/catching-javascript-errors-with-promises/" title="Read full article">Read Article</a>
 
     </div><!-- end .container -->
   </article><!-- end .stripe -->
@@ -195,24 +191,22 @@
   <article class="stripe">
     <div class="container">
 
-      <h2 class="post-header"><a href="/programming/logging-messages-in-dot-net/" title="Read full article">Logging Messages in Dot Net</a></h2>
+      <h2 class="post-header"><a href="/programming/mapping-errors-in-jquery-promises-deferred/" title="Read full article">Mapping errors in jQuery promises / deferred</a></h2>
 
       <div class="meta-label">
-        posted on <span class="meta-value muted">17 June 2010</span>
+        posted on <span class="meta-value muted">15 July 2014</span>
         
           in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="logging-messages-in-dot-net" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="mapping-errors-in-jquery-promises--deferred" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
-      <p>The .Net Framework provides an easy way to log messages using the System.Diagnostics.Trace class. By using Trace the user can configure where and what to log in the config file.</p>
-
-<p>Below are two simple ways to log a message to a text file.</p>
+      <p>For those familiar with JavaScript Promises, jQuery’s Deferred.fail() handling can act unexpectedly. <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="Mozilla Developer Network: Promise">Standard Promises implementations</a> allow the first catch handler to deal with the error and then return to normal execution flow (see <a href="http://www.html5rocks.com/en/tutorials/es6/promises" title="JavaScript Promises: There and back again">JavaScript Promises: There and back again</a>). jQuery on the other hand appears to execute all fail handlers, in the order they were defined with no chance to recover normal flow.</p>
 
 
 
-      <a class="btn btn-default btn-read-more" href="/programming/logging-messages-in-dot-net/" title="Read full article">Read Article</a>
+      <a class="btn btn-default btn-read-more" href="/programming/mapping-errors-in-jquery-promises-deferred/" title="Read full article">Read Article</a>
 
     </div><!-- end .container -->
   </article><!-- end .stripe -->
@@ -222,26 +216,22 @@
   <article class="stripe alt">
     <div class="container">
 
-      <h2 class="post-header"><a href="/general/phreplace-goes-open-source/" title="Read full article">phreplace Goes Open Source</a></h2>
+      <h2 class="post-header"><a href="/general/excel-templates-for-scrum-product-and-sprint-backlogs/" title="Read full article">Excel templates for Scrum Product and Sprint Backlogs</a></h2>
 
       <div class="meta-label">
-        posted on <span class="meta-value muted">14 June 2010</span>
+        posted on <span class="meta-value muted">13 May 2014</span>
         
           in <span class="meta-value"><a href="/general">general</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="phreplace-goes-open-source" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="excel-templates-for-scrum-product-and-sprint-backlogs" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
-      <p>I’ve decided to release phreplace as open source software in order to continue it’s development, I no longer have the time to give it the attention it requires.</p>
-
-<p>The VB6 source code will be released under the GNU Lesser General Public License (LGPL), in my understanding this means that anyone can use phreplace and even include the library in a greater works (e.g. PSPad), however if they modify the code it must be released under a similar open source library, in order that everyone will benefit from the changes.</p>
-
-<p>The source code is available at <a href="https://www.assembla.com/spaces/phreplace/documents" title="phreplace source code available at Assembla">Assembla</a>, feel free to send any code changes to me to be included in the project.</p>
+      <p>Here’s some useful templates for managing Scrum projects using Excel. Why use Excel? For simplicity. Sometimes great software and tools are necessary, sometimes they just over complicate the process.</p>
 
 
 
-      <a class="btn btn-default btn-read-more" href="/general/phreplace-goes-open-source/" title="Read full article">Read Article</a>
+      <a class="btn btn-default btn-read-more" href="/general/excel-templates-for-scrum-product-and-sprint-backlogs/" title="Read full article">Read Article</a>
 
     </div><!-- end .container -->
   </article><!-- end .stripe -->
@@ -251,24 +241,24 @@
   <article class="stripe">
     <div class="container">
 
-      <h2 class="post-header"><a href="/programming/ie-autocomplete-doesnt-fire-onchange-event-handler/" title="Read full article">IE Autocomplete Doesn't Fire onchange Event Handler</a></h2>
+      <h2 class="post-header"><a href="/programming/backbone-spark/" title="Read full article">Backbone.Spark: Ember style computed properties for Backbone.js</a></h2>
 
       <div class="meta-label">
-        posted on <span class="meta-value muted">17 April 2010</span>
+        posted on <span class="meta-value muted">24 July 2012</span>
         
           in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="ie-autocomplete-doesnt-fire-onchange-event-handler" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="backbonespark-ember-style-computed-properties-for-backbonejs" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
-      <p>While testing an ASP validation control in Internet Explorer I found that the validation wasn’t triggered if I selected an item from the autocomplete list for a text box, this was the same in Safari for Windows, but worked fine in Mozilla Firefox. What?!</p>
+      <p>Backbone.Spark provides computed property support for Backbone.js, the goal of the extension is to make computed properties behave in the same way as a normal attribute so your other code doesn’t need to know the difference.</p>
 
-<p><img src="/assets/img/blog/autocomplete.png" alt="IE form autocomplete feature" /></p>
+<p><a href="https://github.com/phdesign/Backbone.Spark" title="Backbone.Spark project on GitHub">The latest version of Backbone.Spark and examples can be found at GitHub</a></p>
 
 
 
-      <a class="btn btn-default btn-read-more" href="/programming/ie-autocomplete-doesnt-fire-onchange-event-handler/" title="Read full article">Read Article</a>
+      <a class="btn btn-default btn-read-more" href="/programming/backbone-spark/" title="Read full article">Read Article</a>
 
     </div><!-- end .container -->
   </article><!-- end .stripe -->
@@ -278,24 +268,22 @@
   <article class="stripe alt">
     <div class="container">
 
-      <h2 class="post-header"><a href="/programming/registering-phreplace-dll-in-windows-vista/" title="Read full article">Registering phreplace DLL in Windows Vista</a></h2>
+      <h2 class="post-header"><a href="/programming/tfs-undo-checkout-of-unedited-files/" title="Read full article">TFS undo checkout of unedited files</a></h2>
 
       <div class="meta-label">
-        posted on <span class="meta-value muted">17 March 2010</span>
+        posted on <span class="meta-value muted">13 April 2012</span>
         
           in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="registering-phreplace-dll-in-windows-vista" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="tfs-undo-checkout-of-unedited-files" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
-      <p><a href="/phreplace">phreplace</a> is a VB6 DLL which is called from a vbscript plugin for <a href="http://www.pspad.com/" title="PSPad editor for developers">PSPad</a>. The script tests to see if the correct version of the DLL is registered on this computer, if not it registers it using regsvr32. This works fine in XP but not Vista where the script will error.</p>
-
-<p>A while ago a user pointed out to me <a href="http://www.experts-exchange.com/Programming/System/Windows__Programming/Q_21243930.html" title="Self Registering DLL's">this article on Experts Exchange</a> explaining why administrative rights are required to register a DLL in Windows Vista, in the hopes that we could automate the registration of phreplace in Vista.</p>
+      <p>It bugs me when developers check in files to TFS that haven’t been modified. It’s easy to do, you open a file, edit it, change your mind and ctrl-z it. Now you have a checked out file with no changes and when you do your next check in you’ll probably check that file in too, unless you’re really on the ball and compare each file manually first. TFS makes no distinction between checked in files that were modified and those that weren’t, which makes the job of reviewing code that much harder.</p>
 
 
 
-      <a class="btn btn-default btn-read-more" href="/programming/registering-phreplace-dll-in-windows-vista/" title="Read full article">Read Article</a>
+      <a class="btn btn-default btn-read-more" href="/programming/tfs-undo-checkout-of-unedited-files/" title="Read full article">Read Article</a>
 
     </div><!-- end .container -->
   </article><!-- end .stripe -->
@@ -305,26 +293,24 @@
   <article class="stripe">
     <div class="container">
 
-      <h2 class="post-header"><a href="/programming/no-validation-messages-when-disabling-enabling-asp-net-validator-in-javascript/" title="Read full article">No Validation Messages when Disabling & Enabling ASP.Net Validator in Javascript</a></h2>
+      <h2 class="post-header"><a href="/programming/create-branch-of-modified-working-copy-in-tfs/" title="Read full article">Create branch of modified working copy in TFS</a></h2>
 
       <div class="meta-label">
-        posted on <span class="meta-value muted">04 March 2010</span>
+        posted on <span class="meta-value muted">29 March 2012</span>
         
           in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="no-validation-messages-when-disabling--enabling-aspnet-validator-in-javascript" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="create-branch-of-modified-working-copy-in-tfs" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
-      <p>Need to validate a form field based on the value of another field in ASP.Net? The .Net Framework provides a javascript function to do just that:</p>
+      <p>So you’ve been working on your code from Team Foundation Server (TFS), made changes then realised you should really have started a branch for it.</p>
 
-<div class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="n">ValidatorEnable</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">enable</span><span class="p">)</span></code></pre></div>
-
-<p>This function takes the validator control (val) and a boolean to determine whether it should be enabled or disabled. The problem with this function is that it triggers the validator to validate itself immediately, showing any validation error messages before the user has submitted the form, which may not always be want you want.  The alternative is to set the validator’s enabled property to trigger this validator to validate itself when the user submits the form, and by using the Page_IsValid variable you can test whether the user has triggered a validation or not, then use ValidatorEnable function only after the validation has occurred when the user expects to see validation messages.</p>
+<p>I couldn’t find a good tutorial anywhere for how to do this so here’s the best workflow I found.</p>
 
 
 
-      <a class="btn btn-default btn-read-more" href="/programming/no-validation-messages-when-disabling-enabling-asp-net-validator-in-javascript/" title="Read full article">Read Article</a>
+      <a class="btn btn-default btn-read-more" href="/programming/create-branch-of-modified-working-copy-in-tfs/" title="Read full article">Read Article</a>
 
     </div><!-- end .container -->
   </article><!-- end .stripe -->
@@ -334,22 +320,23 @@
   <article class="stripe alt">
     <div class="container">
 
-      <h2 class="post-header"><a href="/general/converting-topfield-pvr-recordings/" title="Read full article">Converting Topfield PVR Recordings</a></h2>
+      <h2 class="post-header"><a href="/programming/delete-dependent-entities-when-removed-from-ef-collection/" title="Read full article">Delete Dependents When Removing an Entity From Entity Framework</a></h2>
 
       <div class="meta-label">
-        posted on <span class="meta-value muted">14 February 2010</span>
+        posted on <span class="meta-value muted">06 September 2011</span>
         
-          in <span class="meta-value"><a href="/general">general</a></span>
+          in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="converting-topfield-pvr-recordings" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="delete-dependents-when-removing-an-entity-from-entity-framework" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
-      <p>This weekend I’ve been having fun moving some recording off the full hard drive of my Topfield Masterpiece and trying to convert them into the formats I want. Below is what I’ve learnt in the process, this is only going to be useful to those using Windows.</p>
+      <p>This post is based on Entity Framework 4.1 Code First Fluent API.<br />
+I have an Entity Framework model being used in the business layer called Patient, it has a collection of dependent entities called Responses, when a response needs to be deleted I simply remove it from the collection and expect that it’ll get deleted from the database. It doesn’t.</p>
 
 
 
-      <a class="btn btn-default btn-read-more" href="/general/converting-topfield-pvr-recordings/" title="Read full article">Read Article</a>
+      <a class="btn btn-default btn-read-more" href="/programming/delete-dependent-entities-when-removed-from-ef-collection/" title="Read full article">Read Article</a>
 
     </div><!-- end .container -->
   </article><!-- end .stripe -->
@@ -359,50 +346,79 @@
   <article class="stripe">
     <div class="container">
 
-      <h2 class="post-header"><a href="/programming/create-a-pdf-using-the-net-reportviewer-control/" title="Read full article">Create a PDF using the .Net ReportViewer control</a></h2>
+      <h2 class="post-header"><a href="/programming/conditional-validation-in-asp-net-mvc3/" title="Read full article">Conditional Validation in ASP.NET MVC3</a></h2>
 
       <div class="meta-label">
-        posted on <span class="meta-value muted">25 November 2009</span>
+        posted on <span class="meta-value muted">10 June 2011</span>
         
           in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="create-a-pdf-using-the-net-reportviewer-control" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="conditional-validation-in-aspnet-mvc3" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
-      <p>Need to generate a pdf programmatically in dot net? You could purchase an HTML to PDF converter and worry about getting the page to format nicely for paper, or you could use the freely available ReportViewer control from Microsoft.</p>
-
-<p>Microsoft offers SQL Server Reporting Services (SSRS) with SQL Server 2005 and later editions to generate and publish reports using the Report Definition Language (RDL), as an alternative to Crystal Reports. SSRS requires a Report Server to publish reports to so they can be useful, however they also offer a ASP.Net or Windows Forms component called the <a href="http://msdn.microsoft.com/en-us/library/ms251671(VS.80).aspx" title="ReportViewer Controls on MSDN">ReportViewer</a> which we can use in our code without the need for any SQL database to generate reports, and these reports can be saved as Excel files, PDF’s or images.</p>
+      <p>Need to perform validation on a model’s property based on some other state of the model? Here’s a way to achieve it using the IValidatableObject interface and data annotations.</p>
 
 
 
-      <a class="btn btn-default btn-read-more" href="/programming/create-a-pdf-using-the-net-reportviewer-control/" title="Read full article">Read Article</a>
+      <a class="btn btn-default btn-read-more" href="/programming/conditional-validation-in-asp-net-mvc3/" title="Read full article">Read Article</a>
+
+    </div><!-- end .container -->
+  </article><!-- end .stripe -->
+
+  
+  
+  <article class="stripe alt">
+    <div class="container">
+
+      <h2 class="post-header"><a href="/programming/using-linq-to-list-all-duplicates/" title="Read full article">Using LINQ to list all duplicates</a></h2>
+
+      <div class="meta-label">
+        posted on <span class="meta-value muted">11 March 2011</span>
+        
+          in <span class="meta-value"><a href="/programming">programming</a></span>
+        
+        with <span class="meta-value"><a data-disqus-identifier="using-linq-to-list-all-duplicates" href="#disqus_thread">0 Comments</a></span>
+      </div><!-- end .meta-label -->
+      <br />
+
+      <p>There’s plenty of examples on how to find duplicates using LINQ’s GroupBy method, but usually they use a projection to return a new object, like this:</p>
+
+<div class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="n">_filteredSubmissions</span> <span class="p">=</span> <span class="p">(</span><span class="k">from</span> <span class="n">s</span> <span class="k">in</span> <span class="n">_filteredSubmissions</span>
+                        <span class="k">group</span> <span class="n">s</span> <span class="n">by</span> <span class="n">s</span><span class="p">.</span><span class="n">Email</span>
+                        <span class="k">into</span> <span class="n">g</span>
+                        <span class="k">where</span> <span class="n">g</span><span class="p">.</span><span class="n">Count</span><span class="p">()</span> <span class="p">&gt;</span> <span class="m">1</span>
+                        <span class="k">select</span> <span class="k">new</span> <span class="p">{</span> <span class="n">Emails</span> <span class="p">=</span> <span class="n">g</span><span class="p">.</span><span class="n">Key</span><span class="p">,</span> <span class="n">DuplicateCount</span> <span class="p">=</span> <span class="n">g</span><span class="p">.</span><span class="n">Count</span><span class="p">()</span> <span class="p">}</span></code></pre></div>
+
+
+
+      <a class="btn btn-default btn-read-more" href="/programming/using-linq-to-list-all-duplicates/" title="Read full article">Read Article</a>
 
     </div><!-- end .container -->
   </article><!-- end .stripe -->
 
 
-<article class="stripe  alt">
+<article class="stripe ">
   <div class="container">
 
     <nav class="home-pagination">
       <ul class="pagination">
-        <li>
-          <a href="/"><span aria-hidden="true">&larr;</span> Previous</a>
+        <li class="disabled">
+          <a href=""><span aria-hidden="true">&larr;</span> Previous</a>
         </li>
 
         
           
-            <li><a href="/">1</a></li>
+            <li class="active"><span>1 <span class="sr-only">(current)</span></span></li>
           
         
           
-            <li class="active"><span>2 <span class="sr-only">(current)</span></span></li>
+            <li><a href="/home/page2">2</a></li>
           
         
 
-        <li class="disabled">
-          <a href="">Next <span aria-hidden="true">&rarr;</span></a>
+        <li>
+          <a href="/home/page2">Next <span aria-hidden="true">&rarr;</span></a>
         </li>
       </ul>
     </nav>
