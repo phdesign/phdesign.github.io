@@ -6,8 +6,8 @@
 </description>
     <link>http://phdesign.com.au/</link>
     <atom:link href="http://phdesign.com.au/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 20 Jul 2015 21:17:16 +1000</pubDate>
-    <lastBuildDate>Mon, 20 Jul 2015 21:17:16 +1000</lastBuildDate>
+    <pubDate>Wed, 22 Jul 2015 06:03:30 +1000</pubDate>
+    <lastBuildDate>Wed, 22 Jul 2015 06:03:30 +1000</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -62,6 +62,8 @@
         <category>ie</category>
         
         <category>javascript</category>
+        
+        <category>logging</category>
         
         
         <category>programming</category>
@@ -459,10 +461,6 @@ You can identify a getter call by testing arguments.length === 0, a setter call 
         <link>http://phdesign.com.au/programming/tfs-undo-checkout-of-unedited-files/</link>
         <guid isPermaLink="true">http://phdesign.com.au/programming/tfs-undo-checkout-of-unedited-files/</guid>
         
-        <category>dotnet</category>
-        
-        <category>howto</category>
-        
         <category>tfs</category>
         
         
@@ -506,8 +504,6 @@ To do this you need TFS Power Tools ‘unshelve’. More info here:&lt;br /&gt;
         <pubDate>Thu, 29 Mar 2012 00:00:00 +1100</pubDate>
         <link>http://phdesign.com.au/programming/create-branch-of-modified-working-copy-in-tfs/</link>
         <guid isPermaLink="true">http://phdesign.com.au/programming/create-branch-of-modified-working-copy-in-tfs/</guid>
-        
-        <category>howto</category>
         
         <category>tfs</category>
         
@@ -565,8 +561,6 @@ I have an Entity Framework model being used in the business layer called Patient
         <category>c#</category>
         
         <category>ef</category>
-        
-        <category>howto</category>
         
         
         <category>programming</category>
@@ -850,13 +844,9 @@ I have an Entity Framework model being used in the business layer called Patient
         <link>http://phdesign.com.au/programming/conditional-validation-in-asp-net-mvc3/</link>
         <guid isPermaLink="true">http://phdesign.com.au/programming/conditional-validation-in-asp-net-mvc3/</guid>
         
-        <category>asp</category>
+        <category>aspnet</category>
         
         <category>c#</category>
-        
-        <category>dotnet</category>
-        
-        <category>howto</category>
         
         <category>mvc</category>
         
@@ -918,10 +908,6 @@ Note that I also stuck in a check for blank emails, I don’t consider a Submiss
         <guid isPermaLink="true">http://phdesign.com.au/programming/using-linq-to-list-all-duplicates/</guid>
         
         <category>c#</category>
-        
-        <category>dotnet</category>
-        
-        <category>howto</category>
         
         <category>linq</category>
         
