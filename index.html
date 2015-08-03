@@ -69,6 +69,8 @@
             
               <li><a href="/general">general</a></li>
             
+              <li><a href="/woodworking">woodworking</a></li>
+            
           </ul>
         </li>
         <li class="dropdown">
@@ -81,6 +83,9 @@
         </li>
         <li><a href="/contact">Contact me</a></li>
       </ul>
+
+      
+
     </div><!-- end .navbar-collapse -->
   </div><!-- end .container -->
 </nav>
@@ -144,6 +149,31 @@
   <article class="stripe">
     <div class="container">
 
+      <h2 class="post-header"><a href="/woodworking/pallet-wood-coffee-table/" title="Read full article">Pallet Wood Coffee Table</a></h2>
+
+      <div class="meta-label">
+        posted on <span class="meta-value muted">03 August 2015</span>
+        
+          in <span class="meta-value"><a href="/woodworking">woodworking</a></span>
+        
+        with <span class="meta-value"><a data-disqus-identifier="pallet-wood-coffee-table" href="#disqus_thread">0 Comments</a></span>
+      </div><!-- end .meta-label -->
+      <br />
+
+      <p>I’ve recently become addicted to <a href="https://www.pinterest.com/paulheasley/pallet-projects/">pallet wood projects on Pinterest</a>, there’s something beautiful in breathing life back into old wood, and best of all it’s free. After finding a free source of pallets I’ve tried my hand a couple of projects, some shelves for the bathroom and a <a href="https://www.pinterest.com/pin/292100725810132139/">pallet wood stool</a>, I was pretty happy with the results so I thought I’d try my hand at something more substantial, a coffee table.</p>
+
+
+
+      <a class="btn btn-default btn-read-more" href="/woodworking/pallet-wood-coffee-table/" title="Read full article">Read Article</a>
+
+    </div><!-- end .container -->
+  </article><!-- end .stripe -->
+
+  
+  
+  <article class="stripe alt">
+    <div class="container">
+
       <h2 class="post-header"><a href="/programming/logging-objects-to-the-console-in-internet-explorer/" title="Read full article">Logging Objects to the Console in Internet Explorer</a></h2>
 
       <div class="meta-label">
@@ -166,7 +196,7 @@
 
   
   
-  <article class="stripe alt">
+  <article class="stripe">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/catching-javascript-errors-with-promises/" title="Read full article">Catching JavaScript errors with Promises</a></h2>
@@ -191,7 +221,7 @@
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/mapping-errors-in-jquery-promises-deferred/" title="Read full article">Mapping errors in jQuery promises / deferred</a></h2>
@@ -216,7 +246,7 @@
 
   
   
-  <article class="stripe alt">
+  <article class="stripe">
     <div class="container">
 
       <h2 class="post-header"><a href="/general/excel-templates-for-scrum-product-and-sprint-backlogs/" title="Read full article">Excel templates for Scrum Product and Sprint Backlogs</a></h2>
@@ -241,7 +271,7 @@
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/backbone-spark/" title="Read full article">Backbone.Spark: Ember style computed properties for Backbone.js</a></h2>
@@ -268,7 +298,7 @@
 
   
   
-  <article class="stripe alt">
+  <article class="stripe">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/tfs-undo-checkout-of-unedited-files/" title="Read full article">TFS undo checkout of unedited files</a></h2>
@@ -293,7 +323,7 @@
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/create-branch-of-modified-working-copy-in-tfs/" title="Read full article">Create branch of modified working copy in TFS</a></h2>
@@ -320,7 +350,7 @@
 
   
   
-  <article class="stripe alt">
+  <article class="stripe">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/delete-dependent-entities-when-removed-from-ef-collection/" title="Read full article">Delete Dependents When Removing an Entity From Entity Framework</a></h2>
@@ -346,7 +376,7 @@ I have an Entity Framework model being used in the business layer called Patient
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/conditional-validation-in-asp-net-mvc3/" title="Read full article">Conditional Validation in ASP.NET MVC3</a></h2>
@@ -369,39 +399,10 @@ I have an Entity Framework model being used in the business layer called Patient
     </div><!-- end .container -->
   </article><!-- end .stripe -->
 
-  
-  
-  <article class="stripe alt">
-    <div class="container">
-
-      <h2 class="post-header"><a href="/programming/using-linq-to-list-all-duplicates/" title="Read full article">Using LINQ to list all duplicates</a></h2>
-
-      <div class="meta-label">
-        posted on <span class="meta-value muted">11 March 2011</span>
-        
-          in <span class="meta-value"><a href="/programming">programming</a></span>
-        
-        with <span class="meta-value"><a data-disqus-identifier="using-linq-to-list-all-duplicates" href="#disqus_thread">0 Comments</a></span>
-      </div><!-- end .meta-label -->
-      <br />
-
-      <p>There’s plenty of examples on how to find duplicates using LINQ’s GroupBy method, but usually they use a projection to return a new object, like this:</p>
-
-<div class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="n">_filteredSubmissions</span> <span class="p">=</span> <span class="p">(</span><span class="k">from</span> <span class="n">s</span> <span class="k">in</span> <span class="n">_filteredSubmissions</span>
-                        <span class="k">group</span> <span class="n">s</span> <span class="n">by</span> <span class="n">s</span><span class="p">.</span><span class="n">Email</span>
-                        <span class="k">into</span> <span class="n">g</span>
-                        <span class="k">where</span> <span class="n">g</span><span class="p">.</span><span class="n">Count</span><span class="p">()</span> <span class="p">&gt;</span> <span class="m">1</span>
-                        <span class="k">select</span> <span class="k">new</span> <span class="p">{</span> <span class="n">Emails</span> <span class="p">=</span> <span class="n">g</span><span class="p">.</span><span class="n">Key</span><span class="p">,</span> <span class="n">DuplicateCount</span> <span class="p">=</span> <span class="n">g</span><span class="p">.</span><span class="n">Count</span><span class="p">()</span> <span class="p">}</span></code></pre></div>
 
 
 
-      <a class="btn btn-default btn-read-more" href="/programming/using-linq-to-list-all-duplicates/" title="Read full article">Read Article</a>
-
-    </div><!-- end .container -->
-  </article><!-- end .stripe -->
-
-
-<article class="stripe ">
+<article class="stripe">
   <div class="container">
 
     <nav class="home-pagination">
@@ -428,8 +429,6 @@ I have an Entity Framework model being used in the business layer called Patient
 
   </div><!-- end .container -->
 </article><!-- end .stripe -->
-
-
 
     </main><!-- end .content -->
 
