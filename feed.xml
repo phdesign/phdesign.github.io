@@ -6,8 +6,8 @@
 </description>
     <link>http://phdesign.com.au/</link>
     <atom:link href="http://phdesign.com.au/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 03 Aug 2015 22:08:21 +1000</pubDate>
-    <lastBuildDate>Mon, 03 Aug 2015 22:08:21 +1000</lastBuildDate>
+    <pubDate>Mon, 24 Aug 2015 21:06:01 +1000</pubDate>
+    <lastBuildDate>Mon, 24 Aug 2015 21:06:01 +1000</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
     
       <item>
@@ -18,36 +18,61 @@
 
 &lt;div class=&quot;row&quot;&gt;
   &lt;ul class=&quot;gallery&quot;&gt;
-    &lt;li class=&quot;col-sm-4&quot;&gt;
-      &lt;a href=&quot;/assets/img/blog/coffeetable_1.jpg&quot; class=&quot;chocolat-image&quot;&gt;
-        &lt;img class=&quot;landscape coffeetable-1&quot; src=&quot;/assets/img/blog/coffeetable_1.jpg&quot; alt=&quot;Making a lap joint with a handsaw and chisel&quot; /&gt;
-      &lt;/a&gt;
-    &lt;/li&gt;
-    &lt;li class=&quot;col-sm-4&quot;&gt;
-      &lt;a href=&quot;/assets/img/blog/coffeetable_2.jpg&quot; class=&quot;chocolat-image&quot;&gt;
-        &lt;img class=&quot;landscape coffeetable-2&quot; src=&quot;/assets/img/blog/coffeetable_2.jpg&quot; alt=&quot;All joints cut, ready to be assembled&quot; /&gt;
-      &lt;/a&gt;
-    &lt;/li&gt;
-    &lt;li class=&quot;col-sm-4&quot;&gt;
-      &lt;a href=&quot;/assets/img/blog/coffeetable_3.jpg&quot; class=&quot;chocolat-image&quot;&gt;
-        &lt;img class=&quot;landscape coffeetable-3&quot; src=&quot;/assets/img/blog/coffeetable_3.jpg&quot; alt=&quot;All joints cut, ready to be assembled&quot; /&gt;
-      &lt;/a&gt;
-    &lt;/li&gt;
-    &lt;li class=&quot;col-sm-4&quot;&gt;
-      &lt;a href=&quot;/assets/img/blog/coffeetable_4.jpg&quot; class=&quot;chocolat-image&quot;&gt;
-        &lt;img class=&quot;landscape coffeetable-4&quot; src=&quot;/assets/img/blog/coffeetable_4.jpg&quot; alt=&quot;All joints cut, ready to be assembled&quot; /&gt;
-      &lt;/a&gt;
-    &lt;/li&gt;
-    &lt;li class=&quot;col-sm-4&quot;&gt;
-      &lt;a href=&quot;/assets/img/blog/coffeetable_5.jpg&quot; class=&quot;chocolat-image&quot;&gt;
-        &lt;img class=&quot;landscape coffeetable-5&quot; src=&quot;/assets/img/blog/coffeetable_5.jpg&quot; alt=&quot;All joints cut, ready to be assembled&quot; /&gt;
-      &lt;/a&gt;
-    &lt;/li&gt;
-    &lt;li class=&quot;col-sm-4&quot;&gt;
-      &lt;a href=&quot;/assets/img/blog/coffeetable_6.jpg&quot; class=&quot;chocolat-image&quot;&gt;
-        &lt;img class=&quot;landscape coffeetable-6&quot; src=&quot;/assets/img/blog/coffeetable_6.jpg&quot; alt=&quot;All joints cut, ready to be assembled&quot; /&gt;
-      &lt;/a&gt;
-    &lt;/li&gt;
+    
+      
+      
+      
+      &lt;li class=&quot;col-sm-4&quot;&gt;
+        &lt;a href=&quot;/assets/img/blog/coffeetable_1.jpg&quot; class=&quot;chocolat-image&quot; title=&quot;Making a lap joint with a handsaw and chisel&quot;&gt;
+          &lt;img class=&quot;landscape coffeetable-1&quot; src=&quot;/assets/img/blog/coffeetable_1.jpg&quot; alt=&quot;Making a lap joint with a handsaw and chisel&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/li&gt;
+    
+      
+      
+      
+      &lt;li class=&quot;col-sm-4&quot;&gt;
+        &lt;a href=&quot;/assets/img/blog/coffeetable_2.jpg&quot; class=&quot;chocolat-image&quot; title=&quot;All joints cut, ready to be assembled&quot;&gt;
+          &lt;img class=&quot;landscape coffeetable-2&quot; src=&quot;/assets/img/blog/coffeetable_2.jpg&quot; alt=&quot;All joints cut, ready to be assembled&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/li&gt;
+    
+      
+      
+      
+      &lt;li class=&quot;col-sm-4&quot;&gt;
+        &lt;a href=&quot;/assets/img/blog/coffeetable_3.jpg&quot; class=&quot;chocolat-image&quot; title=&quot;Top and bottom frames assembled&quot;&gt;
+          &lt;img class=&quot;landscape coffeetable-3&quot; src=&quot;/assets/img/blog/coffeetable_3.jpg&quot; alt=&quot;Top and bottom frames assembled&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/li&gt;
+    
+      
+      
+      
+      &lt;li class=&quot;col-sm-4&quot;&gt;
+        &lt;a href=&quot;/assets/img/blog/coffeetable_4.jpg&quot; class=&quot;chocolat-image&quot; title=&quot;Adding the legs&quot;&gt;
+          &lt;img class=&quot;landscape coffeetable-4&quot; src=&quot;/assets/img/blog/coffeetable_4.jpg&quot; alt=&quot;Adding the legs&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/li&gt;
+    
+      
+      
+      
+      &lt;li class=&quot;col-sm-4&quot;&gt;
+        &lt;a href=&quot;/assets/img/blog/coffeetable_5.jpg&quot; class=&quot;chocolat-image&quot; title=&quot;The whole frame assembled ready for the pallet panels&quot;&gt;
+          &lt;img class=&quot;landscape coffeetable-5&quot; src=&quot;/assets/img/blog/coffeetable_5.jpg&quot; alt=&quot;The whole frame assembled ready for the pallet panels&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/li&gt;
+    
+      
+      
+      
+      &lt;li class=&quot;col-sm-4&quot;&gt;
+        &lt;a href=&quot;/assets/img/blog/coffeetable_6.jpg&quot; class=&quot;chocolat-image&quot; title=&quot;Starting work on the chevron top pattern&quot;&gt;
+          &lt;img class=&quot;landscape coffeetable-6&quot; src=&quot;/assets/img/blog/coffeetable_6.jpg&quot; alt=&quot;Starting work on the chevron top pattern&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/li&gt;
+    
   &lt;/ul&gt;&lt;!-- end .gallery --&gt;
 &lt;/div&gt;
 &lt;!-- end .row --&gt;
@@ -58,21 +83,34 @@
 
 &lt;div class=&quot;row&quot;&gt;
   &lt;ul class=&quot;gallery&quot;&gt;
-    &lt;li class=&quot;col-sm-4&quot;&gt;
-      &lt;a href=&quot;/assets/img/blog/coffeetable_7.jpg&quot; class=&quot;chocolat-image&quot;&gt;
-        &lt;img class=&quot;landscape coffeetable-7&quot; src=&quot;/assets/img/blog/coffeetable_7.jpg&quot; alt=&quot;Top and bottom panels completed&quot; /&gt;
-      &lt;/a&gt;
-    &lt;/li&gt;
-    &lt;li class=&quot;col-sm-4&quot;&gt;
-      &lt;a href=&quot;/assets/img/blog/coffeetable_8.jpg&quot; class=&quot;chocolat-image&quot;&gt;
-        &lt;img class=&quot;landscape coffeetable-8&quot; src=&quot;/assets/img/blog/coffeetable_8.jpg&quot; alt=&quot;The original boards before sanding&quot; /&gt;
-      &lt;/a&gt;
-    &lt;/li&gt;
-    &lt;li class=&quot;col-sm-4&quot;&gt;
-      &lt;a href=&quot;/assets/img/blog/coffeetable_9.jpg&quot; class=&quot;chocolat-image&quot;&gt;
-        &lt;img class=&quot;landscape coffeetable-9&quot; src=&quot;/assets/img/blog/coffeetable_9.jpg&quot; alt=&quot;All sides complete, ready for final trim&quot; /&gt;
-      &lt;/a&gt;
-    &lt;/li&gt;
+    
+      
+      
+      
+      &lt;li class=&quot;col-sm-4&quot;&gt;
+        &lt;a href=&quot;/assets/img/blog/coffeetable_7.jpg&quot; class=&quot;chocolat-image&quot; title=&quot;Top and bottom panels completed&quot;&gt;
+          &lt;img class=&quot;landscape coffeetable-7&quot; src=&quot;/assets/img/blog/coffeetable_7.jpg&quot; alt=&quot;Top and bottom panels completed&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/li&gt;
+    
+      
+      
+      
+      &lt;li class=&quot;col-sm-4&quot;&gt;
+        &lt;a href=&quot;/assets/img/blog/coffeetable_8.jpg&quot; class=&quot;chocolat-image&quot; title=&quot;The original boards before sanding&quot;&gt;
+          &lt;img class=&quot;landscape coffeetable-8&quot; src=&quot;/assets/img/blog/coffeetable_8.jpg&quot; alt=&quot;The original boards before sanding&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/li&gt;
+    
+      
+      
+      
+      &lt;li class=&quot;col-sm-4&quot;&gt;
+        &lt;a href=&quot;/assets/img/blog/coffeetable_9.jpg&quot; class=&quot;chocolat-image&quot; title=&quot;All sides complete, ready for final trim&quot;&gt;
+          &lt;img class=&quot;landscape coffeetable-9&quot; src=&quot;/assets/img/blog/coffeetable_9.jpg&quot; alt=&quot;All sides complete, ready for final trim&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/li&gt;
+    
   &lt;/ul&gt;&lt;!-- end .gallery --&gt;
 &lt;/div&gt;
 &lt;!-- end .row --&gt;
@@ -81,24 +119,38 @@
 
 &lt;div class=&quot;row&quot;&gt;
   &lt;ul class=&quot;gallery&quot;&gt;
-    &lt;li class=&quot;col-sm-4&quot;&gt;
-      &lt;a href=&quot;/assets/img/blog/coffeetable_10.jpg&quot; class=&quot;chocolat-image&quot;&gt;
-        &lt;img class=&quot;landscape coffeetable-10&quot; src=&quot;/assets/img/blog/coffeetable_10.jpg&quot; alt=&quot;Final trim on, nearly done&quot; /&gt;
-      &lt;/a&gt;
-    &lt;/li&gt;
-    &lt;li class=&quot;col-sm-4&quot;&gt;
-      &lt;a href=&quot;/assets/img/blog/coffeetable_11.jpg&quot; class=&quot;chocolat-image&quot;&gt;
-        &lt;img class=&quot;coffeetable-11&quot; src=&quot;/assets/img/blog/coffeetable_11.jpg&quot; alt=&quot;The finished product&quot; /&gt;
-      &lt;/a&gt;
-    &lt;/li&gt;
-    &lt;li class=&quot;col-sm-4&quot;&gt;
-      &lt;a href=&quot;/assets/img/blog/coffeetable_12.jpg&quot; class=&quot;chocolat-image&quot;&gt;
-        &lt;img class=&quot;landscape coffeetable-12&quot; src=&quot;/assets/img/blog/coffeetable_12.jpg&quot; alt=&quot;Pallet wood coffee table&quot; /&gt;
-      &lt;/a&gt;
-    &lt;/li&gt;
+    
+      
+      
+      
+      &lt;li class=&quot;col-sm-4&quot;&gt;
+        &lt;a href=&quot;/assets/img/blog/coffeetable_10.jpg&quot; class=&quot;chocolat-image&quot; title=&quot;Final trim on, nearly done&quot;&gt;
+          &lt;img class=&quot;landscape coffeetable-10&quot; src=&quot;/assets/img/blog/coffeetable_10.jpg&quot; alt=&quot;Final trim on, nearly done&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/li&gt;
+    
+      
+      
+      
+      &lt;li class=&quot;col-sm-4&quot;&gt;
+        &lt;a href=&quot;/assets/img/blog/coffeetable_11.jpg&quot; class=&quot;chocolat-image&quot; title=&quot;The finished product&quot;&gt;
+          &lt;img class=&quot;coffeetable-11&quot; src=&quot;/assets/img/blog/coffeetable_11.jpg&quot; alt=&quot;The finished product&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/li&gt;
+    
+      
+      
+      
+      &lt;li class=&quot;col-sm-4&quot;&gt;
+        &lt;a href=&quot;/assets/img/blog/coffeetable_12.jpg&quot; class=&quot;chocolat-image&quot; title=&quot;Pallet wood coffee table&quot;&gt;
+          &lt;img class=&quot;landscape coffeetable-12&quot; src=&quot;/assets/img/blog/coffeetable_12.jpg&quot; alt=&quot;Pallet wood coffee table&quot; /&gt;
+        &lt;/a&gt;
+      &lt;/li&gt;
+    
   &lt;/ul&gt;&lt;!-- end .gallery --&gt;
 &lt;/div&gt;
 &lt;!-- end .row --&gt;
+
 </description>
         <pubDate>Mon, 03 Aug 2015 00:00:00 +1000</pubDate>
         <link>http://phdesign.com.au/woodworking/pallet-wood-coffee-table/</link>
