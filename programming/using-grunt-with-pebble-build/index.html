@@ -1,0 +1,586 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Paul Heasley">
+  
+
+  <title>Using Grunt with Pebble Build to create scalable PebbleKit JavaScript | phdesign</title>
+
+  <!-- Google Web Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+  <!-- Favicon/Touch Icons  -->
+  <link rel="shortcut icon" href="/favicon.ico">
+  <!-- <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
+
+  <!-- Tell Google this page is under test - index original version -->
+  <link rel="canonical" href="http://www.phdesign.com.au/programming/using-grunt-with-pebble-build/">
+
+</head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/programming">programming</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+              <li><a href="/woodworking">woodworking</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/phreplace">phReplace</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+          </ul>
+        </li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+
+      
+
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+
+    <main class="content">
+      <article>
+  <div class="container">
+
+    
+
+    <div class="date-stamp">
+      <div class="month">Nov</div>
+      <div class="day">09</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">Using Grunt with Pebble Build to create scalable PebbleKit JavaScript</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">09 November 2015</span>
+      
+        in <span class="meta-value"><a href="/programming">programming</a></span>
+      
+      with <span class="meta-value"><a data-disqus-identifier="using-grunt-with-pebble-build-to-create-scalable-pebblekit-javascript" href="#disqus_thread">0 Comments</a></span>
+    </div><!-- end .meta-label -->
+    <br />
+
+    
+    
+    
+    
+
+    <div class="alert alert-info" role="alert">
+<a href="https://gist.github.com/phdesign/d46425bc4a2b72cd4802" title="Get the Gist">Want to skip to the code? Get the Gist here.</a>
+</div>
+
+<p>Pebble watchapps communicate with the phone via PebbleKit, a sandboxed JavaScript environment that runs within the Pebble phone app. It’s pretty simple to setup the interactions on the JavaScript side, but what happens when the JavaScript starts to get more complex? Using <a href="http://gruntjs.com/">Grunt</a> we can manage a scalable JS app, including running linters, bundling and running unit tests.</p>
+
+<!--more-->
+
+<h2 id="setting-up-grunt">Setting up Grunt</h2>
+
+<p>To get started with Grunt, you’ll need to install Node and NPM (Node Package Manager). If you don’t already have it installed, get it from <a href="http://nodejs.org/">Nodejs</a>.
+With Node installed, go to your pebble project directory and type</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>npm init</code></pre></div>
+
+<p>This will launch an interactive prompt to help setup your <em>package.json</em> file for your project. Answer the questions as needed or just accept the defaults.</p>
+
+<p>Next we need to install Grunt. Run this command to install the Grunt CLI globally.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>npm install -g grunt-cli</code></pre></div>
+
+<p>We also need to add Grunt as a dependency for our project, to add your first dependency run</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>npm install grunt --save-dev</code></pre></div>
+
+<p>Notice that this time we didn’t pass the <code>-g</code> flag to install it globally, so by default it will be added as a local dependency. Open the <em>package.json</em> file and note that grunt is now included under devDependencies. All of our dependencies will be dev dependencies (specified by the <code>--save-dev</code> flag), simply put we’re saying that to build the project you’ll need this dependency, but the compiled app doesn’t depend on any node packages to run. 
+Also take notice of the <em>node_modules</em> folder that’s appeared in your project directory, this is where npm stores the files for any project dependencies. Go ahead and add this folder to your <em>.gitignore</em> / <em>.cvsignore</em> file, you don’t want it checked into source control.</p>
+
+<p>Next create a new <em>Gruntfile.js</em> file in the root of your project directory, this file will define the tasks we want to run when building the watchapp. Add this empty Grunt configuration to the new file:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="c1">// The (empty) default task.</span>
+  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[]);</span>
+
+<span class="p">};</span></code></pre></div>
+
+<p>You can now check everything is setup properly by running this command from your project directory:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>grunt
+
+Done, without errors.</code></pre></div>
+
+<h2 id="adding-jshint-to-check-code-quality">Adding JSHint to check code quality</h2>
+
+<p>Now let’s add our first build task to Grunt, we’ll add <a href="http://jshint.com/">JSHint</a> which will check the quality of our JavaScript according to rules you can customise. First, add the dependency to the project</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>npm install grunt-contrib-jshint --save-dev</code></pre></div>
+
+<p>Open the <em>Gruntfile.js</em> and update it to the following</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+
+    <span class="nx">jshint</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">files</span><span class="o">:</span> <span class="p">[</span>
+        <span class="s1">&#39;Gruntfile.js&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;src/js/**/*.js&#39;</span>
+      <span class="p">],</span>
+      <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">jshintrc</span><span class="o">:</span> <span class="kc">true</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+
+  <span class="p">});</span>
+
+  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-jshint&#39;</span><span class="p">);</span>
+
+  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;jshint&#39;</span><span class="p">]);</span>
+
+<span class="p">};</span></code></pre></div>
+
+<p>The line <code>grunt.loadNpmTasks('grunt-contrib-jshint');</code> is telling Grunt to reference the JSHint package and we’ve added jshint to the default build task <code>grunt.registerTask('default', ['jshint']);</code>.</p>
+
+<p>The configuration of the task goes under <code>grunt.initConfig({</code>, you can find more details on how to customise the <a href="https://www.npmjs.com/package/grunt-contrib-jshint">grunt-contrib-jshint task on NPM</a>. In our example you’ll see we’re telling JSHint to check our Grunt file and any JavaScript file(s) in the <em>src/js/</em> folder. <code>jshintrc: true</code> tells the task to look for a <em>.jshintrc</em> file somewhere in the folder heirarchy relative to the file we’re checking, this file defines our rules for JSHint, below is a sample your can use or you can see all the possible rules <a href="https://github.com/jshint/jshint/blob/master/examples/.jshintrc">in the default configuration file</a>. Save the following to a <em>.jshintrc</em> file in your project root folder:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="cm">/*</span>
+<span class="cm"> * Example jshint configuration file for Pebble development.</span>
+<span class="cm"> * Adapted from http://developer.getpebble.com/blog/2014/01/12/Using-JSHint-For-Pebble-Development/</span>
+<span class="cm"> *</span>
+<span class="cm"> * Check out the full documentation at http://www.jshint.com/docs/options/</span>
+<span class="cm"> */</span>
+<span class="p">{</span>
+  <span class="c1">// Declares the existence of a global &#39;Pebble&#39; object</span>
+  <span class="s2">&quot;globals&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;Pebble&quot;</span> <span class="o">:</span> <span class="kc">true</span> <span class="p">},</span>
+
+  <span class="c1">// And standard objects (XMLHttpRequest and console)</span>
+  <span class="s2">&quot;browser&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="s2">&quot;devel&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  <span class="s2">&quot;node&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+
+  <span class="c1">// Do not mess with standard JavaScript objects (Array, Date, etc)</span>
+  <span class="s2">&quot;freeze&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+
+  <span class="c1">// Do not use eval! Keep this warning turned on (ie: false)</span>
+  <span class="s2">&quot;evil&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+
+  <span class="cm">/*</span>
+<span class="cm">   * The options below are more style/developer dependent.</span>
+<span class="cm">   * Customize to your liking.</span>
+<span class="cm">   */</span>
+
+  <span class="c1">// Do not allow blocks without { }</span>
+  <span class="s2">&quot;curly&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+
+  <span class="c1">// Prohibits the use of immediate function invocations without wrapping them in parentheses</span>
+  <span class="s2">&quot;immed&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+
+  <span class="c1">// Enforce indentation</span>
+  <span class="s2">&quot;indent&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+
+  <span class="c1">// Do not use a variable before it&#39;s defined</span>
+  <span class="s2">&quot;latedef&quot;</span><span class="o">:</span> <span class="s2">&quot;nofunc&quot;</span><span class="p">,</span>
+
+  <span class="c1">// Spot undefined variables</span>
+  <span class="s2">&quot;undef&quot;</span><span class="o">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+
+  <span class="c1">// Spot unused variables</span>
+  <span class="s2">&quot;unused&quot;</span><span class="o">:</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span>
+  
+  <span class="c1">// Require capitalization of all constructor functions e.g. `new F()`</span>
+  <span class="s2">&quot;newcap&quot;</span> <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+  
+  <span class="c1">// Enforce use of single quotes (&#39;) everywhere</span>
+  <span class="s2">&quot;quotmark&quot;</span> <span class="o">:</span> <span class="s2">&quot;single&quot;</span><span class="p">,</span>
+  
+  <span class="c1">// Tolerate use of `== null`</span>
+  <span class="s2">&quot;eqnull&quot;</span> <span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+
+  <span class="c1">// Supress dot notation warnings (e.g. allow obj[&#39;prop&#39;])</span>
+  <span class="s2">&quot;sub&quot;</span> <span class="o">:</span> <span class="kc">true</span>
+<span class="p">}</span></code></pre></div>
+
+<p>With the changes made, lets run Grunt again, you should see the following if there are no errors in your JavaScript files.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>grunt
+
+Done, without errors.</code></pre></div>
+
+<h2 id="bundling-javascript">Bundling JavaScript</h2>
+
+<p>The next task we’ll add is bundling. This will combine all of our JavasScript files together into a single file, I do this because originally Pebble only supported a single file <em>src/js/pebble-js-app.js</em>, but with newer SDKs any JavaScript file in your <em>src/js/</em> will be built, so this step is optional.</p>
+
+<p>Bundling using Grunt is usually done with <a href="https://www.npmjs.com/package/grunt-contrib-concat">grunt-contrib-concat</a>, followed by <a href="https://www.npmjs.com/package/grunt-contrib-uglify">grunt-contrib-uglify</a> if you also want to minify the result, you probably won’t want to minify your PebbleKit app however, because the reduction in size will be negligable (remember the JavaScript runs on your phone) but you’ll lose all benefit of debugging with log line numbers. For my project, I use <a href="https://www.npmjs.com/package/grunt-browserify">grunt-browserify</a>. This allows me to ignore the ordering / dependencies of the JavaScript files and just write JavaScript modules like a Node project, browserify will take care of the rest. Here’s an example of a browserify module:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">weather</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./weather.js&#39;</span><span class="p">);</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+
+  <span class="nx">settings</span><span class="o">:</span> <span class="p">{</span>
+    <span class="nx">configVersion</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="nx">showWeather</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="nx">weatherService</span><span class="o">:</span> <span class="s1">&#39;yahoo-weather&#39;</span>
+  <span class="p">},</span>
+
+  <span class="nx">isRunningInEmulator</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">Pebble</span><span class="p">.</span><span class="nx">getActiveWatchInfo</span> <span class="o">&amp;&amp;</span> <span class="sr">/^qemu/</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">Pebble</span><span class="p">.</span><span class="nx">getActiveWatchInfo</span><span class="p">().</span><span class="nx">model</span><span class="p">);</span>
+  <span class="p">},</span>
+
+  <span class="nx">loadConfig</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">config</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">try</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">settings</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">config</span><span class="p">);</span>
+      <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span> 
+    <span class="p">}</span>
+
+    <span class="nx">weather</span><span class="p">.</span><span class="nx">setWeatherService</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">settings</span><span class="p">.</span><span class="nx">weatherService</span><span class="p">);</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Config loaded, using &#39;</span> <span class="o">+</span> <span class="nx">weather</span><span class="p">.</span><span class="nx">activeService</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s1">&#39; service&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="p">};</span></code></pre></div>
+
+<p>To add the task to our project, run</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>npm install grunt-browserify --save-dev</code></pre></div>
+
+<p>Open the <em>Gruntfile.js</em> and update it to the following</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+
+    <span class="nx">jshint</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">files</span><span class="o">:</span> <span class="p">[</span>
+        <span class="s1">&#39;Gruntfile.js&#39;</span><span class="p">,</span> 
+        <span class="s1">&#39;src/js/**/*.js&#39;</span>
+      <span class="p">],</span>
+      <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">jshintrc</span><span class="o">:</span> <span class="kc">true</span>
+      <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="nx">browserify</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">build</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">src</span><span class="o">:</span> <span class="p">[</span>
+          <span class="s1">&#39;src/js/**/*.js&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;!src/js/pebble-js-app.js&#39;</span>
+        <span class="p">],</span>
+        <span class="nx">dest</span><span class="o">:</span> <span class="s1">&#39;src/js/pebble-js-app.js&#39;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+
+  <span class="p">});</span>
+
+  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-jshint&#39;</span><span class="p">);</span>
+  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-browserify&#39;</span><span class="p">);</span>
+
+  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;jshint&#39;</span><span class="p">,</span> <span class="s1">&#39;browserify&#39;</span><span class="p">]);</span>
+
+<span class="p">};</span></code></pre></div>
+
+<p>The src files are specified using <a href="http://gruntjs.com/configuring-tasks#globbing-patterns">Grunt globbing</a>. <code>src/js/**/*.js</code> means find every JavaScript file in the <em>/src/js/</em> folder and any subfolders, and the <code>!src/js/pebble-js-app.js</code> says don’t include the <em>pebble-js-app.js</em> file, which is our output file.</p>
+
+<h2 id="generating-an-appinfoh-file">Generating an appinfo.h file</h2>
+
+<p>It can be very useful to have access to your <em>appinfo.json</em> data from your C code, like the name of the watchapp, the version or the list of appKeys, using Grunt this is a cinch. We’re going to use Grunt’s inbuilt templating facility to generate an <em>appinfo.h</em> file from a template. We’ll use the <a href="https://www.npmjs.com/package/grunt-contrib-copy">grunt-contrib-copy task</a> for this, go ahead and add it to your project:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>npm install grunt-contrib-copy --save-dev</code></pre></div>
+
+<p>Next update your Gruntfile to copy a <em>src/appinfo.tpl.h</em> file to <em>src/appinfo.h</em> and process the file as a Grunt template (for brevity I’ve replaced our previous config with …).</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">grunt</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="kd">var</span> <span class="nx">appConfig</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">info</span><span class="o">:</span> <span class="nx">grunt</span><span class="p">.</span><span class="nx">file</span><span class="p">.</span><span class="nx">readJSON</span><span class="p">(</span><span class="s1">&#39;appinfo.json&#39;</span><span class="p">)</span>
+  <span class="p">};</span>
+
+  <span class="nx">grunt</span><span class="p">.</span><span class="nx">initConfig</span><span class="p">({</span>
+
+    <span class="nx">config</span><span class="o">:</span> <span class="nx">appConfig</span><span class="p">,</span>
+
+    <span class="nx">copy</span><span class="o">:</span> <span class="p">{</span>
+      <span class="nx">main</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">options</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">process</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">content</span><span class="p">,</span> <span class="nx">path</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">grunt</span><span class="p">.</span><span class="nx">template</span><span class="p">.</span><span class="nx">process</span><span class="p">(</span><span class="nx">content</span><span class="p">);</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nx">files</span><span class="o">:</span> <span class="p">{</span>
+          <span class="s1">&#39;src/appinfo.h&#39;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;src/appinfo.tpl.h&#39;</span><span class="p">]</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+    <span class="p">},</span>
+
+    <span class="p">...</span>
+
+  <span class="p">});</span>
+
+  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-jshint&#39;</span><span class="p">);</span>
+  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-browserify&#39;</span><span class="p">);</span>
+  <span class="nx">grunt</span><span class="p">.</span><span class="nx">loadNpmTasks</span><span class="p">(</span><span class="s1">&#39;grunt-contrib-copy&#39;</span><span class="p">);</span>
+
+  <span class="nx">grunt</span><span class="p">.</span><span class="nx">registerTask</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;copy&#39;</span><span class="p">,</span> <span class="s1">&#39;jshint&#39;</span><span class="p">,</span> <span class="s1">&#39;browserify&#39;</span><span class="p">]);</span>
+
+<span class="p">};</span></code></pre></div>
+
+<p>Note the <code>appConfig</code>, we’re reading the <em>appinfo.json</em> file in so we can use the properties in our template file. Let’s create that template file in <em>src/appinfo.tpl.h</em></p>
+
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span class="cp">#pragma once</span>
+
+<span class="cp">#define LONG_NAME &quot;&lt;%= config.info.longName %&gt;&quot;</span>
+<span class="cp">#define VERSION_LABEL &quot;&lt;%= config.info.versionLabel %&gt;&quot;</span>
+<span class="cp">#define UUID &quot;&lt;%= config.info.uuid %&gt;&quot;</span>
+
+<span class="o">&lt;%</span> <span class="k">for</span> <span class="p">(</span><span class="n">prop</span> <span class="n">in</span> <span class="n">config</span><span class="p">.</span><span class="n">info</span><span class="p">.</span><span class="n">appKeys</span><span class="p">)</span> <span class="p">{</span> 
+  <span class="o">%&gt;</span><span class="err">#</span><span class="n">define</span> <span class="o">&lt;%=</span> <span class="n">prop</span> <span class="o">%&gt;</span> <span class="o">&lt;%=</span> <span class="n">config</span><span class="p">.</span><span class="n">info</span><span class="p">.</span><span class="n">appKeys</span><span class="p">[</span><span class="n">prop</span><span class="p">]</span> <span class="o">%&gt;</span>
+<span class="o">&lt;%</span> <span class="p">}</span> <span class="o">%&gt;</span></code></pre></div>
+
+<p>If you now run our <code>grunt</code> command, you should find a sparkly new <em>src/appinfo.h</em> file that looks something like this:</p>
+
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span class="cp">#pragma once</span>
+
+<span class="cp">#define LONG_NAME &quot;PHD&quot;</span>
+<span class="cp">#define VERSION_LABEL &quot;1.1&quot;</span>
+<span class="cp">#define UUID &quot;xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&quot;</span>
+
+<span class="cp">#define KEY_TEMPERATURE 0</span>
+<span class="cp">#define KEY_CONDITIONS 1</span>
+<span class="cp">#define KEY_SHOW_WEATHER 2</span></code></pre></div>
+
+<h3 id="managing-secret-keys">Managing secret keys</h3>
+
+<p>API keys and usernames / passwords should be left out of your code for security reasons, a simple way to manage these using our Grunt setup is to creating a <em>keys.json</em> file in the root of the project. For JavaScript files, if you’re using Browserify you can simply include the keys like so:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">keys</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;../../../keys.json&#39;</span><span class="p">);</span></code></pre></div>
+
+<p>And if you’re generating a <em>appinfo.h</em> file, you can load the keys into the Grunt appConfig:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">appConfig</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">info</span><span class="o">:</span> <span class="nx">grunt</span><span class="p">.</span><span class="nx">file</span><span class="p">.</span><span class="nx">readJSON</span><span class="p">(</span><span class="s1">&#39;appinfo.json&#39;</span><span class="p">),</span>
+    <span class="nx">keys</span><span class="o">:</span> <span class="nx">grunt</span><span class="p">.</span><span class="nx">file</span><span class="p">.</span><span class="nx">readJSON</span><span class="p">(</span><span class="s1">&#39;keys.json&#39;</span><span class="p">)</span>
+  <span class="p">};</span></code></pre></div>
+
+<p>And use these in your <em>appinfo.tpl.h</em> file. e.g.</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;%</span> <span class="k">for</span> <span class="p">(</span><span class="nx">prop</span> <span class="k">in</span> <span class="nx">config</span><span class="p">.</span><span class="nx">keys</span><span class="p">)</span> <span class="p">{</span> 
+  <span class="o">%&gt;</span><span class="err">#</span><span class="nx">define</span> <span class="nx">KEY_</span><span class="o">&lt;%=</span> <span class="nx">prop</span> <span class="o">%&gt;</span> <span class="o">&lt;%=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">keys</span><span class="p">[</span><span class="nx">prop</span><span class="p">]</span> <span class="o">%&gt;</span>
+<span class="o">&lt;%</span> <span class="p">}</span> <span class="o">%&gt;</span></code></pre></div>
+
+<h2 id="integrating-grunt-into-pebble-build">Integrating Grunt into pebble build</h2>
+
+<p>Now that we’ve got a sweet Grunt setup, it’d be awesome if we could run the <code>grunt</code> task every time we did a <code>pebble build</code>. Well it turns out that it’s pretty simple, we just need to modify the wscript file in your project root. Add <code>from sh import grunt</code> under the first import file statement, then call <code>grunt()</code> within the <code>def build(ctx):</code> task.</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">import</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span>
+<span class="n">from</span> <span class="n">sh</span> <span class="n">import</span> <span class="n">grunt</span>
+
+<span class="n">top</span> <span class="o">=</span> <span class="s1">&#39;.&#39;</span>
+<span class="n">out</span> <span class="o">=</span> <span class="s1">&#39;build&#39;</span>
+
+<span class="k">def</span> <span class="nf">options</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;pebble_sdk&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">configure</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;pebble_sdk&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="n">ctx</span><span class="p">):</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;pebble_sdk&#39;</span><span class="p">)</span>
+
+    <span class="n">grunt</span><span class="p">()</span>
+
+    <span class="n">build_worker</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;worker_src&#39;</span><span class="p">)</span>
+    <span class="n">binaries</span> <span class="o">=</span> <span class="o">[]</span>
+
+    <span class="k">for</span> <span class="nb">p</span> <span class="k">in</span> <span class="n">ctx</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">TARGET_PLATFORMS</span><span class="p">:</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">set_env</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">all_envs</span><span class="o">[</span><span class="nb">p</span><span class="o">]</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">set_group</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">PLATFORM_NAME</span><span class="p">)</span>
+        <span class="n">app_elf</span><span class="o">=</span><span class="s1">&#39;{}/pebble-app.elf&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">BUILD_DIR</span><span class="p">)</span>
+        <span class="n">ctx</span><span class="o">.</span><span class="n">pbl_program</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">ant_glob</span><span class="p">(</span><span class="s1">&#39;src/**/*.c&#39;</span><span class="p">),</span>
+        <span class="n">target</span><span class="o">=</span><span class="n">app_elf</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ss">build_worker</span><span class="p">:</span>
+            <span class="n">worker_elf</span><span class="o">=</span><span class="s1">&#39;{}/pebble-worker.elf&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ctx</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">BUILD_DIR</span><span class="p">)</span>
+            <span class="n">binaries</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;platform&#39;</span><span class="p">:</span> <span class="nb">p</span><span class="p">,</span> <span class="s1">&#39;app_elf&#39;</span><span class="p">:</span> <span class="n">app_elf</span><span class="p">,</span> <span class="s1">&#39;worker_elf&#39;</span><span class="p">:</span> <span class="n">worker_elf</span><span class="p">})</span>
+            <span class="n">ctx</span><span class="o">.</span><span class="n">pbl_worker</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">ant_glob</span><span class="p">(</span><span class="s1">&#39;worker_src/**/*.c&#39;</span><span class="p">),</span>
+            <span class="n">target</span><span class="o">=</span><span class="n">worker_elf</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">binaries</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;platform&#39;</span><span class="p">:</span> <span class="nb">p</span><span class="p">,</span> <span class="s1">&#39;app_elf&#39;</span><span class="p">:</span> <span class="n">app_elf</span><span class="p">})</span>
+
+    <span class="n">ctx</span><span class="o">.</span><span class="n">set_group</span><span class="p">(</span><span class="s1">&#39;bundle&#39;</span><span class="p">)</span>
+    <span class="n">ctx</span><span class="o">.</span><span class="n">pbl_bundle</span><span class="p">(</span><span class="n">binaries</span><span class="o">=</span><span class="n">binaries</span><span class="p">,</span> <span class="n">js</span><span class="o">=</span><span class="n">ctx</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">ant_glob</span><span class="p">(</span><span class="s1">&#39;src/js/pebble-js-app.js&#39;</span><span class="p">))</span></code></pre></div>
+
+<p>Also note on the last line we’re telling the build system to just use our single, bundled JavaScript file <em>src/js/pebble-js-app.js</em>.</p>
+
+<p>Now when you run <code>pebble build</code> it will call our Grunt system, lint and bundle the JavaScript and generate an <em>appinfo.h</em> file.</p>
+
+<p>All in a good day’s work.</p>
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tag/grunt" title="View posts tagged with grunt">#grunt</a></li>
+      
+        <li><a href="/tag/pebble" title="View posts tagged with pebble">#pebble</a></li>
+      
+    </ul>
+
+    
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <div class="comments">
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES * * */
+        var disqus_shortname = 'phdesign';
+        var disqus_identifier = 'using-grunt-with-pebble-build-to-create-scalable-pebblekit-javascript';
+        var disqus_title = 'Using Grunt with Pebble Build to create scalable PebbleKit JavaScript';
+        var disqus_url = 'http://phdesign.com.au/programming/using-grunt-with-pebble-build/';
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    </div><!-- end .comments -->
+
+  </div><!-- end .container -->
+</div>
+
+<div class="stripe alt">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/programming/github-pages-jekyll-and-grunt/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/programming/github-pages-jekyll-and-grunt/">Replace your CMS with GitHub Pages, Jekyll and Grunt</a></div>
+        
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+      </div>
+    </nav><!-- end .post_nav -->
+
+  </div><!-- end .container -->
+</div><!-- end .stripe.alt -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="/assets/js/main.js"></script>
+
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  var disqus_shortname = 'phdesign';
+
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function () {
+    var s = document.createElement('script'); s.async = true;
+    s.type = 'text/javascript';
+    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+  }());
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-2414000-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  </body>
+
+</html>
