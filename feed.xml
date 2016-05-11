@@ -6,9 +6,66 @@
 </description>
     <link>http://phdesign.com.au/</link>
     <atom:link href="http://phdesign.com.au/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 19 Nov 2015 19:37:26 +1100</pubDate>
-    <lastBuildDate>Thu, 19 Nov 2015 19:37:26 +1100</lastBuildDate>
+    <pubDate>Thu, 12 May 2016 08:31:39 +1000</pubDate>
+    <lastBuildDate>Thu, 12 May 2016 08:31:39 +1000</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Adding font-awesome (or any SVG) to Google Slides</title>
+        <description>&lt;p&gt;Getting images into Google Slides is simple right, just upload the image and voila. What if instead of images you want icons? You can always take a screenshot of an icon and upload that, but then you’re stuck with the size because resizing that thing is going to make it ugly. There’s a better way.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;It’s possible to import SVG files into Google Slides, and in SVG format you can resize it any way you want without loss of quality.
+Unfortunately you can’t import an SVG directly but you can import a similar format called WMF, so here’s the hoops you need to jump through to make it work.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Find an SVG you want to upload. All of the font-awesome icons are available in SVG format &lt;a href=&quot;https://github.com/encharm/Font-Awesome-SVG-PNG/tree/master/black/svg&quot;&gt;here&lt;/a&gt; so we’ll be using those.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/fa-in-google-icons.png&quot; alt=&quot;Preview of font-awesome icons&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Upload it to your Google Drive, right click on it in Google Drive and Open with CloudConvert.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/fa-in-google-openwith-cloudconvert.png&quot; alt=&quot;Open with CloudConvert from Google Drive&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;In CloudConvert, change your output format to WMF. Make sure the ‘Save file to my Google Drive’ is ticked and click Start Conversion.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/fa-in-google-cloudconvert.png&quot; alt=&quot;Convert to WMF with CloudConvert&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Hop back over to Google Drive, find your file that’s now been converted to WMF format and Open with Google Drawings.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/fa-in-google-openwith-drawings.png&quot; alt=&quot;Open with Google drawings from Google Drive&quot; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;From Google Drawings you can now copy the entire image and paste it into your Google Slide (or Google Doc).&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/fa-in-google-copy-drawings.png&quot; alt=&quot;Copy image in Google Drawings&quot; /&gt;
+&lt;img src=&quot;/assets/img/blog/fa-in-google-slide.png&quot; alt=&quot;Copy image in Google Drawings&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Yay for less text and more images in your presentations.&lt;/p&gt;
+</description>
+        <pubDate>Thu, 12 May 2016 00:00:00 +1000</pubDate>
+        <link>http://phdesign.com.au/general/adding-font-awesome-icons-to-google-slides/</link>
+        <guid isPermaLink="true">http://phdesign.com.au/general/adding-font-awesome-icons-to-google-slides/</guid>
+        
+        <category>googleslides</category>
+        
+        <category>fontawesome</category>
+        
+        <category>presentations</category>
+        
+        
+        <category>general</category>
+        
+      </item>
     
       <item>
         <title>Using Grunt with Pebble Build to create scalable PebbleKit JavaScript</title>
@@ -1112,50 +1169,6 @@ You can identify a getter call by testing arguments.length === 0, a setter call 
         <pubDate>Fri, 13 Apr 2012 00:00:00 +1000</pubDate>
         <link>http://phdesign.com.au/programming/tfs-undo-checkout-of-unedited-files/</link>
         <guid isPermaLink="true">http://phdesign.com.au/programming/tfs-undo-checkout-of-unedited-files/</guid>
-        
-        <category>tfs</category>
-        
-        
-        <category>programming</category>
-        
-      </item>
-    
-      <item>
-        <title>Create branch of modified working copy in TFS</title>
-        <description>&lt;p&gt;So you’ve been working on your code from Team Foundation Server (TFS), made changes then realised you should really have started a branch for it.&lt;/p&gt;
-
-&lt;p&gt;I couldn’t find a good tutorial anywhere for how to do this so here’s the best workflow I found.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Create a shelveset of your current working copy&lt;/strong&gt;&lt;br /&gt;
-File &amp;gt; Source Control &amp;gt; Shelve Pending Changes&lt;br /&gt;
-Uncheck ‘Preserve pending changes locally’. This will undo all your pending changes.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Create branch&lt;/strong&gt;&lt;br /&gt;
-One way to do this is go to the Team Explorer tab &amp;gt; Source Control. Right click on the branch, trunk or root folder and select Branching and Merging &amp;gt; Branch.&lt;br /&gt;
-In Branch From Version, select By Workspace Version.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Map branch to a working folder&lt;/strong&gt;&lt;br /&gt;
-Right click on new branch and select Map to Local Folder.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;Unshelve your changes to the new branch&lt;/strong&gt;&lt;br /&gt;
-To do this you need TFS Power Tools ‘unshelve’. More info here:&lt;br /&gt;
-&lt;a href=&quot;http://geekswithblogs.net/TarunArora/archive/2011/06/06/unshelve-shelveset-created-from-one-branch-to-another.aspx&quot;&gt;http://geekswithblogs.net/TarunArora/archive/2011/06/06/unshelve-shelveset-created-from-one-branch-to-another.aspx&lt;/a&gt;&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;You can can now check in your changes to the new branch&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 29 Mar 2012 00:00:00 +1100</pubDate>
-        <link>http://phdesign.com.au/programming/create-branch-of-modified-working-copy-in-tfs/</link>
-        <guid isPermaLink="true">http://phdesign.com.au/programming/create-branch-of-modified-working-copy-in-tfs/</guid>
         
         <category>tfs</category>
         

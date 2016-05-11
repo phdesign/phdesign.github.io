@@ -14,7 +14,7 @@
   <meta name="author" content="Paul Heasley">
   
 
-  <title>TFS undo checkout of unedited files | phdesign</title>
+  <title>presentations | phdesign</title>
 
   <!-- Google Web Fonts -->
   <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
@@ -37,11 +37,11 @@
   <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
 
   <!-- Tell Google this page is under test - index original version -->
-  <link rel="canonical" href="http://www.phdesign.com.au/programming/tfs-undo-checkout-of-unedited-files/">
+  <link rel="canonical" href="http://www.phdesign.com.au/tag/presentations/">
 
 </head>
 
-  <body class="post">
+  <body class="archive">
 
     <div class="header-background-image"></div>
     <header role="banner">
@@ -98,108 +98,30 @@
     </header>
 
     <main class="content">
-      <article>
-  <div class="container">
+      <div class="container">
 
-    
+  <div class="meta-label-lg">
+    Showing 1 posts  tagged with 
+    <span class="meta-value">#presentations</span>
+  </div><!-- end .meta-label-lg -->
 
-    <div class="date-stamp">
-      <div class="month">Apr</div>
-      <div class="day">13</div>
-    </div><!-- end .date-stamp -->
-
-    <h2 class="post-header">TFS undo checkout of unedited files</h2>
-
-    <div class="meta-label">
-      posted on <span class="meta-value muted">13 April 2012</span>
-      
-        in <span class="meta-value"><a href="/programming">programming</a></span>
-      
-      with <span class="meta-value"><a data-disqus-identifier="tfs-undo-checkout-of-unedited-files" href="#disqus_thread">0 Comments</a></span>
-    </div><!-- end .meta-label -->
-    <br />
-
-    
-    
-    
-    
-      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 4 years old and the content may no longer be relevant.</p>
-    
-
-    <p>It bugs me when developers check in files to TFS that haven’t been modified. It’s easy to do, you open a file, edit it, change your mind and ctrl-z it. Now you have a checked out file with no changes and when you do your next check in you’ll probably check that file in too, unless you’re really on the ball and compare each file manually first. TFS makes no distinction between checked in files that were modified and those that weren’t, which makes the job of reviewing code that much harder.</p>
-
-<!--more-->
-
-<p>Now I’ve found the resolution and it’s so easy it’s stupid, just <strong>undo your changes</strong>. That’s right, go on, right click your solution and select Undo Pending Changes</p>
-
-<p><img src="/assets/img/blog/tfs-undo-unedited-1-crop.png" alt="Selecting Undo Pending Changes from the right click menu in Solution Explorer" /></p>
-
-<p>You’ll see see the Undo Pending Changes dialog, <strong>make sure you only select edited files</strong> (e.g. uncheck add / delete actions), then go ahead and click Undo Changes.</p>
-
-<p>Now the catch is TFS will go ahead and undo the checkout for any unmodified files, when it hits a modified file it’ll prompt you with Confirm Undo Checkout, select <strong>No to All</strong>.</p>
-
-<p><img src="/assets/img/blog/tfs-undo-unedited-2.png" alt="Confirm Undo Changes prompt" /></p>
-
-<p>TFS will continue to undo all unmodified files but leave your modified files alone, now you’re left with only your modified files checked out. Hooraah.</p>
-
-
-
-    <ul class="post-tags">
-      
-        <li><a href="/tag/tfs" title="View posts tagged with tfs">#tfs</a></li>
-      
-    </ul>
-
-    
-
-  </div><!-- end .container -->
-</article>
-
-<div class="stripe">
-  <div class="container">
-
-    <div class="comments">
-      <div id="disqus_thread"></div>
-      <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES * * */
-        var disqus_shortname = 'phdesign';
-        var disqus_identifier = 'tfs-undo-checkout-of-unedited-files';
-        var disqus_title = 'TFS undo checkout of unedited files';
-        var disqus_url = 'http://phdesign.com.au/programming/tfs-undo-checkout-of-unedited-files/';
-
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-    </div><!-- end .comments -->
-
-  </div><!-- end .container -->
 </div>
 
-<div class="stripe alt">
-  <div class="container">
+  <article>
+    <div class="container">
 
-    <nav class="row pager">
-      <div class="previous col-xs-6 col-sm-4">
+      <h3><a href="/general/adding-font-awesome-icons-to-google-slides/" title="Read full article">Adding font-awesome (or any SVG) to Google Slides</a></h3>
+      <div class="meta-label">
+        posted on <span class="meta-value muted">12 May 2016</span>
         
-          <div class="meta-label"><a href="/programming/create-branch-of-modified-working-copy-in-tfs/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
-          <div class="meta-value"><a href="/programming/create-branch-of-modified-working-copy-in-tfs/">Create branch of modified working copy in TFS</a></div>
+          in <span class="meta-value"><a href="/general">general</a></span>
         
-      </div>
-      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
-        
-          <div class="meta-label"><a href="/programming/backbone-spark/">Next post <span aria-hidden="true">&raquo;</span></a></div>
-          <div class="meta-value"><a href="/programming/backbone-spark/">Backbone.Spark: Ember style computed properties for Backbone.js</a></div>
-        
-      </div>
-    </nav><!-- end .post_nav -->
+        with <span class="meta-value"><a data-disqus-identifier="adding-font-awesome-or-any-svg-to-google-slides" href="#disqus_thread">0 Comments</a></span>
+      </div><!-- end .meta-label -->
 
-  </div><!-- end .container -->
-</div><!-- end .stripe.alt -->
+    </div>
+  </article>
+
 
     </main><!-- end .content -->
 

@@ -14,7 +14,7 @@
   <meta name="author" content="Paul Heasley">
   
 
-  <title>TFS undo checkout of unedited files | phdesign</title>
+  <title>Adding font-awesome (or any SVG) to Google Slides | phdesign</title>
 
   <!-- Google Web Fonts -->
   <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
@@ -37,7 +37,7 @@
   <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
 
   <!-- Tell Google this page is under test - index original version -->
-  <link rel="canonical" href="http://www.phdesign.com.au/programming/tfs-undo-checkout-of-unedited-files/">
+  <link rel="canonical" href="http://www.phdesign.com.au/general/adding-font-awesome-icons-to-google-slides/">
 
 </head>
 
@@ -104,18 +104,18 @@
     
 
     <div class="date-stamp">
-      <div class="month">Apr</div>
-      <div class="day">13</div>
+      <div class="month">May</div>
+      <div class="day">12</div>
     </div><!-- end .date-stamp -->
 
-    <h2 class="post-header">TFS undo checkout of unedited files</h2>
+    <h2 class="post-header">Adding font-awesome (or any SVG) to Google Slides</h2>
 
     <div class="meta-label">
-      posted on <span class="meta-value muted">13 April 2012</span>
+      posted on <span class="meta-value muted">12 May 2016</span>
       
-        in <span class="meta-value"><a href="/programming">programming</a></span>
+        in <span class="meta-value"><a href="/general">general</a></span>
       
-      with <span class="meta-value"><a data-disqus-identifier="tfs-undo-checkout-of-unedited-files" href="#disqus_thread">0 Comments</a></span>
+      with <span class="meta-value"><a data-disqus-identifier="adding-font-awesome-or-any-svg-to-google-slides" href="#disqus_thread">0 Comments</a></span>
     </div><!-- end .meta-label -->
     <br />
 
@@ -123,30 +123,55 @@
     
     
     
-      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 4 years old and the content may no longer be relevant.</p>
-    
 
-    <p>It bugs me when developers check in files to TFS that haven’t been modified. It’s easy to do, you open a file, edit it, change your mind and ctrl-z it. Now you have a checked out file with no changes and when you do your next check in you’ll probably check that file in too, unless you’re really on the ball and compare each file manually first. TFS makes no distinction between checked in files that were modified and those that weren’t, which makes the job of reviewing code that much harder.</p>
+    <p>Getting images into Google Slides is simple right, just upload the image and voila. What if instead of images you want icons? You can always take a screenshot of an icon and upload that, but then you’re stuck with the size because resizing that thing is going to make it ugly. There’s a better way.</p>
 
 <!--more-->
 
-<p>Now I’ve found the resolution and it’s so easy it’s stupid, just <strong>undo your changes</strong>. That’s right, go on, right click your solution and select Undo Pending Changes</p>
+<p>It’s possible to import SVG files into Google Slides, and in SVG format you can resize it any way you want without loss of quality.
+Unfortunately you can’t import an SVG directly but you can import a similar format called WMF, so here’s the hoops you need to jump through to make it work.</p>
 
-<p><img src="/assets/img/blog/tfs-undo-unedited-1-crop.png" alt="Selecting Undo Pending Changes from the right click menu in Solution Explorer" /></p>
+<ol>
+  <li>Find an SVG you want to upload. All of the font-awesome icons are available in SVG format <a href="https://github.com/encharm/Font-Awesome-SVG-PNG/tree/master/black/svg">here</a> so we’ll be using those.</li>
+</ol>
 
-<p>You’ll see see the Undo Pending Changes dialog, <strong>make sure you only select edited files</strong> (e.g. uncheck add / delete actions), then go ahead and click Undo Changes.</p>
+<p><img src="/assets/img/blog/fa-in-google-icons.png" alt="Preview of font-awesome icons" /></p>
 
-<p>Now the catch is TFS will go ahead and undo the checkout for any unmodified files, when it hits a modified file it’ll prompt you with Confirm Undo Checkout, select <strong>No to All</strong>.</p>
+<ol>
+  <li>Upload it to your Google Drive, right click on it in Google Drive and Open with CloudConvert.</li>
+</ol>
 
-<p><img src="/assets/img/blog/tfs-undo-unedited-2.png" alt="Confirm Undo Changes prompt" /></p>
+<p><img src="/assets/img/blog/fa-in-google-openwith-cloudconvert.png" alt="Open with CloudConvert from Google Drive" /></p>
 
-<p>TFS will continue to undo all unmodified files but leave your modified files alone, now you’re left with only your modified files checked out. Hooraah.</p>
+<ol>
+  <li>In CloudConvert, change your output format to WMF. Make sure the ‘Save file to my Google Drive’ is ticked and click Start Conversion.</li>
+</ol>
 
+<p><img src="/assets/img/blog/fa-in-google-cloudconvert.png" alt="Convert to WMF with CloudConvert" /></p>
+
+<ol>
+  <li>Hop back over to Google Drive, find your file that’s now been converted to WMF format and Open with Google Drawings.</li>
+</ol>
+
+<p><img src="/assets/img/blog/fa-in-google-openwith-drawings.png" alt="Open with Google drawings from Google Drive" /></p>
+
+<ol>
+  <li>From Google Drawings you can now copy the entire image and paste it into your Google Slide (or Google Doc).</li>
+</ol>
+
+<p><img src="/assets/img/blog/fa-in-google-copy-drawings.png" alt="Copy image in Google Drawings" />
+<img src="/assets/img/blog/fa-in-google-slide.png" alt="Copy image in Google Drawings" /></p>
+
+<p>Yay for less text and more images in your presentations.</p>
 
 
     <ul class="post-tags">
       
-        <li><a href="/tag/tfs" title="View posts tagged with tfs">#tfs</a></li>
+        <li><a href="/tag/googleslides" title="View posts tagged with googleslides">#googleslides</a></li>
+      
+        <li><a href="/tag/fontawesome" title="View posts tagged with fontawesome">#fontawesome</a></li>
+      
+        <li><a href="/tag/presentations" title="View posts tagged with presentations">#presentations</a></li>
       
     </ul>
 
@@ -163,9 +188,9 @@
       <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES * * */
         var disqus_shortname = 'phdesign';
-        var disqus_identifier = 'tfs-undo-checkout-of-unedited-files';
-        var disqus_title = 'TFS undo checkout of unedited files';
-        var disqus_url = 'http://phdesign.com.au/programming/tfs-undo-checkout-of-unedited-files/';
+        var disqus_identifier = 'adding-font-awesome-or-any-svg-to-google-slides';
+        var disqus_title = 'Adding font-awesome (or any SVG) to Google Slides';
+        var disqus_url = 'http://phdesign.com.au/general/adding-font-awesome-icons-to-google-slides/';
 
         /* * * DON'T EDIT BELOW THIS LINE * * */
         (function() {
@@ -186,14 +211,11 @@
     <nav class="row pager">
       <div class="previous col-xs-6 col-sm-4">
         
-          <div class="meta-label"><a href="/programming/create-branch-of-modified-working-copy-in-tfs/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
-          <div class="meta-value"><a href="/programming/create-branch-of-modified-working-copy-in-tfs/">Create branch of modified working copy in TFS</a></div>
+          <div class="meta-label"><a href="/programming/using-grunt-with-pebble-build/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/programming/using-grunt-with-pebble-build/">Using Grunt with Pebble Build to create scalable PebbleKit JavaScript</a></div>
         
       </div>
       <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
-        
-          <div class="meta-label"><a href="/programming/backbone-spark/">Next post <span aria-hidden="true">&raquo;</span></a></div>
-          <div class="meta-value"><a href="/programming/backbone-spark/">Backbone.Spark: Ember style computed properties for Backbone.js</a></div>
         
       </div>
     </nav><!-- end .post_nav -->
