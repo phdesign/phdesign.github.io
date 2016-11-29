@@ -138,7 +138,7 @@
 
 <ul>
   <li>For each address field you need to validate use a CustomValidator control, and in the ClientValidationFunction first check to see if the country is set to Australia and if it’s not then consider any response for this control as valid. The problem with this is you will have to recrete all of the validator functionality in your client validation function, which means more work.</li>
-  <li>Use standard validator controls for the address fields, and enable or disable them in javascript.  The code you call to enable or disable the validators could be a CustomValidation control on the country field, or a standard javascript call when the user selects a country. If the Page_IsValid variable is set to true then assume that the page has just been loaded and no validation has occured, in this case just set the validator controls enabled property so it will be validated (or not) when the user submits the form.<br />
+  <li>Use standard validator controls for the address fields, and enable or disable them in javascript.  The code you call to enable or disable the validators could be a CustomValidation control on the country field, or a standard javascript call when the user selects a country. If the Page_IsValid variable is set to true then assume that the page has just been loaded and no validation has occured, in this case just set the validator controls enabled property so it will be validated (or not) when the user submits the form.  <br />
 If Page_IsValid is false then assume the user has tried to submit but failed, in this case we expect validation messages to show / hide as the user changes data on the form - this is the normal ASP.Net behaviour.</li>
 </ul>
 

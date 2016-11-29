@@ -136,7 +136,7 @@
 
 <!--more-->
 
-<p>Which will just return any email addresses that are duplicates and the count. But what if you want to list all the original items that are duplicates? If you just ‘select g’ in the example above you’ll end up with an IEnumerable&lt;IEnumerable<submission>&gt;, not what we want. This is where SelectMany() is perfect, it will flatten our collection of a collection back down to a single collection, perfect!</submission></p>
+<p>Which will just return any email addresses that are duplicates and the count. But what if you want to list all the original items that are duplicates? If you just ‘select g’ in the example above you’ll end up with an IEnumerable&lt;IEnumerable<Submission>&gt;, not what we want. This is where SelectMany() is perfect, it will flatten our collection of a collection back down to a single collection, perfect!</Submission></p>
 
 <div class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="n">_filteredSubmissions</span> <span class="p">=</span> <span class="p">(</span><span class="k">from</span> <span class="n">s</span> <span class="k">in</span> <span class="n">_filteredSubmissions</span>
                         <span class="k">group</span> <span class="n">s</span> <span class="n">by</span> <span class="n">s</span><span class="p">.</span><span class="n">Email</span>
@@ -168,7 +168,7 @@
          <span class="k">select</span> <span class="n">g</span><span class="p">).</span><span class="n">SelectMany</span><span class="p">(</span><span class="n">g</span> <span class="p">=&gt;</span> <span class="n">g</span><span class="p">)</span>
     <span class="p">);</span></code></pre></div>
 
-<p><code> </code><br />
+<p><code> </code>  <br />
 Note that I also stuck in a check for blank emails, I don’t consider a Submission the same just because they both have no email address, I didn’t do this on the FirstName or LastName fields because I know they are mandatory in my system.</p>
 
 

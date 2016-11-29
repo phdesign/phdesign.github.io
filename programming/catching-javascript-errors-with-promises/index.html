@@ -123,6 +123,8 @@
     
     
     
+      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 2 years old and the content may no longer be relevant.</p>
+    
 
     <p>If your JS function needs to return a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="About Promises by the Mozilla Developer Network">Promise</a> but doesn’t do any asynchronous activity, you may be tempted to use the static Promise.resolve() function rather than instantiating a new Promise object. Be aware that doing this will change the way javascript errors are dealt with.</p>
 
@@ -139,7 +141,7 @@
   <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span> <span class="p">})</span>
   <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;there was an error&#39;</span><span class="p">);</span> <span class="p">});</span></code></pre></div>
 
-<p>Will result in seeing the error ‘new error’ logged by the console. The promise then / catch functions are never called.
+<p>Will result in seeing the error ‘new error’ logged by the console. The promise then / catch functions are never called.<br />
 Whereas:</p>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>

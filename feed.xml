@@ -6,9 +6,108 @@
 </description>
     <link>http://phdesign.com.au/</link>
     <atom:link href="http://phdesign.com.au/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 12 May 2016 08:31:39 +1000</pubDate>
-    <lastBuildDate>Thu, 12 May 2016 08:31:39 +1000</lastBuildDate>
+    <pubDate>Tue, 29 Nov 2016 23:02:38 +1100</pubDate>
+    <lastBuildDate>Tue, 29 Nov 2016 23:02:38 +1100</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Increment project version from Travis</title>
+        <description>&lt;p&gt;Can you effectively use &lt;a href=&quot;https://github.com&quot;&gt;GitHub&lt;/a&gt; and &lt;a href=&quot;https://travis-ci.org&quot;&gt;Travis&lt;/a&gt; for continuous delivery? You sure can, but managing the version number can be difficult, here’s a way to automatically increment the patch number on every deployment from Travis.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;We use a &lt;a href=&quot;https://gist.github.com/seshness/3943237&quot;&gt;shared repository model&lt;/a&gt; for our JavaScript project on GitHub, the workflow goes something like this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;The &lt;code&gt;master&lt;/code&gt; branch is always the currently deployed production code&lt;/li&gt;
+  &lt;li&gt;When someone wants to add a new feature or fix a bug, they create a branch (both locally and on GitHub)&lt;/li&gt;
+  &lt;li&gt;Travis builds all commits to all branches and runs the continuous integration test suite&lt;/li&gt;
+  &lt;li&gt;Once development is complete and tests pass they open a Pull Request&lt;/li&gt;
+  &lt;li&gt;Once someone has approved the Pull Request (we love the new functionality - thanks GitHub!), they then merge and squash onto &lt;code&gt;master&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Travis builds all commits onto the &lt;code&gt;master&lt;/code&gt; branch, if tests pass it deploys the package to a private &lt;a href=&quot;https://www.npmjs.com/&quot;&gt;npm&lt;/a&gt; repository and deploys the artefacts to S3&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The trick is that the version number in the &lt;code&gt;package.json&lt;/code&gt; file must be updated on every commit to master otherwise npm will reject it (rightly so). We used to manually update this before merging the Pull Request by doing an &lt;code&gt;npm version patch&lt;/code&gt;, but people forget to do this or they do it too early and get merge conflicts.&lt;/p&gt;
+
+&lt;p&gt;We now automate incrementing the version by using git tags. Before Travis builds the project, it pulls the latest git tag, then compares the major and minor version (x.x.0) to what’s in &lt;code&gt;package.json&lt;/code&gt;. If they match it increments the patch version (0.0.x) and creates a new git tag and updates the package.json file, if they don’t match we assume the developer has incremented either the minor or major version and so it resets the patch number to 0. At the end of a successful build on the master branch, the tag is pushed back to GitHub. This ensures a nice history of every commit on master having a git tag of the version number, which supports our continuous delivery workflow.&lt;/p&gt;
+
+&lt;p&gt;Here’s the relevant &lt;code&gt;.travis.yaml&lt;/code&gt; entries to make this work:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;c1&quot;&gt;# This is needed to avoid building all the tags pushed by travis&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;branches&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;except&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+&lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;/^v?\d+\.\d+\.\d+$/&lt;/span&gt;
+
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;before_install&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Create a git tag of the new version to use&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# If package.json major and minor versions match last tag, then increment last tag. Else use package.json major.minor.0.&lt;/span&gt;
+&lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;sed&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-nE&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;s/^[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;\\t]*\&amp;quot;version\&amp;quot;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;\&amp;quot;([0-9]{1,}\\.[0-9]{1,}\\.)[0-9x]{1,}\&amp;quot;,$/\\1/p&amp;#39;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;package.json;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;git&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;describe&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;--abbrev=0&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;sed&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-E&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;s/^v([0-9]{1,}\\.[0-9]{1,}\\.)([0-9]{1,})$/\\1&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;\\2/g&amp;#39;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;tr&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;\&amp;quot;\\n\&amp;quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;\&amp;quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;\&amp;quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;awk&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;{printf($1==$2?\&amp;quot;v\&amp;quot;$2$3+1:\&amp;quot;v\&amp;quot;$1\&amp;quot;0\&amp;quot;)}&amp;#39;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;xargs&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-I&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;{}&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;git&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;tag&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-a&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;{}&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-m&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;\&amp;quot;{}\&amp;quot;\n&amp;quot;&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# Update package.json based on the git tag we just created&lt;/span&gt;
+&lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;npm --no-git-tag-version version from-git&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Push the new tag back to GitHub but only if on the master branch&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;deploy&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+&lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;provider&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;script&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;skip_cleanup&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;true&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;git push --tags&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;branch&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;master&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Let’s decompose that bash one-liner:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Read the current major and minor version from package.json (e.g. &lt;code&gt;1.2&lt;/code&gt;)&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt; sed -nE &#39;s/^[ \\t]*&quot;version&quot;: &quot;([0-9]{1,}\\.[0-9]{1,}\\.)[0-9x]{1,}&quot;,$/\\1/p&#39; package.json;
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Get the latest git tag (e.g. &lt;code&gt;v1.2.43&lt;/code&gt;)&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt; git describe --abbrev=0
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Split out the major and minor version and the patch version into separate parts (e.g. &lt;code&gt;1.2 43&lt;/code&gt;)&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt; sed -E &#39;s/^v([0-9]{1,}\\.[0-9]{1,}\\.)([0-9]{1,})$/\\1 \\2/g&#39;;
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Take the output of 1. and 2. and create 3 space separated parts which are (in order) &lt;code&gt;&amp;lt;major.minor from package.json&amp;gt; &amp;lt;major.minor from git tag&amp;gt; &amp;lt;patch from git tag&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt; tr &quot;\\n&quot; &quot; &quot;
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If part 1 and 2 match, just increment the patch version, otherwise use major.minor from package.json and reset patch to 0.&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt; awk &#39;{printf($1==$2?&quot;v&quot;$2$3+1:&quot;v&quot;$1&quot;0&quot;)}&#39;
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Pipe the resulting version number into a git tag (e.g. &lt;code&gt;v1.2.44&lt;/code&gt;)&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt; xargs -I {} git tag -a {} -m &quot;{}&quot;
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Tue, 29 Nov 2016 00:00:00 +1100</pubDate>
+        <link>http://phdesign.com.au/programming/auto-increment-project-version-from-travis/</link>
+        <guid isPermaLink="true">http://phdesign.com.au/programming/auto-increment-project-version-from-travis/</guid>
+        
+        <category>travis</category>
+        
+        <category>github</category>
+        
+        <category>npm</category>
+        
+        
+        <category>programming</category>
+        
+      </item>
     
       <item>
         <title>Adding font-awesome (or any SVG) to Google Slides</title>
@@ -16,7 +115,7 @@
 
 &lt;!--more--&gt;
 
-&lt;p&gt;It’s possible to import SVG files into Google Slides, and in SVG format you can resize it any way you want without loss of quality.
+&lt;p&gt;It’s possible to import SVG files into Google Slides, and in SVG format you can resize it any way you want without loss of quality.&lt;br /&gt;
 Unfortunately you can’t import an SVG directly but you can import a similar format called WMF, so here’s the hoops you need to jump through to make it work.&lt;/p&gt;
 
 &lt;ol&gt;
@@ -47,7 +146,7 @@ Unfortunately you can’t import an SVG directly but you can import a similar fo
   &lt;li&gt;From Google Drawings you can now copy the entire image and paste it into your Google Slide (or Google Doc).&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/img/blog/fa-in-google-copy-drawings.png&quot; alt=&quot;Copy image in Google Drawings&quot; /&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/fa-in-google-copy-drawings.png&quot; alt=&quot;Copy image in Google Drawings&quot; /&gt;&lt;br /&gt;
 &lt;img src=&quot;/assets/img/blog/fa-in-google-slide.png&quot; alt=&quot;Copy image in Google Drawings&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Yay for less text and more images in your presentations.&lt;/p&gt;
@@ -79,7 +178,7 @@ Unfortunately you can’t import an SVG directly but you can import a similar fo
 
 &lt;h2 id=&quot;setting-up-grunt&quot;&gt;Setting up Grunt&lt;/h2&gt;
 
-&lt;p&gt;To get started with Grunt, you’ll need to install Node and NPM (Node Package Manager). If you don’t already have it installed, get it from &lt;a href=&quot;http://nodejs.org/&quot;&gt;Nodejs&lt;/a&gt;.
+&lt;p&gt;To get started with Grunt, you’ll need to install Node and NPM (Node Package Manager). If you don’t already have it installed, get it from &lt;a href=&quot;http://nodejs.org/&quot;&gt;Nodejs&lt;/a&gt;.&lt;br /&gt;
 With Node installed, go to your pebble project directory and type&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm init&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -94,7 +193,7 @@ With Node installed, go to your pebble project directory and type&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;npm install grunt --save-dev&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Notice that this time we didn’t pass the &lt;code&gt;-g&lt;/code&gt; flag to install it globally, so by default it will be added as a local dependency. Open the &lt;em&gt;package.json&lt;/em&gt; file and note that grunt is now included under devDependencies. All of our dependencies will be dev dependencies (specified by the &lt;code&gt;--save-dev&lt;/code&gt; flag), simply put we’re saying that to build the project you’ll need this dependency, but the compiled app doesn’t depend on any node packages to run. 
+&lt;p&gt;Notice that this time we didn’t pass the &lt;code&gt;-g&lt;/code&gt; flag to install it globally, so by default it will be added as a local dependency. Open the &lt;em&gt;package.json&lt;/em&gt; file and note that grunt is now included under devDependencies. All of our dependencies will be dev dependencies (specified by the &lt;code&gt;--save-dev&lt;/code&gt; flag), simply put we’re saying that to build the project you’ll need this dependency, but the compiled app doesn’t depend on any node packages to run. &lt;br /&gt;
 Also take notice of the &lt;em&gt;node_modules&lt;/em&gt; folder that’s appeared in your project directory, this is where npm stores the files for any project dependencies. Go ahead and add this folder to your &lt;em&gt;.gitignore&lt;/em&gt; / &lt;em&gt;.cvsignore&lt;/em&gt; file, you don’t want it checked into source control.&lt;/p&gt;
 
 &lt;p&gt;Next create a new &lt;em&gt;Gruntfile.js&lt;/em&gt; file in the root of your project directory, this file will define the tasks we want to run when building the watchapp. Add this empty Grunt configuration to the new file:&lt;/p&gt;
@@ -796,7 +895,7 @@ Configuration file: /Users/paul/Projects/demo/_config.yml
   &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
   &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;there was an error&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Will result in seeing the error ‘new error’ logged by the console. The promise then / catch functions are never called.
+&lt;p&gt;Will result in seeing the error ‘new error’ logged by the console. The promise then / catch functions are never called.&lt;br /&gt;
 Whereas:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -994,17 +1093,17 @@ Whereas:&lt;/p&gt;
 &lt;!--more--&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;“Individuals and interactions over processes and tools”&lt;br /&gt;
+  &lt;p&gt;“Individuals and interactions over processes and tools”  &lt;br /&gt;
 - &lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;Manifestio for Agile Software&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;“Simplicity–the art of maximizing the amount of work not done–is essential.”&lt;br /&gt;
+  &lt;p&gt;“Simplicity–the art of maximizing the amount of work not done–is essential.”  &lt;br /&gt;
 - &lt;a href=&quot;http://agilemanifesto.org/principles.html&quot;&gt;Principles behind the Agile Manifesto&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;blockquote&gt;
-  &lt;p&gt;“Many time management techniques fail because they subject the people who use them to a higher level of added complexity with respect to the intrinsic complexity of the task at hand.”&lt;br /&gt;
+  &lt;p&gt;“Many time management techniques fail because they subject the people who use them to a higher level of added complexity with respect to the intrinsic complexity of the task at hand.”  &lt;br /&gt;
 - &lt;a href=&quot;http://pomodorotechnique.com/&quot;&gt;The Pomodoro Technique&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 
@@ -1066,7 +1165,7 @@ Whereas:&lt;/p&gt;
 
 &lt;h4 id=&quot;basic-usage&quot;&gt;Basic usage&lt;/h4&gt;
 
-&lt;p&gt;To use, declare a new property object called sparks and add function properties for the ‘getter’ accessors.&lt;br /&gt;
+&lt;p&gt;To use, declare a new property object called sparks and add function properties for the ‘getter’ accessors.  &lt;br /&gt;
 Call dependsOn with the spark to specify which attributes this spark depends on. Whenever the dependent attribute(s) are changed, a change event will also be triggered for this spark.&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;App&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;File&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Backbone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Spark&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;extend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
@@ -1091,12 +1190,12 @@ Call dependsOn with the spark to specify which attributes this spark depends on.
 
 &lt;h4 id=&quot;using-setters&quot;&gt;Using setters&lt;/h4&gt;
 
-&lt;p&gt;When calling set on a spark, the set function arguments are passed to the spark function.&lt;br /&gt;
+&lt;p&gt;When calling set on a spark, the set function arguments are passed to the spark function.  &lt;br /&gt;
 You can identify a getter call by testing arguments.length === 0, a setter call has the following arguments:&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;key:&lt;/strong&gt; The name of the spark property.&lt;br /&gt;
-&lt;strong&gt;value:&lt;/strong&gt; The new value to be set.&lt;br /&gt;
-&lt;strong&gt;options:&lt;/strong&gt; Any options passed to the set call, including whether this call should raise events or not (silent).&lt;br /&gt;
+&lt;p&gt;&lt;strong&gt;key:&lt;/strong&gt; The name of the spark property.  &lt;br /&gt;
+&lt;strong&gt;value:&lt;/strong&gt; The new value to be set.  &lt;br /&gt;
+&lt;strong&gt;options:&lt;/strong&gt; Any options passed to the set call, including whether this call should raise events or not (silent).  &lt;br /&gt;
 &lt;strong&gt;set:&lt;/strong&gt; The base class set function.&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;App&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;File&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Backbone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Spark&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;extend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
@@ -1141,36 +1240,6 @@ You can identify a getter call by testing arguments.length === 0, a setter call 
         <category>backbonejs</category>
         
         <category>javascript</category>
-        
-        
-        <category>programming</category>
-        
-      </item>
-    
-      <item>
-        <title>TFS undo checkout of unedited files</title>
-        <description>&lt;p&gt;It bugs me when developers check in files to TFS that haven’t been modified. It’s easy to do, you open a file, edit it, change your mind and ctrl-z it. Now you have a checked out file with no changes and when you do your next check in you’ll probably check that file in too, unless you’re really on the ball and compare each file manually first. TFS makes no distinction between checked in files that were modified and those that weren’t, which makes the job of reviewing code that much harder.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;Now I’ve found the resolution and it’s so easy it’s stupid, just &lt;strong&gt;undo your changes&lt;/strong&gt;. That’s right, go on, right click your solution and select Undo Pending Changes&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/img/blog/tfs-undo-unedited-1-crop.png&quot; alt=&quot;Selecting Undo Pending Changes from the right click menu in Solution Explorer&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;You’ll see see the Undo Pending Changes dialog, &lt;strong&gt;make sure you only select edited files&lt;/strong&gt; (e.g. uncheck add / delete actions), then go ahead and click Undo Changes.&lt;/p&gt;
-
-&lt;p&gt;Now the catch is TFS will go ahead and undo the checkout for any unmodified files, when it hits a modified file it’ll prompt you with Confirm Undo Checkout, select &lt;strong&gt;No to All&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/img/blog/tfs-undo-unedited-2.png&quot; alt=&quot;Confirm Undo Changes prompt&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;TFS will continue to undo all unmodified files but leave your modified files alone, now you’re left with only your modified files checked out. Hooraah.&lt;/p&gt;
-
-</description>
-        <pubDate>Fri, 13 Apr 2012 00:00:00 +1000</pubDate>
-        <link>http://phdesign.com.au/programming/tfs-undo-checkout-of-unedited-files/</link>
-        <guid isPermaLink="true">http://phdesign.com.au/programming/tfs-undo-checkout-of-unedited-files/</guid>
-        
-        <category>tfs</category>
         
         
         <category>programming</category>

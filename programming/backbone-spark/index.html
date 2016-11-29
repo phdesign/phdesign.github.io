@@ -123,7 +123,7 @@
     
     
     
-      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 3 years old and the content may no longer be relevant.</p>
+      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 4 years old and the content may no longer be relevant.</p>
     
 
     <p>Backbone.Spark provides computed property support for Backbone.js, the goal of the extension is to make computed properties behave in the same way as a normal attribute so your other code doesn’t need to know the difference.</p>
@@ -152,7 +152,7 @@
 
 <h4 id="basic-usage">Basic usage</h4>
 
-<p>To use, declare a new property object called sparks and add function properties for the ‘getter’ accessors.<br />
+<p>To use, declare a new property object called sparks and add function properties for the ‘getter’ accessors.  <br />
 Call dependsOn with the spark to specify which attributes this spark depends on. Whenever the dependent attribute(s) are changed, a change event will also be triggered for this spark.</p>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">App</span><span class="p">.</span><span class="nx">File</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Spark</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
@@ -177,12 +177,12 @@ Call dependsOn with the spark to specify which attributes this spark depends on.
 
 <h4 id="using-setters">Using setters</h4>
 
-<p>When calling set on a spark, the set function arguments are passed to the spark function.<br />
+<p>When calling set on a spark, the set function arguments are passed to the spark function.  <br />
 You can identify a getter call by testing arguments.length === 0, a setter call has the following arguments:</p>
 
-<p><strong>key:</strong> The name of the spark property.<br />
-<strong>value:</strong> The new value to be set.<br />
-<strong>options:</strong> Any options passed to the set call, including whether this call should raise events or not (silent).<br />
+<p><strong>key:</strong> The name of the spark property.  <br />
+<strong>value:</strong> The new value to be set.  <br />
+<strong>options:</strong> Any options passed to the set call, including whether this call should raise events or not (silent).  <br />
 <strong>set:</strong> The base class set function.</p>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">App</span><span class="p">.</span><span class="nx">File</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Spark</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>

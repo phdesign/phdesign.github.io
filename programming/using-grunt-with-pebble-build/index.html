@@ -134,7 +134,7 @@
 
 <h2 id="setting-up-grunt">Setting up Grunt</h2>
 
-<p>To get started with Grunt, you’ll need to install Node and NPM (Node Package Manager). If you don’t already have it installed, get it from <a href="http://nodejs.org/">Nodejs</a>.
+<p>To get started with Grunt, you’ll need to install Node and NPM (Node Package Manager). If you don’t already have it installed, get it from <a href="http://nodejs.org/">Nodejs</a>.<br />
 With Node installed, go to your pebble project directory and type</p>
 
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>npm init</code></pre></div>
@@ -149,7 +149,7 @@ With Node installed, go to your pebble project directory and type</p>
 
 <div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>npm install grunt --save-dev</code></pre></div>
 
-<p>Notice that this time we didn’t pass the <code>-g</code> flag to install it globally, so by default it will be added as a local dependency. Open the <em>package.json</em> file and note that grunt is now included under devDependencies. All of our dependencies will be dev dependencies (specified by the <code>--save-dev</code> flag), simply put we’re saying that to build the project you’ll need this dependency, but the compiled app doesn’t depend on any node packages to run. 
+<p>Notice that this time we didn’t pass the <code>-g</code> flag to install it globally, so by default it will be added as a local dependency. Open the <em>package.json</em> file and note that grunt is now included under devDependencies. All of our dependencies will be dev dependencies (specified by the <code>--save-dev</code> flag), simply put we’re saying that to build the project you’ll need this dependency, but the compiled app doesn’t depend on any node packages to run. <br />
 Also take notice of the <em>node_modules</em> folder that’s appeared in your project directory, this is where npm stores the files for any project dependencies. Go ahead and add this folder to your <em>.gitignore</em> / <em>.cvsignore</em> file, you don’t want it checked into source control.</p>
 
 <p>Next create a new <em>Gruntfile.js</em> file in the root of your project directory, this file will define the tasks we want to run when building the watchapp. Add this empty Grunt configuration to the new file:</p>
