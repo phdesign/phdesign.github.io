@@ -6,9 +6,62 @@
 </description>
     <link>http://phdesign.com.au/</link>
     <atom:link href="http://phdesign.com.au/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 29 Nov 2016 23:02:38 +1100</pubDate>
-    <lastBuildDate>Tue, 29 Nov 2016 23:02:38 +1100</lastBuildDate>
+    <pubDate>Wed, 04 Jan 2017 08:28:29 +1100</pubDate>
+    <lastBuildDate>Wed, 04 Jan 2017 08:28:29 +1100</lastBuildDate>
     <generator>Jekyll v2.5.3</generator>
+    
+      <item>
+        <title>Starting a promise chain to handle exceptions correctly</title>
+        <description>&lt;p&gt;Here’s a little promises quirk that I’ve overlooked for a while. Generally we all write promises like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;doSomething()
+  .then(doSomethingElse)
+  .then(doSomethingFurther)
+  .catch(handleError);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;And we know that any exception raised will skip to the catch handler. Except for the initial &lt;code&gt;doSomething()&lt;/code&gt; call. If an exception is raised here it will be treated like a normal exception and stop executing all the rest of your code. So how do you deal with it? &lt;!--more--&gt; You could:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Ensure that &lt;code&gt;doSomething&lt;/code&gt; always returns a promise, e.g. wrap the whole thing in a &lt;code&gt;new Promise(function (resolve, reject) { .. })&lt;/code&gt;. While this isn’t a bad practice it requires the calling code to assume the function has been implemented correctly, not something I’d rely on.&lt;/li&gt;
+  &lt;li&gt;Wrap the start of the promise chain in a promise like this:
+    &lt;pre&gt;&lt;code&gt;new Promise(function (resolve, reject) {
+ resolve(doSomething());
+  })
+  .then(doSomethingElse)
+  .then(doSomethingFurther)
+  .catch(handleError);
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Start the promise chain with a dummy promise like this (my preferred approach):
+    &lt;pre&gt;&lt;code&gt;Promise.resolve()
+  .then(doSomething)
+  .then(doSomethingElse)
+  .then(doSomethingFurther)
+  .catch(handleError);
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;p&gt;or in angular:&lt;/p&gt;
+    &lt;pre&gt;&lt;code&gt;$q.when()
+  .then(doSomething)
+  .then(doSomethingElse)
+  .then(doSomethingFurther)
+  .catch(handleError);
+&lt;/code&gt;&lt;/pre&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+</description>
+        <pubDate>Wed, 04 Jan 2017 00:00:00 +1100</pubDate>
+        <link>http://phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly/</link>
+        <guid isPermaLink="true">http://phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly/</guid>
+        
+        <category>javascript</category>
+        
+        <category>promises</category>
+        
+        
+        <category>programming</category>
+        
+      </item>
     
       <item>
         <title>Increment project version from Travis</title>
@@ -1134,115 +1187,6 @@ Whereas:&lt;/p&gt;
         
         
         <category>general</category>
-        
-      </item>
-    
-      <item>
-        <title>Backbone.Spark: Ember style computed properties for Backbone.js</title>
-        <description>&lt;p&gt;Backbone.Spark provides computed property support for Backbone.js, the goal of the extension is to make computed properties behave in the same way as a normal attribute so your other code doesn’t need to know the difference.&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/phdesign/Backbone.Spark&quot; title=&quot;Backbone.Spark project on GitHub&quot;&gt;The latest version of Backbone.Spark and examples can be found at GitHub&lt;/a&gt;&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;h3 id=&quot;why-would-you-use-a-computed-property&quot;&gt;Why would you use a computed property?&lt;/h3&gt;
-
-&lt;p&gt;Say you were working with files, and your file model has the full path to the file, e.g. &lt;code&gt;C:\Users\joe\Documents\thefile.txt&lt;/code&gt;. Now you want to display only the file name in a templated view, how would you do this?&lt;/p&gt;
-
-&lt;p&gt;You could only store the file path attribute in the model and have the view extract the file name, but what happens when you have mutliple views pointing to the model, you’ll have have to replicate the code to compute the file name, not very &lt;a href=&quot;https://en.wikipedia.org/wiki/Don&#39;t_repeat_yourself&quot; title=&quot;Read about Don&#39;t Repeat Yourself&quot;&gt;DRY&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Another way you could approach it is to have a file name attribute of the model and watch for changes to the file path, when it changes you update the value of file name. This works but it relies on good code to keep the dependent file path attribute in sync, and as you add more dependent values, say file extension, this code can bloat out. You’re also running code to compute the values of the dependent attributes that may never be used.&lt;/p&gt;
-
-&lt;p&gt;Backbone.Spark provides an alternative, allowing you to specify a the file name as a function, so it gets computed from the file path every time it’s requested and you’re guaranteed to have the correct value.&lt;/p&gt;
-
-&lt;h3 id=&quot;but-backbonemutators-already-exists-why-wouldnt-i-just-use-this&quot;&gt;But Backbone.Mutators already exists, why wouldn’t I just use this?&lt;/h3&gt;
-
-&lt;p&gt;Right you are, and full credit to &lt;a href=&quot;https://github.com/asciidisco/Backbone.Mutators&quot;&gt;Backbone.Mutators&lt;/a&gt;, it’s a great extension and Backbone.Spark is based on it. My problem with mutators is that other code needs to know the dependencies for the mutator. If you want to update the view when file name changes, you need to watch for a change to the file path attribute. Backbone.Spark overcomes this by raising change events whenever any of the dependent properties change.&lt;/p&gt;
-
-&lt;h3 id=&quot;enough-of-the-talk-show-me-some-code&quot;&gt;Enough of the talk, show me some code&lt;/h3&gt;
-
-&lt;p&gt;Backbone.Spark defines a new Model class that you can choose to inherit from.&lt;/p&gt;
-
-&lt;h4 id=&quot;basic-usage&quot;&gt;Basic usage&lt;/h4&gt;
-
-&lt;p&gt;To use, declare a new property object called sparks and add function properties for the ‘getter’ accessors.  &lt;br /&gt;
-Call dependsOn with the spark to specify which attributes this spark depends on. Whenever the dependent attribute(s) are changed, a change event will also be triggered for this spark.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;App&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;File&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Backbone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Spark&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;extend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-
-    &lt;span class=&quot;nx&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-
-    &lt;span class=&quot;nx&quot;&gt;sparks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-        &lt;span class=&quot;nx&quot;&gt;extn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lastIndexOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;substr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;dependsOn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;filePath&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h4 id=&quot;using-setters&quot;&gt;Using setters&lt;/h4&gt;
-
-&lt;p&gt;When calling set on a spark, the set function arguments are passed to the spark function.  &lt;br /&gt;
-You can identify a getter call by testing arguments.length === 0, a setter call has the following arguments:&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;key:&lt;/strong&gt; The name of the spark property.  &lt;br /&gt;
-&lt;strong&gt;value:&lt;/strong&gt; The new value to be set.  &lt;br /&gt;
-&lt;strong&gt;options:&lt;/strong&gt; Any options passed to the set call, including whether this call should raise events or not (silent).  &lt;br /&gt;
-&lt;strong&gt;set:&lt;/strong&gt; The base class set function.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;App&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;File&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Backbone&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Spark&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;extend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-
-    &lt;span class=&quot;nx&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-        &lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-
-    &lt;span class=&quot;nx&quot;&gt;sparks&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-
-        &lt;span class=&quot;nx&quot;&gt;extn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;options&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-            &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;arguments&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lastIndexOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-                &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;substr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-                &lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;filePath&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-                    &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;lastIndexOf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-                &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-                    &lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;set&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;filePath&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;filePath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;substr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-        &lt;span class=&quot;p&quot;&gt;}.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;dependsOn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;filePath&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;using&quot;&gt;Using&lt;/h3&gt;
-
-&lt;p&gt;Backbone.Spark is released under the Apache License, Version 2.0.&lt;/p&gt;
-
-&lt;p&gt;&lt;a class=&quot;btn btn-primary&quot; href=&quot;https://github.com/phdesign/Backbone.Spark&quot; title=&quot;Backbone.Spark project on GitHub&quot;&gt;Get on GitHub&lt;/a&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Tue, 24 Jul 2012 00:00:00 +1000</pubDate>
-        <link>http://phdesign.com.au/programming/backbone-spark/</link>
-        <guid isPermaLink="true">http://phdesign.com.au/programming/backbone-spark/</guid>
-        
-        <category>backbonejs</category>
-        
-        <category>javascript</category>
-        
-        
-        <category>programming</category>
         
       </item>
     

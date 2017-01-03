@@ -14,7 +14,7 @@
   <meta name="author" content="Paul Heasley">
   
 
-  <title>promises | phdesign</title>
+  <title>Starting a promise chain to handle exceptions correctly | phdesign</title>
 
   <!-- Google Web Fonts -->
   <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
@@ -37,11 +37,11 @@
   <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
 
   <!-- Tell Google this page is under test - index original version -->
-  <link rel="canonical" href="http://www.phdesign.com.au/tag/promises/">
+  <link rel="canonical" href="http://www.phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly/">
 
 </head>
 
-  <body class="archive">
+  <body class="post">
 
     <div class="header-background-image"></div>
     <header role="banner">
@@ -98,60 +98,126 @@
     </header>
 
     <main class="content">
-      <div class="container">
+      <article>
+  <div class="container">
 
-  <div class="meta-label-lg">
-    Showing 3 posts  tagged with 
-    <span class="meta-value">#promises</span>
-  </div><!-- end .meta-label-lg -->
+    
 
+    <div class="date-stamp">
+      <div class="month">Jan</div>
+      <div class="day">04</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">Starting a promise chain to handle exceptions correctly</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">04 January 2017</span>
+      
+        in <span class="meta-value"><a href="/programming">programming</a></span>
+      
+      with <span class="meta-value"><a data-disqus-identifier="starting-a-promise-chain-to-handle-exceptions-correctly" href="#disqus_thread">0 Comments</a></span>
+    </div><!-- end .meta-label -->
+    <br />
+
+    
+    
+    
+    
+
+    <p>Here’s a little promises quirk that I’ve overlooked for a while. Generally we all write promises like this:</p>
+
+<pre><code>doSomething()
+  .then(doSomethingElse)
+  .then(doSomethingFurther)
+  .catch(handleError);
+</code></pre>
+
+<p>And we know that any exception raised will skip to the catch handler. Except for the initial <code>doSomething()</code> call. If an exception is raised here it will be treated like a normal exception and stop executing all the rest of your code. So how do you deal with it? <!--more--> You could:</p>
+
+<ol>
+  <li>Ensure that <code>doSomething</code> always returns a promise, e.g. wrap the whole thing in a <code>new Promise(function (resolve, reject) { .. })</code>. While this isn’t a bad practice it requires the calling code to assume the function has been implemented correctly, not something I’d rely on.</li>
+  <li>Wrap the start of the promise chain in a promise like this:
+    <pre><code>new Promise(function (resolve, reject) {
+ resolve(doSomething());
+  })
+  .then(doSomethingElse)
+  .then(doSomethingFurther)
+  .catch(handleError);
+</code></pre>
+  </li>
+  <li>Start the promise chain with a dummy promise like this (my preferred approach):
+    <pre><code>Promise.resolve()
+  .then(doSomething)
+  .then(doSomethingElse)
+  .then(doSomethingFurther)
+  .catch(handleError);
+</code></pre>
+    <p>or in angular:</p>
+    <pre><code>$q.when()
+  .then(doSomething)
+  .then(doSomethingElse)
+  .then(doSomethingFurther)
+  .catch(handleError);
+</code></pre>
+  </li>
+</ol>
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tag/javascript" title="View posts tagged with javascript">#javascript</a></li>
+      
+        <li><a href="/tag/promises" title="View posts tagged with promises">#promises</a></li>
+      
+    </ul>
+
+    
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <div class="comments">
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES * * */
+        var disqus_shortname = 'phdesign';
+        var disqus_identifier = 'starting-a-promise-chain-to-handle-exceptions-correctly';
+        var disqus_title = 'Starting a promise chain to handle exceptions correctly';
+        var disqus_url = 'http://phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly/';
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    </div><!-- end .comments -->
+
+  </div><!-- end .container -->
 </div>
 
-  <article>
-    <div class="container">
+<div class="stripe alt">
+  <div class="container">
 
-      <h3><a href="/programming/starting-a-promise-chain-to-handle-exceptions-correctly/" title="Read full article">Starting a promise chain to handle exceptions correctly</a></h3>
-      <div class="meta-label">
-        posted on <span class="meta-value muted">04 January 2017</span>
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
         
-          in <span class="meta-value"><a href="/programming">programming</a></span>
+          <div class="meta-label"><a href="/programming/auto-increment-project-version-from-travis/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/programming/auto-increment-project-version-from-travis/">Increment project version from Travis</a></div>
         
-        with <span class="meta-value"><a data-disqus-identifier="starting-a-promise-chain-to-handle-exceptions-correctly" href="#disqus_thread">0 Comments</a></span>
-      </div><!-- end .meta-label -->
-
-    </div>
-  </article>
-
-  <article>
-    <div class="container">
-
-      <h3><a href="/programming/catching-javascript-errors-with-promises/" title="Read full article">Catching JavaScript errors with Promises</a></h3>
-      <div class="meta-label">
-        posted on <span class="meta-value muted">02 August 2014</span>
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
         
-          in <span class="meta-value"><a href="/programming">programming</a></span>
-        
-        with <span class="meta-value"><a data-disqus-identifier="catching-javascript-errors-with-promises" href="#disqus_thread">0 Comments</a></span>
-      </div><!-- end .meta-label -->
+      </div>
+    </nav><!-- end .post_nav -->
 
-    </div>
-  </article>
-
-  <article>
-    <div class="container">
-
-      <h3><a href="/programming/mapping-errors-in-jquery-promises-deferred/" title="Read full article">Mapping errors in jQuery promises / deferred</a></h3>
-      <div class="meta-label">
-        posted on <span class="meta-value muted">15 July 2014</span>
-        
-          in <span class="meta-value"><a href="/programming">programming</a></span>
-        
-        with <span class="meta-value"><a data-disqus-identifier="mapping-errors-in-jquery-promises--deferred" href="#disqus_thread">0 Comments</a></span>
-      </div><!-- end .meta-label -->
-
-    </div>
-  </article>
-
+  </div><!-- end .container -->
+</div><!-- end .stripe.alt -->
 
     </main><!-- end .content -->
 
