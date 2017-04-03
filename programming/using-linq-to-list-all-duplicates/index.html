@@ -2,26 +2,31 @@
 
 
 
-
 <!DOCTYPE html>
 <html lang="en">
-  
-<head>
 
+  <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="Paul Heasley">
   
 
   <title>Using LINQ to list all duplicates | phdesign</title>
+  <meta name="description" content="There’s plenty of examples on how to find duplicates using LINQ’s GroupBy method, but usually they use a projection to return a new object, like this: _filte...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/programming/using-linq-to-list-all-duplicates/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  
 
   <!-- Google Web Fonts -->
   <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="/assets/css/style.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -29,16 +34,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
-
-  <!-- Favicon/Touch Icons  -->
-  <link rel="shortcut icon" href="/favicon.ico">
-  <!-- <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
-
-  <!-- Tell Google this page is under test - index original version -->
-  <link rel="canonical" href="http://www.phdesign.com.au/programming/using-linq-to-list-all-duplicates/">
-
+  
 </head>
 
   <body class="post">
@@ -70,7 +66,7 @@
             
               <li><a href="/general">general</a></li>
             
-              <li><a href="/woodworking">woodworking</a></li>
+              <li><a href="/Woodworking">Woodworking</a></li>
             
           </ul>
         </li>
@@ -96,9 +92,8 @@
       
 
     </header>
-
-    <main class="content">
-      <article>
+    <main class="content" aria-label="Content">
+  	  <article>
   <div class="container">
 
     
@@ -115,7 +110,7 @@
       
         in <span class="meta-value"><a href="/programming">programming</a></span>
       
-      with <span class="meta-value"><a data-disqus-identifier="using-linq-to-list-all-duplicates" href="#disqus_thread">0 Comments</a></span>
+      with <span class="meta-value"><a data-disqus-identifier="Using LINQ to list all duplicates" href="#disqus_thread">0 Comments</a></span>
     </div><!-- end .meta-label -->
     <br />
 
@@ -123,52 +118,52 @@
     
     
     
-      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 5 years old and the content may no longer be relevant.</p>
+      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 6 years old and the content may no longer be relevant.</p>
     
 
     <p>There’s plenty of examples on how to find duplicates using LINQ’s GroupBy method, but usually they use a projection to return a new object, like this:</p>
 
-<div class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="n">_filteredSubmissions</span> <span class="p">=</span> <span class="p">(</span><span class="k">from</span> <span class="n">s</span> <span class="k">in</span> <span class="n">_filteredSubmissions</span>
-                        <span class="k">group</span> <span class="n">s</span> <span class="n">by</span> <span class="n">s</span><span class="p">.</span><span class="n">Email</span>
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="n">_filteredSubmissions</span> <span class="p">=</span> <span class="p">(</span><span class="k">from</span> <span class="n">s</span> <span class="k">in</span> <span class="n">_filteredSubmissions</span>
+                        <span class="k">group</span> <span class="n">s</span> <span class="k">by</span> <span class="n">s</span><span class="p">.</span><span class="n">Email</span>
                         <span class="k">into</span> <span class="n">g</span>
-                        <span class="k">where</span> <span class="n">g</span><span class="p">.</span><span class="n">Count</span><span class="p">()</span> <span class="p">&gt;</span> <span class="m">1</span>
-                        <span class="k">select</span> <span class="k">new</span> <span class="p">{</span> <span class="n">Emails</span> <span class="p">=</span> <span class="n">g</span><span class="p">.</span><span class="n">Key</span><span class="p">,</span> <span class="n">DuplicateCount</span> <span class="p">=</span> <span class="n">g</span><span class="p">.</span><span class="n">Count</span><span class="p">()</span> <span class="p">}</span></code></pre></div>
+                        <span class="k">where</span> <span class="n">g</span><span class="p">.</span><span class="nf">Count</span><span class="p">()</span> <span class="p">&gt;</span> <span class="m">1</span>
+                        <span class="k">select</span> <span class="k">new</span> <span class="p">{</span> <span class="n">Emails</span> <span class="p">=</span> <span class="n">g</span><span class="p">.</span><span class="n">Key</span><span class="p">,</span> <span class="n">DuplicateCount</span> <span class="p">=</span> <span class="n">g</span><span class="p">.</span><span class="nf">Count</span><span class="p">()</span> <span class="p">}</span></code></pre></figure>
 
 <!--more-->
 
 <p>Which will just return any email addresses that are duplicates and the count. But what if you want to list all the original items that are duplicates? If you just ‘select g’ in the example above you’ll end up with an IEnumerable&lt;IEnumerable<Submission>&gt;, not what we want. This is where SelectMany() is perfect, it will flatten our collection of a collection back down to a single collection, perfect!</Submission></p>
 
-<div class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="n">_filteredSubmissions</span> <span class="p">=</span> <span class="p">(</span><span class="k">from</span> <span class="n">s</span> <span class="k">in</span> <span class="n">_filteredSubmissions</span>
-                        <span class="k">group</span> <span class="n">s</span> <span class="n">by</span> <span class="n">s</span><span class="p">.</span><span class="n">Email</span>
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="n">_filteredSubmissions</span> <span class="p">=</span> <span class="p">(</span><span class="k">from</span> <span class="n">s</span> <span class="k">in</span> <span class="n">_filteredSubmissions</span>
+                        <span class="k">group</span> <span class="n">s</span> <span class="k">by</span> <span class="n">s</span><span class="p">.</span><span class="n">Email</span>
                         <span class="k">into</span> <span class="n">g</span>
-                        <span class="k">where</span> <span class="n">g</span><span class="p">.</span><span class="n">Count</span><span class="p">()</span> <span class="p">&gt;</span> <span class="m">1</span>
-                        <span class="k">select</span> <span class="n">g</span><span class="p">).</span><span class="n">SelectMany</span><span class="p">(</span><span class="n">g</span> <span class="p">=&gt;</span> <span class="n">g</span><span class="p">)</span></code></pre></div>
+                        <span class="k">where</span> <span class="n">g</span><span class="p">.</span><span class="nf">Count</span><span class="p">()</span> <span class="p">&gt;</span> <span class="m">1</span>
+                        <span class="k">select</span> <span class="n">g</span><span class="p">).</span><span class="nf">SelectMany</span><span class="p">(</span><span class="n">g</span> <span class="p">=&gt;</span> <span class="n">g</span><span class="p">)</span></code></pre></figure>
 
 <p>So now I want to find Submissions that have the same first and last names, I use an anonymous type.</p>
 
-<div class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="n">_filteredSubmissions</span> <span class="p">=</span> <span class="p">(</span><span class="k">from</span> <span class="n">s</span> <span class="k">in</span> <span class="n">_filteredSubmissions</span>
-                        <span class="k">group</span> <span class="n">s</span> <span class="n">by</span> <span class="k">new</span> <span class="p">{</span> <span class="n">s</span><span class="p">.</span><span class="n">FirstName</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">LastName</span> <span class="p">}</span>
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="n">_filteredSubmissions</span> <span class="p">=</span> <span class="p">(</span><span class="k">from</span> <span class="n">s</span> <span class="k">in</span> <span class="n">_filteredSubmissions</span>
+                        <span class="k">group</span> <span class="n">s</span> <span class="k">by</span> <span class="k">new</span> <span class="p">{</span> <span class="n">s</span><span class="p">.</span><span class="n">FirstName</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">LastName</span> <span class="p">}</span>
                         <span class="k">into</span> <span class="n">g</span>
-                        <span class="k">where</span> <span class="n">g</span><span class="p">.</span><span class="n">Count</span><span class="p">()</span> <span class="p">&gt;</span> <span class="m">1</span>
-                        <span class="k">select</span> <span class="n">g</span><span class="p">).</span><span class="n">SelectMany</span><span class="p">(</span><span class="n">g</span> <span class="p">=&gt;</span> <span class="n">g</span><span class="p">)</span></code></pre></div>
+                        <span class="k">where</span> <span class="n">g</span><span class="p">.</span><span class="nf">Count</span><span class="p">()</span> <span class="p">&gt;</span> <span class="m">1</span>
+                        <span class="k">select</span> <span class="n">g</span><span class="p">).</span><span class="nf">SelectMany</span><span class="p">(</span><span class="n">g</span> <span class="p">=&gt;</span> <span class="n">g</span><span class="p">)</span></code></pre></figure>
 
 <p>And finally I want to find all Submissions that have the same first name and last name OR the same email. Simply use Union(), this will join the two collections and remove any duplicates (that’s duplicate instances of the classes, not to be confused with the duplicates we’re trying to find).</p>
 
-<div class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="n">_filteredSubmissions</span> <span class="p">=</span> <span class="p">(</span><span class="k">from</span> <span class="n">s</span> <span class="k">in</span> <span class="n">_filteredSubmissions</span>
-                        <span class="k">group</span> <span class="n">s</span> <span class="n">by</span> <span class="k">new</span> <span class="p">{</span> <span class="n">s</span><span class="p">.</span><span class="n">FirstName</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">LastName</span> <span class="p">}</span>
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="n">_filteredSubmissions</span> <span class="p">=</span> <span class="p">(</span><span class="k">from</span> <span class="n">s</span> <span class="k">in</span> <span class="n">_filteredSubmissions</span>
+                        <span class="k">group</span> <span class="n">s</span> <span class="k">by</span> <span class="k">new</span> <span class="p">{</span> <span class="n">s</span><span class="p">.</span><span class="n">FirstName</span><span class="p">,</span> <span class="n">s</span><span class="p">.</span><span class="n">LastName</span> <span class="p">}</span>
                         <span class="k">into</span> <span class="n">g</span>
-                        <span class="k">where</span> <span class="n">g</span><span class="p">.</span><span class="n">Count</span><span class="p">()</span> <span class="p">&gt;</span> <span class="m">1</span>
-                        <span class="k">select</span> <span class="n">g</span><span class="p">).</span><span class="n">SelectMany</span><span class="p">(</span><span class="n">g</span> <span class="p">=&gt;</span> <span class="n">g</span><span class="p">)</span>
-    <span class="p">.</span><span class="n">Union</span><span class="p">(</span>
+                        <span class="k">where</span> <span class="n">g</span><span class="p">.</span><span class="nf">Count</span><span class="p">()</span> <span class="p">&gt;</span> <span class="m">1</span>
+                        <span class="k">select</span> <span class="n">g</span><span class="p">).</span><span class="nf">SelectMany</span><span class="p">(</span><span class="n">g</span> <span class="p">=&gt;</span> <span class="n">g</span><span class="p">)</span>
+    <span class="p">.</span><span class="nf">Union</span><span class="p">(</span>
         <span class="p">(</span><span class="k">from</span> <span class="n">s</span> <span class="k">in</span> <span class="n">_filteredSubmissions</span>
-         <span class="k">where</span> <span class="p">!</span><span class="kt">string</span><span class="p">.</span><span class="n">IsNullOrWhiteSpace</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">Email</span><span class="p">)</span>
-         <span class="k">group</span> <span class="n">s</span> <span class="n">by</span> <span class="n">s</span><span class="p">.</span><span class="n">Email</span>
+         <span class="k">where</span> <span class="p">!</span><span class="kt">string</span><span class="p">.</span><span class="nf">IsNullOrWhiteSpace</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">Email</span><span class="p">)</span>
+         <span class="k">group</span> <span class="n">s</span> <span class="k">by</span> <span class="n">s</span><span class="p">.</span><span class="n">Email</span>
          <span class="k">into</span> <span class="n">g</span>
-         <span class="k">where</span> <span class="n">g</span><span class="p">.</span><span class="n">Count</span><span class="p">()</span> <span class="p">&gt;</span> <span class="m">1</span>
-         <span class="k">select</span> <span class="n">g</span><span class="p">).</span><span class="n">SelectMany</span><span class="p">(</span><span class="n">g</span> <span class="p">=&gt;</span> <span class="n">g</span><span class="p">)</span>
-    <span class="p">);</span></code></pre></div>
+         <span class="k">where</span> <span class="n">g</span><span class="p">.</span><span class="nf">Count</span><span class="p">()</span> <span class="p">&gt;</span> <span class="m">1</span>
+         <span class="k">select</span> <span class="n">g</span><span class="p">).</span><span class="nf">SelectMany</span><span class="p">(</span><span class="n">g</span> <span class="p">=&gt;</span> <span class="n">g</span><span class="p">)</span>
+    <span class="p">);</span></code></pre></figure>
 
-<p><code> </code>  <br />
+<p><code> </code><br />
 Note that I also stuck in a check for blank emails, I don’t consider a Submission the same just because they both have no email address, I didn’t do this on the FirstName or LastName fields because I know they are mandatory in my system.</p>
 
 
@@ -190,11 +185,14 @@ Note that I also stuck in a check for blank emails, I don’t consider a Submiss
   <div class="container">
 
     <div class="comments">
+      
+        
+
       <div id="disqus_thread"></div>
       <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES * * */
         var disqus_shortname = 'phdesign';
-        var disqus_identifier = 'using-linq-to-list-all-duplicates';
+        var disqus_identifier = 'Using LINQ to list all duplicates';
         var disqus_title = 'Using LINQ to list all duplicates';
         var disqus_url = 'http://phdesign.com.au/programming/using-linq-to-list-all-duplicates/';
 
@@ -206,6 +204,10 @@ Note that I also stuck in a check for blank emails, I don’t consider a Submiss
         })();
       </script>
       <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+      
     </div><!-- end .comments -->
 
   </div><!-- end .container -->
@@ -258,31 +260,8 @@ Note that I also stuck in a check for blank emails, I don’t consider a Submiss
 <!-- JS (Javascript Files)
 ================================================== -->
 
+<script src="/assets/js/search.min.js"></script>
 <script src="/assets/js/main.js"></script>
-
-<script type="text/javascript">
-  /* * * CONFIGURATION VARIABLES * * */
-  var disqus_shortname = 'phdesign';
-
-  /* * * DON'T EDIT BELOW THIS LINE * * */
-  (function () {
-    var s = document.createElement('script'); s.async = true;
-    s.type = 'text/javascript';
-    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-  }());
-</script>
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-2414000-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
 
   </body>
 

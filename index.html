@@ -2,28 +2,33 @@
 
 
 
-
 <!DOCTYPE html>
 <html lang="en">
-  
-<head>
 
+  <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="Paul Heasley">
   
-    <meta name="google-site-verification" content="9tEgdbVtDnWGWmrq5fFYoF3x0VK8kfeRcbH5DJfqlYY" />
+  <meta name="google-site-verification" content="9tEgdbVtDnWGWmrq5fFYoF3x0VK8kfeRcbH5DJfqlYY" />
   
 
   <title>Home | phdesign</title>
+  <meta name="description" content="Website of Paul Heasley, .NET Web Developer Technical advice, bits of software, maybe some woodworking">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  
 
   <!-- Google Web Fonts -->
   <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="/assets/css/style.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -31,16 +36,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
-
-  <!-- Favicon/Touch Icons  -->
-  <link rel="shortcut icon" href="/favicon.ico">
-  <!-- <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
-
-  <!-- Tell Google this page is under test - index original version -->
-  <link rel="canonical" href="http://www.phdesign.com.au/index.html">
-
+  
 </head>
 
   <body class="home">
@@ -72,7 +68,7 @@
             
               <li><a href="/general">general</a></li>
             
-              <li><a href="/woodworking">woodworking</a></li>
+              <li><a href="/Woodworking">Woodworking</a></li>
             
           </ul>
         </li>
@@ -125,9 +121,8 @@
       
 
     </header>
-
-    <main class="content">
-      
+    <main class="content" aria-label="Content">
+  	  
 
 
 
@@ -159,19 +154,20 @@
         
           in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="starting-a-promise-chain-to-handle-exceptions-correctly" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="Starting a promise chain to handle exceptions correctly" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
       <p>Here’s a little promises quirk that I’ve overlooked for a while. Generally we all write promises like this:</p>
 
-<pre><code>doSomething()
+<div class="highlighter-rouge"><pre class="highlight"><code>doSomething()
   .then(doSomethingElse)
   .then(doSomethingFurther)
   .catch(handleError);
 </code></pre>
+</div>
 
-<p>And we know that any exception raised will skip to the catch handler. Except for the initial <code>doSomething()</code> call. If an exception is raised here it will be treated like a normal exception and stop executing all the rest of your code. So how do you deal with it?</p>
+<p>And we know that any exception raised will skip to the catch handler. Except for the initial <code class="highlighter-rouge">doSomething()</code> call. If an exception is raised here it will be treated like a normal exception and stop executing all the rest of your code. So how do you deal with it?</p>
 
 
 
@@ -192,7 +188,7 @@
         
           in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="increment-project-version-from-travis" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="Increment project version from Travis" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
@@ -217,7 +213,7 @@
         
           in <span class="meta-value"><a href="/general">general</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="adding-font-awesome-or-any-svg-to-google-slides" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="Adding font-awesome (or any SVG) to Google Slides" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
@@ -242,7 +238,7 @@
         
           in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="using-grunt-with-pebble-build-to-create-scalable-pebblekit-javascript" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="Using Grunt with Pebble Build to create scalable PebbleKit JavaScript" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
@@ -265,7 +261,7 @@
         
           in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="replace-your-cms-with-github-pages-jekyll-and-grunt" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="Replace your CMS with GitHub Pages, Jekyll and Grunt" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
@@ -286,9 +282,9 @@
       <div class="meta-label">
         posted on <span class="meta-value muted">03 August 2015</span>
         
-          in <span class="meta-value"><a href="/woodworking">woodworking</a></span>
+          in <span class="meta-value"><a href="/Woodworking">Woodworking</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="pallet-wood-coffee-table" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="Pallet Wood Coffee Table" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
@@ -313,7 +309,7 @@
         
           in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="logging-objects-to-the-console-in-internet-explorer" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="Logging Objects to the Console in Internet Explorer" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
@@ -338,7 +334,7 @@
         
           in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="catching-javascript-errors-with-promises" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="Catching JavaScript errors with Promises" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
@@ -363,7 +359,7 @@
         
           in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="mapping-errors-in-jquery-promises--deferred" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="Mapping errors in jQuery promises / deferred" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
@@ -388,7 +384,7 @@
         
           in <span class="meta-value"><a href="/general">general</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="excel-templates-for-scrum-product-and-sprint-backlogs" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="Excel templates for Scrum Product and Sprint Backlogs" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
@@ -462,31 +458,8 @@
 <!-- JS (Javascript Files)
 ================================================== -->
 
+<script src="/assets/js/search.min.js"></script>
 <script src="/assets/js/main.js"></script>
-
-<script type="text/javascript">
-  /* * * CONFIGURATION VARIABLES * * */
-  var disqus_shortname = 'phdesign';
-
-  /* * * DON'T EDIT BELOW THIS LINE * * */
-  (function () {
-    var s = document.createElement('script'); s.async = true;
-    s.type = 'text/javascript';
-    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-  }());
-</script>
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-2414000-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
 
   </body>
 

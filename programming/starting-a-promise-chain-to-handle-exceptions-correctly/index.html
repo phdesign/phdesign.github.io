@@ -2,26 +2,31 @@
 
 
 
-
 <!DOCTYPE html>
 <html lang="en">
-  
-<head>
 
+  <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="Paul Heasley">
   
 
   <title>Starting a promise chain to handle exceptions correctly | phdesign</title>
+  <meta name="description" content="Here’s a little promises quirk that I’ve overlooked for a while. Generally we all write promises like this: doSomething() .then(doSomethingElse) .then(doSome...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  
 
   <!-- Google Web Fonts -->
   <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="/assets/css/style.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -29,16 +34,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
-
-  <!-- Favicon/Touch Icons  -->
-  <link rel="shortcut icon" href="/favicon.ico">
-  <!-- <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
-
-  <!-- Tell Google this page is under test - index original version -->
-  <link rel="canonical" href="http://www.phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly/">
-
+  
 </head>
 
   <body class="post">
@@ -70,7 +66,7 @@
             
               <li><a href="/general">general</a></li>
             
-              <li><a href="/woodworking">woodworking</a></li>
+              <li><a href="/Woodworking">Woodworking</a></li>
             
           </ul>
         </li>
@@ -96,9 +92,8 @@
       
 
     </header>
-
-    <main class="content">
-      <article>
+    <main class="content" aria-label="Content">
+  	  <article>
   <div class="container">
 
     
@@ -115,7 +110,7 @@
       
         in <span class="meta-value"><a href="/programming">programming</a></span>
       
-      with <span class="meta-value"><a data-disqus-identifier="starting-a-promise-chain-to-handle-exceptions-correctly" href="#disqus_thread">0 Comments</a></span>
+      with <span class="meta-value"><a data-disqus-identifier="Starting a promise chain to handle exceptions correctly" href="#disqus_thread">0 Comments</a></span>
     </div><!-- end .meta-label -->
     <br />
 
@@ -126,39 +121,43 @@
 
     <p>Here’s a little promises quirk that I’ve overlooked for a while. Generally we all write promises like this:</p>
 
-<pre><code>doSomething()
+<div class="highlighter-rouge"><pre class="highlight"><code>doSomething()
   .then(doSomethingElse)
   .then(doSomethingFurther)
   .catch(handleError);
 </code></pre>
+</div>
 
-<p>And we know that any exception raised will skip to the catch handler. Except for the initial <code>doSomething()</code> call. If an exception is raised here it will be treated like a normal exception and stop executing all the rest of your code. So how do you deal with it? <!--more--> You could:</p>
+<p>And we know that any exception raised will skip to the catch handler. Except for the initial <code class="highlighter-rouge">doSomething()</code> call. If an exception is raised here it will be treated like a normal exception and stop executing all the rest of your code. So how do you deal with it? <!--more--> You could:</p>
 
 <ol>
-  <li>Ensure that <code>doSomething</code> always returns a promise, e.g. wrap the whole thing in a <code>new Promise(function (resolve, reject) { .. })</code>. While this isn’t a bad practice it requires the calling code to assume the function has been implemented correctly, not something I’d rely on.</li>
+  <li>Ensure that <code class="highlighter-rouge">doSomething</code> always returns a promise, e.g. wrap the whole thing in a <code class="highlighter-rouge">new Promise(function (resolve, reject) { .. })</code>. While this isn’t a bad practice it requires the calling code to assume the function has been implemented correctly, not something I’d rely on.</li>
   <li>Wrap the start of the promise chain in a promise like this:
-    <pre><code>new Promise(function (resolve, reject) {
+    <div class="highlighter-rouge"><pre class="highlight"><code>new Promise(function (resolve, reject) {
  resolve(doSomething());
   })
   .then(doSomethingElse)
   .then(doSomethingFurther)
   .catch(handleError);
 </code></pre>
+    </div>
   </li>
   <li>Start the promise chain with a dummy promise like this (my preferred approach):
-    <pre><code>Promise.resolve()
+    <div class="highlighter-rouge"><pre class="highlight"><code>Promise.resolve()
   .then(doSomething)
   .then(doSomethingElse)
   .then(doSomethingFurther)
   .catch(handleError);
 </code></pre>
+    </div>
     <p>or in angular:</p>
-    <pre><code>$q.when()
+    <div class="highlighter-rouge"><pre class="highlight"><code>$q.when()
   .then(doSomething)
   .then(doSomethingElse)
   .then(doSomethingFurther)
   .catch(handleError);
 </code></pre>
+    </div>
   </li>
 </ol>
 
@@ -180,11 +179,14 @@
   <div class="container">
 
     <div class="comments">
+      
+        
+
       <div id="disqus_thread"></div>
       <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES * * */
         var disqus_shortname = 'phdesign';
-        var disqus_identifier = 'starting-a-promise-chain-to-handle-exceptions-correctly';
+        var disqus_identifier = 'Starting a promise chain to handle exceptions correctly';
         var disqus_title = 'Starting a promise chain to handle exceptions correctly';
         var disqus_url = 'http://phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly/';
 
@@ -196,6 +198,10 @@
         })();
       </script>
       <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+      
     </div><!-- end .comments -->
 
   </div><!-- end .container -->
@@ -245,31 +251,8 @@
 <!-- JS (Javascript Files)
 ================================================== -->
 
+<script src="/assets/js/search.min.js"></script>
 <script src="/assets/js/main.js"></script>
-
-<script type="text/javascript">
-  /* * * CONFIGURATION VARIABLES * * */
-  var disqus_shortname = 'phdesign';
-
-  /* * * DON'T EDIT BELOW THIS LINE * * */
-  (function () {
-    var s = document.createElement('script'); s.async = true;
-    s.type = 'text/javascript';
-    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-  }());
-</script>
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-2414000-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
 
   </body>
 

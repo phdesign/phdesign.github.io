@@ -2,26 +2,31 @@
 
 
 
-
 <!DOCTYPE html>
 <html lang="en">
-  
-<head>
 
+  <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="Paul Heasley">
   
 
   <title>WPF RadioButton Binding to IsChecked Property | phdesign</title>
+  <meta name="description" content="I wasted a few development hours discovering this strange behaviour when binding to the IsChecked property of a RadioButton in WPF when using MVVM. You can r...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/programming/wpf-radiobutton-binding-to-ischecked-property/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  
 
   <!-- Google Web Fonts -->
   <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="/assets/css/style.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -29,16 +34,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
-
-  <!-- Favicon/Touch Icons  -->
-  <link rel="shortcut icon" href="/favicon.ico">
-  <!-- <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
-
-  <!-- Tell Google this page is under test - index original version -->
-  <link rel="canonical" href="http://www.phdesign.com.au/programming/wpf-radiobutton-binding-to-ischecked-property/">
-
+  
 </head>
 
   <body class="post">
@@ -70,7 +66,7 @@
             
               <li><a href="/general">general</a></li>
             
-              <li><a href="/woodworking">woodworking</a></li>
+              <li><a href="/Woodworking">Woodworking</a></li>
             
           </ul>
         </li>
@@ -96,9 +92,8 @@
       
 
     </header>
-
-    <main class="content">
-      <article>
+    <main class="content" aria-label="Content">
+  	  <article>
   <div class="container">
 
     
@@ -115,7 +110,7 @@
       
         in <span class="meta-value"><a href="/programming">programming</a></span>
       
-      with <span class="meta-value"><a data-disqus-identifier="wpf-radiobutton-binding-to-ischecked-property" href="#disqus_thread">0 Comments</a></span>
+      with <span class="meta-value"><a data-disqus-identifier="WPF RadioButton Binding to IsChecked Property" href="#disqus_thread">0 Comments</a></span>
     </div><!-- end .meta-label -->
     <br />
 
@@ -132,16 +127,16 @@
 
 <p>Here is my original code that kept losing it’s binding:</p>
 
-<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;ItemsControl</span> <span class="na">ItemsSource=</span><span class="s">&quot;{Binding Elements}&quot;</span> <span class="na">Margin=</span><span class="s">&quot;0,10,0,10&quot;</span><span class="nt">&gt;</span>
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;ItemsControl</span> <span class="na">ItemsSource=</span><span class="s">"{Binding Elements}"</span> <span class="na">Margin=</span><span class="s">"0,10,0,10"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;ItemsControl.ItemTemplate&gt;</span>
     <span class="nt">&lt;DataTemplate&gt;</span>
-      <span class="nt">&lt;RadioButton</span> <span class="na">Content=</span><span class="s">&quot;{Binding Key}&quot;</span>
-        <span class="na">GroupName=</span><span class="s">&quot;{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Title}&quot;</span>
-        <span class="na">IsChecked=</span><span class="s">&quot;{Binding Path=IsSelected}&quot;</span>
-        <span class="na">Margin=</span><span class="s">&quot;0,5,0,5&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;RadioButton</span> <span class="na">Content=</span><span class="s">"{Binding Key}"</span>
+        <span class="na">GroupName=</span><span class="s">"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Title}"</span>
+        <span class="na">IsChecked=</span><span class="s">"{Binding Path=IsSelected}"</span>
+        <span class="na">Margin=</span><span class="s">"0,5,0,5"</span><span class="nt">/&gt;</span>
     <span class="nt">&lt;/DataTemplate&gt;</span>
   <span class="nt">&lt;/ItemsControl.ItemTemplate&gt;</span>
-<span class="nt">&lt;/ItemsControl&gt;</span></code></pre></div>
+<span class="nt">&lt;/ItemsControl&gt;</span></code></pre></figure>
 
 <p>There a couple of ways to solve this,</p>
 
@@ -150,30 +145,30 @@
   <li>You could use OneWay binding on IsChecked to set the RadioButton state from code, then bind the Command property to a  Command when user clicks on the RadioButton.</li>
 </ul>
 
-<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;ItemsControl</span> <span class="na">ItemsSource=</span><span class="s">&quot;{Binding Elements}&quot;</span> <span class="na">Margin=</span><span class="s">&quot;0,10,0,10&quot;</span><span class="nt">&gt;</span>
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;ItemsControl</span> <span class="na">ItemsSource=</span><span class="s">"{Binding Elements}"</span> <span class="na">Margin=</span><span class="s">"0,10,0,10"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;ItemsControl.ItemTemplate&gt;</span>
     <span class="nt">&lt;DataTemplate&gt;</span>
-      <span class="nt">&lt;RadioButton</span> <span class="na">Content=</span><span class="s">&quot;{Binding Key}&quot;</span>
-        <span class="na">GroupName=</span><span class="s">&quot;{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Title}&quot;</span>
-        <span class="na">IsChecked=</span><span class="s">&quot;{Binding Path=IsSelected, Mode=OneWay}&quot;</span>
-        <span class="na">Command=</span><span class="s">&quot;{Binding IsSelectedCommand}&quot;</span>
-        <span class="na">CommandParameter=</span><span class="s">&quot;{Binding}&quot;</span>
-        <span class="na">Margin=</span><span class="s">&quot;0,5,0,5&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;RadioButton</span> <span class="na">Content=</span><span class="s">"{Binding Key}"</span>
+        <span class="na">GroupName=</span><span class="s">"{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.Title}"</span>
+        <span class="na">IsChecked=</span><span class="s">"{Binding Path=IsSelected, Mode=OneWay}"</span>
+        <span class="na">Command=</span><span class="s">"{Binding IsSelectedCommand}"</span>
+        <span class="na">CommandParameter=</span><span class="s">"{Binding}"</span>
+        <span class="na">Margin=</span><span class="s">"0,5,0,5"</span><span class="nt">/&gt;</span>
     <span class="nt">&lt;/DataTemplate&gt;</span>
   <span class="nt">&lt;/ItemsControl.ItemTemplate&gt;</span>
-<span class="nt">&lt;/ItemsControl&gt;</span></code></pre></div>
+<span class="nt">&lt;/ItemsControl&gt;</span></code></pre></figure>
 
 <ul>
   <li>My preferred option: (<a href="http://social.msdn.microsoft.com/forums/en-US/wpf/thread/8eb8280a-19c4-4502-8260-f74633a9e2f2/" title="RadioButton unchecked bindings issue still not resolved?">as suggested by karliwatson</a>) use a ListBox for the grouping and bind the ListBoxItem’s IsSelected property to your ViewModel, then bind the RadioButton’s IsChecked property to the list box item’s IsSelected property. Don’t set a group on the RadioButton.</li>
 </ul>
 
-<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;ListBox</span> <span class="na">ItemsSource=</span><span class="s">&quot;{Binding Elements}&quot;</span> <span class="na">Margin=</span><span class="s">&quot;0,10,0,10&quot;</span> <span class="na">BorderThickness=</span><span class="s">&quot;0&quot;</span> <span class="na">Background=</span><span class="s">&quot;Transparent&quot;</span><span class="nt">&gt;</span>
+<figure class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;ListBox</span> <span class="na">ItemsSource=</span><span class="s">"{Binding Elements}"</span> <span class="na">Margin=</span><span class="s">"0,10,0,10"</span> <span class="na">BorderThickness=</span><span class="s">"0"</span> <span class="na">Background=</span><span class="s">"Transparent"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;ListBox.ItemContainerStyle&gt;</span>
-    <span class="nt">&lt;Style</span> <span class="na">TargetType=</span><span class="s">&quot;{x:Type ListBoxItem}&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;Setter</span> <span class="na">Property=</span><span class="s">&quot;IsSelected&quot;</span> <span class="na">Value=</span><span class="s">&quot;{Binding Path=IsSelected, Mode=TwoWay}&quot;</span> <span class="nt">/&gt;</span>
-      <span class="nt">&lt;Setter</span> <span class="na">Property=</span><span class="s">&quot;Template&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;Style</span> <span class="na">TargetType=</span><span class="s">"{x:Type ListBoxItem}"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;Setter</span> <span class="na">Property=</span><span class="s">"IsSelected"</span> <span class="na">Value=</span><span class="s">"{Binding Path=IsSelected, Mode=TwoWay}"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;Setter</span> <span class="na">Property=</span><span class="s">"Template"</span><span class="nt">&gt;</span>
         <span class="nt">&lt;Setter.Value&gt;</span>
-          <span class="nt">&lt;ControlTemplate</span> <span class="na">TargetType=</span><span class="s">&quot;ListBoxItem&quot;</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;ControlTemplate</span> <span class="na">TargetType=</span><span class="s">"ListBoxItem"</span><span class="nt">&gt;</span>
             <span class="nt">&lt;ContentPresenter/&gt;</span>
           <span class="nt">&lt;/ControlTemplate&gt;</span>
         <span class="nt">&lt;/Setter.Value&gt;</span>
@@ -182,12 +177,12 @@
   <span class="nt">&lt;/ListBox.ItemContainerStyle&gt;</span>
   <span class="nt">&lt;ListBox.ItemTemplate&gt;</span>
     <span class="nt">&lt;DataTemplate&gt;</span>
-        <span class="nt">&lt;RadioButton</span> <span class="na">Content=</span><span class="s">&quot;{Binding Key}&quot;</span>
-            <span class="na">IsChecked=</span><span class="s">&quot;{Binding Path=IsSelected, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}&quot;</span>
-            <span class="na">Margin=</span><span class="s">&quot;0,5,0,5&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;RadioButton</span> <span class="na">Content=</span><span class="s">"{Binding Key}"</span>
+            <span class="na">IsChecked=</span><span class="s">"{Binding Path=IsSelected, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}"</span>
+            <span class="na">Margin=</span><span class="s">"0,5,0,5"</span><span class="nt">/&gt;</span>
     <span class="nt">&lt;/DataTemplate&gt;</span>
   <span class="nt">&lt;/ListBox.ItemTemplate&gt;</span>
-<span class="nt">&lt;/ListBox&gt;</span></code></pre></div>
+<span class="nt">&lt;/ListBox&gt;</span></code></pre></figure>
 
 
 
@@ -208,11 +203,14 @@
   <div class="container">
 
     <div class="comments">
+      
+        
+
       <div id="disqus_thread"></div>
       <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES * * */
         var disqus_shortname = 'phdesign';
-        var disqus_identifier = 'wpf-radiobutton-binding-to-ischecked-property';
+        var disqus_identifier = 'WPF RadioButton Binding to IsChecked Property';
         var disqus_title = 'WPF RadioButton Binding to IsChecked Property';
         var disqus_url = 'http://phdesign.com.au/programming/wpf-radiobutton-binding-to-ischecked-property/';
 
@@ -224,6 +222,10 @@
         })();
       </script>
       <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+      
     </div><!-- end .comments -->
 
   </div><!-- end .container -->
@@ -276,31 +278,8 @@
 <!-- JS (Javascript Files)
 ================================================== -->
 
+<script src="/assets/js/search.min.js"></script>
 <script src="/assets/js/main.js"></script>
-
-<script type="text/javascript">
-  /* * * CONFIGURATION VARIABLES * * */
-  var disqus_shortname = 'phdesign';
-
-  /* * * DON'T EDIT BELOW THIS LINE * * */
-  (function () {
-    var s = document.createElement('script'); s.async = true;
-    s.type = 'text/javascript';
-    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-  }());
-</script>
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-2414000-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
 
   </body>
 

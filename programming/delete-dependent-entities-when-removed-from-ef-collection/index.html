@@ -2,26 +2,31 @@
 
 
 
-
 <!DOCTYPE html>
 <html lang="en">
-  
-<head>
 
+  <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="Paul Heasley">
   
 
   <title>Delete Dependents When Removing an Entity From Entity Framework | phdesign</title>
+  <meta name="description" content="This post is based on Entity Framework 4.1 Code First Fluent API. I have an Entity Framework model being used in the business layer called Patient, it has a ...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/programming/delete-dependent-entities-when-removed-from-ef-collection/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  
 
   <!-- Google Web Fonts -->
   <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="/assets/css/style.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -29,16 +34,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
-
-  <!-- Favicon/Touch Icons  -->
-  <link rel="shortcut icon" href="/favicon.ico">
-  <!-- <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
-
-  <!-- Tell Google this page is under test - index original version -->
-  <link rel="canonical" href="http://www.phdesign.com.au/programming/delete-dependent-entities-when-removed-from-ef-collection/">
-
+  
 </head>
 
   <body class="post">
@@ -70,7 +66,7 @@
             
               <li><a href="/general">general</a></li>
             
-              <li><a href="/woodworking">woodworking</a></li>
+              <li><a href="/Woodworking">Woodworking</a></li>
             
           </ul>
         </li>
@@ -96,9 +92,8 @@
       
 
     </header>
-
-    <main class="content">
-      <article>
+    <main class="content" aria-label="Content">
+  	  <article>
   <div class="container">
 
     
@@ -115,7 +110,7 @@
       
         in <span class="meta-value"><a href="/programming">programming</a></span>
       
-      with <span class="meta-value"><a data-disqus-identifier="delete-dependents-when-removing-an-entity-from-entity-framework" href="#disqus_thread">0 Comments</a></span>
+      with <span class="meta-value"><a data-disqus-identifier="Delete Dependents When Removing an Entity From Entity Framework" href="#disqus_thread">0 Comments</a></span>
     </div><!-- end .meta-label -->
     <br />
 
@@ -126,19 +121,19 @@
       <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 5 years old and the content may no longer be relevant.</p>
     
 
-    <p>This post is based on Entity Framework 4.1 Code First Fluent API.  <br />
+    <p>This post is based on Entity Framework 4.1 Code First Fluent API.<br />
 I have an Entity Framework model being used in the business layer called Patient, it has a collection of dependent entities called Responses, when a response needs to be deleted I simply remove it from the collection and expect that it’ll get deleted from the database. It doesn’t.</p>
 
 <!--more-->
 
 <p><img src="/assets/img/blog/ef-delete-relationship-models.png" alt="Response and Patient Model Diagram" /></p>
 
-<div class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="c1">// This doesn’t work as expected, it removes the relationship but not the Response entity. </span>
-<span class="n">Patient</span><span class="p">.</span><span class="n">Responses</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">Patient</span><span class="p">.</span><span class="n">Responses</span><span class="p">.</span><span class="n">Where</span><span class="p">(</span><span class="n">r</span> <span class="p">=&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">Id</span> <span class="p">==</span> <span class="m">1</span><span class="p">));</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="c1">// This doesn’t work as expected, it removes the relationship but not the Response entity. 
+</span><span class="n">Patient</span><span class="p">.</span><span class="n">Responses</span><span class="p">.</span><span class="nf">Remove</span><span class="p">(</span><span class="n">Patient</span><span class="p">.</span><span class="n">Responses</span><span class="p">.</span><span class="nf">Where</span><span class="p">(</span><span class="n">r</span> <span class="p">=&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">Id</span> <span class="p">==</span> <span class="m">1</span><span class="p">));</span></code></pre></figure>
 
 <p>If I try to save this, I get the error:</p>
 
-<div class="highlight"><pre><code class="language-text" data-lang="text">System.InvalidOperationException: The operation failed: The relationship could not be changed because one or more of the foreign-key properties is non-nullable. When a change is made to a relationship, the related foreign-key property is set to a null value. If the foreign-key does not support null values, a new relationship must be defined, the foreign-key property must be assigned another non-null value, or the unrelated object must be deleted.</code></pre></div>
+<figure class="highlight"><pre><code class="language-text" data-lang="text">System.InvalidOperationException: The operation failed: The relationship could not be changed because one or more of the foreign-key properties is non-nullable. When a change is made to a relationship, the related foreign-key property is set to a null value. If the foreign-key does not support null values, a new relationship must be defined, the foreign-key property must be assigned another non-null value, or the unrelated object must be deleted.</code></pre></figure>
 
 <p>What’s happening is the Response entity does not get deleted, just the relationship to the Patient. However when the relationship is removed, Entity Framework doesn’t know what to do with Response.PatientId, it can’t null it because it’s marked as not null.</p>
 
@@ -146,24 +141,24 @@ I have an Entity Framework model being used in the business layer called Patient
 
 <p>We can do this by providing the following Fluent API mapping:</p>
 
-<div class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="n">modelBuilder</span><span class="p">.</span><span class="n">Entity</span><span class="p">().</span><span class="n">HasKey</span><span class="p">(</span><span class="n">m</span> <span class="p">=&gt;</span> <span class="k">new</span> <span class="p">{</span> <span class="n">m</span><span class="p">.</span><span class="n">Id</span><span class="p">,</span> <span class="n">m</span><span class="p">.</span><span class="n">PatientId</span> <span class="p">});</span></code></pre></div>
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="n">modelBuilder</span><span class="p">.</span><span class="nf">Entity</span><span class="p">().</span><span class="nf">HasKey</span><span class="p">(</span><span class="n">m</span> <span class="p">=&gt;</span> <span class="k">new</span> <span class="p">{</span> <span class="n">m</span><span class="p">.</span><span class="n">Id</span><span class="p">,</span> <span class="n">m</span><span class="p">.</span><span class="n">PatientId</span> <span class="p">});</span> </code></pre></figure>
 
 <p>But if you’re not comfortable changing your database structure to suit Entity Framework there is another way. By overriding the SaveChanges method of our DbContext class, we can monitor for changes to Responses where they have been orphaned from a Patient and delete them:</p>
 
-<div class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="k">public</span> <span class="k">override</span> <span class="kt">int</span> <span class="nf">SaveChanges</span><span class="p">()</span>
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="k">public</span> <span class="k">override</span> <span class="kt">int</span> <span class="nf">SaveChanges</span><span class="p">()</span>
 <span class="p">{</span>
-  <span class="c1">// Need to manually delete all responses that have been removed from the patient, otherwise they&#39;ll be orphaned.</span>
-  <span class="kt">var</span> <span class="n">orphanedResponses</span> <span class="p">=</span> <span class="n">ChangeTracker</span><span class="p">.</span><span class="n">Entries</span><span class="p">().</span><span class="n">Where</span><span class="p">(</span>
+  <span class="c1">// Need to manually delete all responses that have been removed from the patient, otherwise they'll be orphaned.
+</span>  <span class="kt">var</span> <span class="n">orphanedResponses</span> <span class="p">=</span> <span class="n">ChangeTracker</span><span class="p">.</span><span class="nf">Entries</span><span class="p">().</span><span class="nf">Where</span><span class="p">(</span>
     <span class="n">e</span> <span class="p">=&gt;</span> <span class="p">(</span><span class="n">e</span><span class="p">.</span><span class="n">State</span> <span class="p">==</span> <span class="n">EntityState</span><span class="p">.</span><span class="n">Modified</span> <span class="p">||</span> <span class="n">e</span><span class="p">.</span><span class="n">State</span> <span class="p">==</span> <span class="n">EntityState</span><span class="p">.</span><span class="n">Added</span><span class="p">)</span> <span class="p">&amp;&amp;</span>
       <span class="n">e</span><span class="p">.</span><span class="n">Entity</span> <span class="k">is</span> <span class="n">Response</span> <span class="p">&amp;&amp;</span>
-        <span class="n">e</span><span class="p">.</span><span class="n">Reference</span><span class="p">(</span><span class="s">&quot;Patient&quot;</span><span class="p">).</span><span class="n">CurrentValue</span> <span class="p">==</span> <span class="k">null</span><span class="p">);</span>
+        <span class="n">e</span><span class="p">.</span><span class="nf">Reference</span><span class="p">(</span><span class="s">"Patient"</span><span class="p">).</span><span class="n">CurrentValue</span> <span class="p">==</span> <span class="k">null</span><span class="p">);</span>
   <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">orphanedResponse</span> <span class="k">in</span> <span class="n">orphanedResponses</span><span class="p">)</span>
   <span class="p">{</span>
-    <span class="n">Responses</span><span class="p">.</span><span class="n">Remove</span><span class="p">(</span><span class="n">orphanedResponse</span><span class="p">.</span><span class="n">Entity</span> <span class="k">as</span> <span class="n">Response</span><span class="p">);</span>
+    <span class="n">Responses</span><span class="p">.</span><span class="nf">Remove</span><span class="p">(</span><span class="n">orphanedResponse</span><span class="p">.</span><span class="n">Entity</span> <span class="k">as</span> <span class="n">Response</span><span class="p">);</span>
   <span class="p">}</span>
 
-  <span class="k">return</span> <span class="k">base</span><span class="p">.</span><span class="n">SaveChanges</span><span class="p">();</span>
-<span class="p">}</span></code></pre></div>
+  <span class="k">return</span> <span class="k">base</span><span class="p">.</span><span class="nf">SaveChanges</span><span class="p">();</span>
+<span class="p">}</span></code></pre></figure>
 
 
 
@@ -184,11 +179,14 @@ I have an Entity Framework model being used in the business layer called Patient
   <div class="container">
 
     <div class="comments">
+      
+        
+
       <div id="disqus_thread"></div>
       <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES * * */
         var disqus_shortname = 'phdesign';
-        var disqus_identifier = 'delete-dependents-when-removing-an-entity-from-entity-framework';
+        var disqus_identifier = 'Delete Dependents When Removing an Entity From Entity Framework';
         var disqus_title = 'Delete Dependents When Removing an Entity From Entity Framework';
         var disqus_url = 'http://phdesign.com.au/programming/delete-dependent-entities-when-removed-from-ef-collection/';
 
@@ -200,6 +198,10 @@ I have an Entity Framework model being used in the business layer called Patient
         })();
       </script>
       <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+      
     </div><!-- end .comments -->
 
   </div><!-- end .container -->
@@ -252,31 +254,8 @@ I have an Entity Framework model being used in the business layer called Patient
 <!-- JS (Javascript Files)
 ================================================== -->
 
+<script src="/assets/js/search.min.js"></script>
 <script src="/assets/js/main.js"></script>
-
-<script type="text/javascript">
-  /* * * CONFIGURATION VARIABLES * * */
-  var disqus_shortname = 'phdesign';
-
-  /* * * DON'T EDIT BELOW THIS LINE * * */
-  (function () {
-    var s = document.createElement('script'); s.async = true;
-    s.type = 'text/javascript';
-    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-  }());
-</script>
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-2414000-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
 
   </body>
 

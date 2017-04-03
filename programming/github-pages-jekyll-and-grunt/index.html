@@ -2,26 +2,31 @@
 
 
 
-
 <!DOCTYPE html>
 <html lang="en">
-  
-<head>
 
+  <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="Paul Heasley">
   
 
   <title>Replace your CMS with GitHub Pages, Jekyll and Grunt | phdesign</title>
+  <meta name="description" content="For years I’ve used Wordpress to host my site, which has been great but it’s overkill for what I need. I’d be happier to write the HTML myself if it wasn’t s...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/programming/github-pages-jekyll-and-grunt/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  
 
   <!-- Google Web Fonts -->
   <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="/assets/css/style.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -29,16 +34,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
-
-  <!-- Favicon/Touch Icons  -->
-  <link rel="shortcut icon" href="/favicon.ico">
-  <!-- <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
-
-  <!-- Tell Google this page is under test - index original version -->
-  <link rel="canonical" href="http://www.phdesign.com.au/programming/github-pages-jekyll-and-grunt/">
-
+  
 </head>
 
   <body class="post">
@@ -70,7 +66,7 @@
             
               <li><a href="/general">general</a></li>
             
-              <li><a href="/woodworking">woodworking</a></li>
+              <li><a href="/Woodworking">Woodworking</a></li>
             
           </ul>
         </li>
@@ -96,9 +92,8 @@
       
 
     </header>
-
-    <main class="content">
-      <article>
+    <main class="content" aria-label="Content">
+  	  <article>
   <div class="container">
 
     
@@ -115,7 +110,7 @@
       
         in <span class="meta-value"><a href="/programming">programming</a></span>
       
-      with <span class="meta-value"><a data-disqus-identifier="replace-your-cms-with-github-pages-jekyll-and-grunt" href="#disqus_thread">0 Comments</a></span>
+      with <span class="meta-value"><a data-disqus-identifier="Replace your CMS with GitHub Pages, Jekyll and Grunt" href="#disqus_thread">0 Comments</a></span>
     </div><!-- end .meta-label -->
     <br />
 
@@ -137,17 +132,17 @@
 <p>GitHub pages is a free offering from GitHub that allows you to host one website per account and one website per project, you can even use <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages/">your own domain name</a>. To use your account site, you need to</p>
 
 <ul>
-  <li>Create a repo named <code>username.github.io</code> on GitHub (where username is your GitHub username)</li>
-  <li>Push your website files into the <code>master</code> branch</li>
-  <li>Your site will be available on <code>http://username.github.io</code></li>
+  <li>Create a repo named <code class="highlighter-rouge">username.github.io</code> on GitHub (where username is your GitHub username)</li>
+  <li>Push your website files into the <code class="highlighter-rouge">master</code> branch</li>
+  <li>Your site will be available on <code class="highlighter-rouge">http://username.github.io</code></li>
 </ul>
 
 <p>For a project site you need to</p>
 
 <ul>
-  <li>Create a new orphaned branch called <code>gh-pages</code> within your project repo on GitHub</li>
+  <li>Create a new orphaned branch called <code class="highlighter-rouge">gh-pages</code> within your project repo on GitHub</li>
   <li>Push your website files to this branch</li>
-  <li>Your site will be available on <code>http://username.github.io/project</code></li>
+  <li>Your site will be available on <code class="highlighter-rouge">http://username.github.io/project</code></li>
 </ul>
 
 <p>Free static web site hosting at GitHub is great but what makes GitHub pages stand out is Jekyll.</p>
@@ -156,7 +151,7 @@
 
 <p><a href="https://jekyllrb.com/">Jekyll</a> is a static site generator, which means it takes templates, pages and data from a convention based folder structure, and turns it into a static site for you. It’s basically what your CMS is doing on every page request, but it does it just once. GitHub pages runs Jekyll on your site by default, but because you probably aren’t clashing with Jekyll’s folder conventions you won’t notice. Jekyll is blog aware, which means it can do a lot of what your Wordpress site can, it understands published and draft posts, tag, categories, permalinks, post listings and excerpts among other concepts.</p>
 
-<div class="highlight"><pre><code class="language-text" data-lang="text">.
+<figure class="highlight"><pre><code class="language-text" data-lang="text">.
 ├── _config.yml
 ├── _drafts
 |   └── on-simplicity-in-technology.markdown
@@ -170,46 +165,46 @@
 |   ├── 2007-10-29-why-every-programmer-should-play-nethack.textile
 ├── _data
 |   └── members.yml
-└── index.html</code></pre></div>
+└── index.html</code></pre></figure>
 
-<p>A typical Jekyll folder structure contains a <code>_layouts</code> folder for your base templates, an <code>_includes</code> folder for partial includes that can be used by layouts or pages, a <code>_config.yaml</code> file which defines site configuration, and other files and folders that contain your site content. Any folder that Jekyll doesn’t recognise is copied verbatim to the static site and you can tell Jekyll to ignore files or folders and not copy them using configuration settings.</p>
+<p>A typical Jekyll folder structure contains a <code class="highlighter-rouge">_layouts</code> folder for your base templates, an <code class="highlighter-rouge">_includes</code> folder for partial includes that can be used by layouts or pages, a <code class="highlighter-rouge">_config.yaml</code> file which defines site configuration, and other files and folders that contain your site content. Any folder that Jekyll doesn’t recognise is copied verbatim to the static site and you can tell Jekyll to ignore files or folders and not copy them using configuration settings.</p>
 
 <p>posts.html:</p>
 
-<div class="highlight"><pre><code class="language-html" data-lang="html">---
+<figure class="highlight"><pre><code class="language-html" data-lang="html">---
 layout: posts
 permalink: posts/
 title: Recent blog posts
 ---
 {% include header.html %}
-<span class="nt">&lt;h1&gt;</span>Here’s some of my recent posts<span class="nt">&lt;/h1&gt;</span></code></pre></div>
+<span class="nt">&lt;h1&gt;</span>Here’s some of my recent posts<span class="nt">&lt;/h1&gt;</span></code></pre></figure>
 
 <p>_layouts/posts.html:</p>
 
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">"en"</span><span class="nt">&gt;</span>
 <span class="nt">&lt;head&gt;&lt;title&gt;</span>{{ page.title }}<span class="nt">&lt;/title&gt;&lt;/head&gt;</span>
 <span class="nt">&lt;body&gt;</span>
   {{ content }}
 <span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span></code></pre></div>
+<span class="nt">&lt;/html&gt;</span></code></pre></figure>
 
 <p>A Jekyll content page will start with Frontmatter, that’s all the code between the 2 rows of hyphens at the start of the file. In the frontmatter you can can define the layout to use, the page title and a permalink for the page among other configuration settings. These will override any settings in the site config (_config.yaml).</p>
 
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul&gt;</span>
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul&gt;</span>
   {% for post in site.posts %}
     <span class="nt">&lt;li&gt;</span>
-      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{ post.url }}&quot;</span><span class="nt">&gt;</span>{{ post.title }}<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{{ post.url }}"</span><span class="nt">&gt;</span>{{ post.title }}<span class="nt">&lt;/a&gt;</span>
       {{ post.excerpt | strip_html }}
     <span class="nt">&lt;/li&gt;</span>
   {% endfor %}
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+<span class="nt">&lt;/ul&gt;</span></code></pre></figure>
 
 <p>Jekyll uses the <a href="https://docs.shopify.com/themes/liquid-documentation/basics">Liquid templating language</a> developed by Shopify which will feel familiar for anyone who’s worked with handlebars, mustache or angular. Liquid defines tags for flow control and filters for acting on variables</p>
 
 <p>For a static site generator Jekyll is very feature rich and you’ll be surpised what you can accomplish with it. Apart from templates, it supports SASS, extensionless urls, markdown, textile, even custom domains on GitHub pages.</p>
 
-<div class="highlight"><pre><code class="language-text" data-lang="text">$ gem install jekyll
+<figure class="highlight"><pre><code class="language-text" data-lang="text">$ gem install jekyll
 $ jekyll serve
 
 Configuration file: /Users/paul/Projects/demo/_config.yml
@@ -217,14 +212,14 @@ Configuration file: /Users/paul/Projects/demo/_config.yml
        Destination: /Users/paul/Projects/demo/_site
       Generating... 
                     done.
- Auto-regeneration: enabled for &#39;/Users/paul/Projects/demo&#39;
+ Auto-regeneration: enabled for '/Users/paul/Projects/demo'
 Configuration file: /Users/paul/Projects/demo/_config.yml
     Server address: http://127.0.0.1:4000/
-  Server running... press ctrl-c to stop.</code></pre></div>
+  Server running... press ctrl-c to stop.</code></pre></figure>
 
-<p>But Jekyll isn’t exclusive to GitHub pages, Jekyll comes packaged as a Ruby gem that allows you to install it on your local machine. Once jekyll is installed you can use <code>jekyll build</code> to compile your static site or <code>jekyll serve</code> to compile, spin up a web server and watch the file system for changes.</p>
+<p>But Jekyll isn’t exclusive to GitHub pages, Jekyll comes packaged as a Ruby gem that allows you to install it on your local machine. Once jekyll is installed you can use <code class="highlighter-rouge">jekyll build</code> to compile your static site or <code class="highlighter-rouge">jekyll serve</code> to compile, spin up a web server and watch the file system for changes.</p>
 
-<p>And there’s another big benefit to running Jekyll locally, plugins! Plugins extend the functionality of Jekyll but unfortunately they aren’t supported by GitHub pages, so if you want to use a plugin you’ll need to build you site locally and push up the resulting <code>_site</code> folder to GitHub.</p>
+<p>And there’s another big benefit to running Jekyll locally, plugins! Plugins extend the functionality of Jekyll but unfortunately they aren’t supported by GitHub pages, so if you want to use a plugin you’ll need to build you site locally and push up the resulting <code class="highlighter-rouge">_site</code> folder to GitHub.</p>
 
 <p>Some cool Jekyll plugins allow you to implement <a href="https://github.com/slashdotdash/jekyll-lunr-js-search">site search</a>, <a href="https://github.com/jekyll/jekyll-archives">create tag or category listings</a> and have <a href="https://github.com/jekyll/jekyll-redirect-from">page redirects</a>.</p>
 
@@ -257,11 +252,14 @@ Configuration file: /Users/paul/Projects/demo/_config.yml
   <div class="container">
 
     <div class="comments">
+      
+        
+
       <div id="disqus_thread"></div>
       <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES * * */
         var disqus_shortname = 'phdesign';
-        var disqus_identifier = 'replace-your-cms-with-github-pages-jekyll-and-grunt';
+        var disqus_identifier = 'Replace your CMS with GitHub Pages, Jekyll and Grunt';
         var disqus_title = 'Replace your CMS with GitHub Pages, Jekyll and Grunt';
         var disqus_url = 'http://phdesign.com.au/programming/github-pages-jekyll-and-grunt/';
 
@@ -273,6 +271,10 @@ Configuration file: /Users/paul/Projects/demo/_config.yml
         })();
       </script>
       <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+      
     </div><!-- end .comments -->
 
   </div><!-- end .container -->
@@ -325,31 +327,8 @@ Configuration file: /Users/paul/Projects/demo/_config.yml
 <!-- JS (Javascript Files)
 ================================================== -->
 
+<script src="/assets/js/search.min.js"></script>
 <script src="/assets/js/main.js"></script>
-
-<script type="text/javascript">
-  /* * * CONFIGURATION VARIABLES * * */
-  var disqus_shortname = 'phdesign';
-
-  /* * * DON'T EDIT BELOW THIS LINE * * */
-  (function () {
-    var s = document.createElement('script'); s.async = true;
-    s.type = 'text/javascript';
-    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-  }());
-</script>
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-2414000-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
 
   </body>
 

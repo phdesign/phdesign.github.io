@@ -2,26 +2,31 @@
 
 
 
-
 <!DOCTYPE html>
 <html lang="en">
-  
-<head>
 
+  <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="Paul Heasley">
   
 
   <title>Create branch of modified working copy in TFS | phdesign</title>
+  <meta name="description" content="So you’ve been working on your code from Team Foundation Server (TFS), made changes then realised you should really have started a branch for it. I couldn’t ...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/programming/create-branch-of-modified-working-copy-in-tfs/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  
 
   <!-- Google Web Fonts -->
   <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="/assets/css/style.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -29,16 +34,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
-
-  <!-- Favicon/Touch Icons  -->
-  <link rel="shortcut icon" href="/favicon.ico">
-  <!-- <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
-
-  <!-- Tell Google this page is under test - index original version -->
-  <link rel="canonical" href="http://www.phdesign.com.au/programming/create-branch-of-modified-working-copy-in-tfs/">
-
+  
 </head>
 
   <body class="post">
@@ -70,7 +66,7 @@
             
               <li><a href="/general">general</a></li>
             
-              <li><a href="/woodworking">woodworking</a></li>
+              <li><a href="/Woodworking">Woodworking</a></li>
             
           </ul>
         </li>
@@ -96,9 +92,8 @@
       
 
     </header>
-
-    <main class="content">
-      <article>
+    <main class="content" aria-label="Content">
+  	  <article>
   <div class="container">
 
     
@@ -115,7 +110,7 @@
       
         in <span class="meta-value"><a href="/programming">programming</a></span>
       
-      with <span class="meta-value"><a data-disqus-identifier="create-branch-of-modified-working-copy-in-tfs" href="#disqus_thread">0 Comments</a></span>
+      with <span class="meta-value"><a data-disqus-identifier="Create branch of modified working copy in TFS" href="#disqus_thread">0 Comments</a></span>
     </div><!-- end .meta-label -->
     <br />
 
@@ -123,7 +118,7 @@
     
     
     
-      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 4 years old and the content may no longer be relevant.</p>
+      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 5 years old and the content may no longer be relevant.</p>
     
 
     <p>So you’ve been working on your code from Team Foundation Server (TFS), made changes then realised you should really have started a branch for it.</p>
@@ -134,22 +129,22 @@
 
 <ol>
   <li>
-    <p><strong>Create a shelveset of your current working copy</strong>  <br />
-File &gt; Source Control &gt; Shelve Pending Changes  <br />
+    <p><strong>Create a shelveset of your current working copy</strong><br />
+File &gt; Source Control &gt; Shelve Pending Changes<br />
 Uncheck ‘Preserve pending changes locally’. This will undo all your pending changes.</p>
   </li>
   <li>
-    <p><strong>Create branch</strong>  <br />
-One way to do this is go to the Team Explorer tab &gt; Source Control. Right click on the branch, trunk or root folder and select Branching and Merging &gt; Branch.  <br />
+    <p><strong>Create branch</strong><br />
+One way to do this is go to the Team Explorer tab &gt; Source Control. Right click on the branch, trunk or root folder and select Branching and Merging &gt; Branch.<br />
 In Branch From Version, select By Workspace Version.</p>
   </li>
   <li>
-    <p><strong>Map branch to a working folder</strong>  <br />
+    <p><strong>Map branch to a working folder</strong><br />
 Right click on new branch and select Map to Local Folder.</p>
   </li>
   <li>
-    <p><strong>Unshelve your changes to the new branch</strong>  <br />
-To do this you need TFS Power Tools ‘unshelve’. More info here:  <br />
+    <p><strong>Unshelve your changes to the new branch</strong><br />
+To do this you need TFS Power Tools ‘unshelve’. More info here:<br />
 <a href="http://geekswithblogs.net/TarunArora/archive/2011/06/06/unshelve-shelveset-created-from-one-branch-to-another.aspx">http://geekswithblogs.net/TarunArora/archive/2011/06/06/unshelve-shelveset-created-from-one-branch-to-another.aspx</a></p>
   </li>
 </ol>
@@ -173,11 +168,14 @@ To do this you need TFS Power Tools ‘unshelve’. More info here:  <br />
   <div class="container">
 
     <div class="comments">
+      
+        
+
       <div id="disqus_thread"></div>
       <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES * * */
         var disqus_shortname = 'phdesign';
-        var disqus_identifier = 'create-branch-of-modified-working-copy-in-tfs';
+        var disqus_identifier = 'Create branch of modified working copy in TFS';
         var disqus_title = 'Create branch of modified working copy in TFS';
         var disqus_url = 'http://phdesign.com.au/programming/create-branch-of-modified-working-copy-in-tfs/';
 
@@ -189,6 +187,10 @@ To do this you need TFS Power Tools ‘unshelve’. More info here:  <br />
         })();
       </script>
       <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+      
     </div><!-- end .comments -->
 
   </div><!-- end .container -->
@@ -241,31 +243,8 @@ To do this you need TFS Power Tools ‘unshelve’. More info here:  <br />
 <!-- JS (Javascript Files)
 ================================================== -->
 
+<script src="/assets/js/search.min.js"></script>
 <script src="/assets/js/main.js"></script>
-
-<script type="text/javascript">
-  /* * * CONFIGURATION VARIABLES * * */
-  var disqus_shortname = 'phdesign';
-
-  /* * * DON'T EDIT BELOW THIS LINE * * */
-  (function () {
-    var s = document.createElement('script'); s.async = true;
-    s.type = 'text/javascript';
-    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-  }());
-</script>
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-2414000-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
 
   </body>
 

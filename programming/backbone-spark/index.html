@@ -2,26 +2,31 @@
 
 
 
-
 <!DOCTYPE html>
 <html lang="en">
-  
-<head>
 
+  <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="">
   <meta name="author" content="Paul Heasley">
   
 
   <title>Backbone.Spark: Ember style computed properties for Backbone.js | phdesign</title>
+  <meta name="description" content="Backbone.Spark provides computed property support for Backbone.js, the goal of the extension is to make computed properties behave in the same way as a norma...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/programming/backbone-spark/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  
 
   <!-- Google Web Fonts -->
   <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
   <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-
-  <!-- Stylesheets -->
-  <link rel="stylesheet" href="/assets/css/style.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -29,16 +34,7 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
   <![endif]-->
-
-  <!-- Favicon/Touch Icons  -->
-  <link rel="shortcut icon" href="/favicon.ico">
-  <!-- <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
-  <link rel="apple-touch-icon" sizes="72x72" href="/assets/img/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon" sizes="114x114" href="/assets/img/apple-touch-icon-114x114.png"> -->
-
-  <!-- Tell Google this page is under test - index original version -->
-  <link rel="canonical" href="http://www.phdesign.com.au/programming/backbone-spark/">
-
+  
 </head>
 
   <body class="post">
@@ -70,7 +66,7 @@
             
               <li><a href="/general">general</a></li>
             
-              <li><a href="/woodworking">woodworking</a></li>
+              <li><a href="/Woodworking">Woodworking</a></li>
             
           </ul>
         </li>
@@ -96,9 +92,8 @@
       
 
     </header>
-
-    <main class="content">
-      <article>
+    <main class="content" aria-label="Content">
+  	  <article>
   <div class="container">
 
     
@@ -115,7 +110,7 @@
       
         in <span class="meta-value"><a href="/programming">programming</a></span>
       
-      with <span class="meta-value"><a data-disqus-identifier="backbonespark-ember-style-computed-properties-for-backbonejs" href="#disqus_thread">0 Comments</a></span>
+      with <span class="meta-value"><a data-disqus-identifier="Backbone.Spark: Ember style computed properties for Backbone.js" href="#disqus_thread">0 Comments</a></span>
     </div><!-- end .meta-label -->
     <br />
 
@@ -134,7 +129,7 @@
 
 <h3 id="why-would-you-use-a-computed-property">Why would you use a computed property?</h3>
 
-<p>Say you were working with files, and your file model has the full path to the file, e.g. <code>C:\Users\joe\Documents\thefile.txt</code>. Now you want to display only the file name in a templated view, how would you do this?</p>
+<p>Say you were working with files, and your file model has the full path to the file, e.g. <code class="highlighter-rouge">C:\Users\joe\Documents\thefile.txt</code>. Now you want to display only the file name in a templated view, how would you do this?</p>
 
 <p>You could only store the file path attribute in the model and have the view extract the file name, but what happens when you have mutliple views pointing to the model, you’ll have have to replicate the code to compute the file name, not very <a href="https://en.wikipedia.org/wiki/Don't_repeat_yourself" title="Read about Don't Repeat Yourself">DRY</a>.</p>
 
@@ -152,66 +147,66 @@
 
 <h4 id="basic-usage">Basic usage</h4>
 
-<p>To use, declare a new property object called sparks and add function properties for the ‘getter’ accessors.  <br />
+<p>To use, declare a new property object called sparks and add function properties for the ‘getter’ accessors.<br />
 Call dependsOn with the spark to specify which attributes this spark depends on. Whenever the dependent attribute(s) are changed, a change event will also be triggered for this spark.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">App</span><span class="p">.</span><span class="nx">File</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Spark</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">App</span><span class="p">.</span><span class="nx">File</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Spark</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
 
-    <span class="nx">defaults</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="na">defaults</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
       <span class="k">return</span> <span class="p">{</span>
-        <span class="nx">content</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="nx">filePath</span><span class="o">:</span> <span class="kc">null</span>
+        <span class="na">content</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="na">filePath</span><span class="p">:</span> <span class="kc">null</span>
       <span class="p">};</span>
     <span class="p">},</span>
 
-    <span class="nx">sparks</span><span class="o">:</span> <span class="p">{</span>
+    <span class="na">sparks</span><span class="p">:</span> <span class="p">{</span>
 
-        <span class="nx">extn</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">filePath</span><span class="p">.</span><span class="nx">lastIndexOf</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
-            <span class="k">return</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">filePath</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-        <span class="p">}.</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">&#39;filePath&#39;</span><span class="p">)</span>
+        <span class="na">extn</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">filePath</span><span class="p">.</span><span class="nx">lastIndexOf</span><span class="p">(</span><span class="s1">'.'</span><span class="p">);</span>
+            <span class="k">return</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">filePath</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">:</span> <span class="s1">''</span><span class="p">;</span>
+        <span class="p">}.</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">'filePath'</span><span class="p">)</span>
 
     <span class="p">}</span>
 
-<span class="p">});</span></code></pre></div>
+<span class="p">});</span></code></pre></figure>
 
 <h4 id="using-setters">Using setters</h4>
 
-<p>When calling set on a spark, the set function arguments are passed to the spark function.  <br />
+<p>When calling set on a spark, the set function arguments are passed to the spark function.<br />
 You can identify a getter call by testing arguments.length === 0, a setter call has the following arguments:</p>
 
-<p><strong>key:</strong> The name of the spark property.  <br />
-<strong>value:</strong> The new value to be set.  <br />
-<strong>options:</strong> Any options passed to the set call, including whether this call should raise events or not (silent).  <br />
+<p><strong>key:</strong> The name of the spark property.<br />
+<strong>value:</strong> The new value to be set.<br />
+<strong>options:</strong> Any options passed to the set call, including whether this call should raise events or not (silent).<br />
 <strong>set:</strong> The base class set function.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">App</span><span class="p">.</span><span class="nx">File</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Spark</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">App</span><span class="p">.</span><span class="nx">File</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">Spark</span><span class="p">.</span><span class="nx">Model</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
 
-    <span class="nx">defaults</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="na">defaults</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
       <span class="k">return</span> <span class="p">{</span>
-        <span class="nx">content</span><span class="o">:</span> <span class="kc">null</span><span class="p">,</span>
-        <span class="nx">filePath</span><span class="o">:</span> <span class="kc">null</span>
+        <span class="na">content</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+        <span class="na">filePath</span><span class="p">:</span> <span class="kc">null</span>
       <span class="p">};</span>
     <span class="p">},</span>
 
-    <span class="nx">sparks</span><span class="o">:</span> <span class="p">{</span>
+    <span class="na">sparks</span><span class="p">:</span> <span class="p">{</span>
 
-        <span class="nx">extn</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">set</span><span class="p">)</span> <span class="p">{</span>
+        <span class="na">extn</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">set</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">if</span> <span class="p">(</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-                <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">filePath</span><span class="p">.</span><span class="nx">lastIndexOf</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
-                <span class="k">return</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">filePath</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+                <span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">filePath</span><span class="p">.</span><span class="nx">lastIndexOf</span><span class="p">(</span><span class="s1">'.'</span><span class="p">);</span>
+                <span class="k">return</span> <span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="p">?</span> <span class="k">this</span><span class="p">.</span><span class="nx">filePath</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span> <span class="p">:</span> <span class="s1">''</span><span class="p">;</span>
             <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                <span class="kd">var</span> <span class="nx">filePath</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;filePath&#39;</span><span class="p">),</span>
-                    <span class="nx">i</span> <span class="o">=</span> <span class="nx">filePath</span><span class="p">.</span><span class="nx">lastIndexOf</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">);</span>
+                <span class="kd">var</span> <span class="nx">filePath</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">'filePath'</span><span class="p">),</span>
+                    <span class="nx">i</span> <span class="o">=</span> <span class="nx">filePath</span><span class="p">.</span><span class="nx">lastIndexOf</span><span class="p">(</span><span class="s1">'.'</span><span class="p">);</span>
 
                 <span class="k">if</span> <span class="p">(</span><span class="nx">i</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
-                    <span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;filePath&#39;</span><span class="p">,</span> <span class="nx">filePath</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="o">+</span> <span class="nx">value</span><span class="p">);</span>
+                    <span class="k">this</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">'filePath'</span><span class="p">,</span> <span class="nx">filePath</span><span class="p">.</span><span class="nx">substr</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nx">i</span><span class="p">)</span> <span class="o">+</span> <span class="nx">value</span><span class="p">);</span>
             <span class="p">}</span>
-        <span class="p">}.</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">&#39;filePath&#39;</span><span class="p">)</span>
+        <span class="p">}.</span><span class="nx">dependsOn</span><span class="p">(</span><span class="s1">'filePath'</span><span class="p">)</span>
 
     <span class="p">}</span>
 
-<span class="p">});</span></code></pre></div>
+<span class="p">});</span></code></pre></figure>
 
 <h3 id="using">Using</h3>
 
@@ -238,11 +233,14 @@ You can identify a getter call by testing arguments.length === 0, a setter call 
   <div class="container">
 
     <div class="comments">
+      
+        
+
       <div id="disqus_thread"></div>
       <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES * * */
         var disqus_shortname = 'phdesign';
-        var disqus_identifier = 'backbonespark-ember-style-computed-properties-for-backbonejs';
+        var disqus_identifier = 'Backbone.Spark: Ember style computed properties for Backbone.js';
         var disqus_title = 'Backbone.Spark: Ember style computed properties for Backbone.js';
         var disqus_url = 'http://phdesign.com.au/programming/backbone-spark/';
 
@@ -254,6 +252,10 @@ You can identify a getter call by testing arguments.length === 0, a setter call 
         })();
       </script>
       <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+      
     </div><!-- end .comments -->
 
   </div><!-- end .container -->
@@ -306,31 +308,8 @@ You can identify a getter call by testing arguments.length === 0, a setter call 
 <!-- JS (Javascript Files)
 ================================================== -->
 
+<script src="/assets/js/search.min.js"></script>
 <script src="/assets/js/main.js"></script>
-
-<script type="text/javascript">
-  /* * * CONFIGURATION VARIABLES * * */
-  var disqus_shortname = 'phdesign';
-
-  /* * * DON'T EDIT BELOW THIS LINE * * */
-  (function () {
-    var s = document.createElement('script'); s.async = true;
-    s.type = 'text/javascript';
-    s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-  }());
-</script>
-
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-2414000-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
 
   </body>
 
