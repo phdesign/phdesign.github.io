@@ -1,5 +1,65 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://phdesign.com.au/feed.xml" rel="self" type="application/atom+xml" /><link href="http://phdesign.com.au/" rel="alternate" type="text/html" /><updated>2017-04-26T07:40:37+10:00</updated><id>http://phdesign.com.au/</id><title type="html">phdesign</title><subtitle>Website of Paul Heasley, .NET Web Developer Technical advice, bits of software, maybe some woodworking
-</subtitle><entry><title type="html">Starting a promise chain to handle exceptions correctly</title><link href="http://phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly/" rel="alternate" type="text/html" title="Starting a promise chain to handle exceptions correctly" /><published>2017-01-04T00:00:00+11:00</published><updated>2017-01-04T00:00:00+11:00</updated><id>http://phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly</id><content type="html" xml:base="http://phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly/">&lt;p&gt;Here’s a little promises quirk that I’ve overlooked for a while. Generally we all write promises like this:&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://phdesign.com.au/feed.xml" rel="self" type="application/atom+xml" /><link href="http://phdesign.com.au/" rel="alternate" type="text/html" /><updated>2017-04-26T17:41:45+10:00</updated><id>http://phdesign.com.au/</id><title type="html">phdesign</title><subtitle>Website of Paul Heasley, .NET Web Developer Technical advice, bits of software, maybe some woodworking
+</subtitle><entry><title type="html">Two’s company, three’s a mob: Mob programming</title><link href="http://phdesign.com.au/programming/mob-programming/" rel="alternate" type="text/html" title="Two's company, three's a mob: Mob programming" /><published>2017-04-26T00:00:00+10:00</published><updated>2017-04-26T00:00:00+10:00</updated><id>http://phdesign.com.au/programming/mob-programming</id><content type="html" xml:base="http://phdesign.com.au/programming/mob-programming/">&lt;div class=&quot;alert alert-info&quot; role=&quot;alert&quot;&gt;
+  This post is adapted from &lt;a class=&quot;alert-link&quot; href=&quot;http://phdesign.com.au/presentation-mob-programming&quot; target=&quot;_blank&quot;&gt;a presentation&lt;/a&gt; I gave at &lt;a class=&quot;alert-link&quot; href=&quot;http://dddbynight.dddmelbourne.com/&quot; target=&quot;_blank&quot;&gt;DDD By Night&lt;/a&gt; on 24 November 2016.
+&lt;/div&gt;
+
+&lt;p&gt;First there came pair programming, a development disciple that promised team collaboration, improved quality, inbuilt mentoring and redundancy. Now the development community is taking it to the next level - mob programming. Mob programming, or mobbing, is where the entire team works together on a single problem, sharing one PC, one keyboard and one mouse.&lt;/p&gt;
+
+&lt;h2 id=&quot;history&quot;&gt;History&lt;/h2&gt;
+
+&lt;p&gt;Around 5 years ago a development team at Hunter Industries in San Diego who were trying to improve their agile, TDD and peer programming techniques were holding a solution design workshop in a meeting room when someone remoted back into their PC and they started writing code together while talking over the problem. Eventually they were kicked out of that room but found another and continued to carry on, and in this way they continued to jump between meeting rooms for the next 2 weeks, programming as a team and everyday holding a mini retrospective and agreeing that this process was working for them and they should keep doing it.&lt;/p&gt;
+
+&lt;p&gt;This technique continued to gain traction until now its practiced world wide as an effective team development process called mob programming and has a dedicated conference held in Boston.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-mechanics&quot;&gt;The mechanics&lt;/h2&gt;
+
+&lt;p&gt;So how does it work? Simply put the whole team sit in front of a large TV or projector (or 2) and take turns passing control of the keyboard and mouse around while working together to solve the problem at hand.&lt;/p&gt;
+
+&lt;h4 id=&quot;driver--navigator-model&quot;&gt;Driver / Navigator model&lt;/h4&gt;
+
+&lt;p&gt;This constant moving of the keyboard is key to an effective mobbing session, it follows the driver / navigator model borrowed from strong pair programming which says “For an idea to go from your head into the computer it must go through someone else’s hands.” In mob programming there is one driver and the rest of the team are navigators. The driver sits behind the keyboard and types code, but that’s all they’re supposed to do, they’re discouraged from thinking how to solve the problem too much and they shouldn’t be typing anything without being directed to by a navigator. The navigators discuss the idea being coded and guide the driver in creating the code. This concept is critical to engagement of the team, if the driver starts thinking too much and typing their own ideas they’ll leave the others behind, but having to clearly explain to the driver what to type, the navigators have to communicate and discuss the solution out loud. Drivers are rotated on a short interval, this could be 5, 10 or 15 minutes. Shorter works better when starting out.&lt;/p&gt;
+
+&lt;h4 id=&quot;equipment-setup&quot;&gt;Equipment setup&lt;/h4&gt;
+
+&lt;p&gt;A mob can be anywhere from 3 to 12 members and dedicated equipment is helpful. Meeting room hopping will quickly become tiresome and interrupt flow, so it’s a good idea to setup a space with a couple of big TV screens or projectors, a single PC and any number of preferred keyboards or mice for those that like their mechanical clackers or splayed keyboards. At PageUp we’ll often use this space although we find the contrast too low from the projector so we play with different IDE themes to improve the readability.&lt;/p&gt;
+
+&lt;h4 id=&quot;administrative-tasks&quot;&gt;Administrative tasks&lt;/h4&gt;
+
+&lt;p&gt;During mobbing people aren’t tied down for the whole day. Individuals are free to take short breaks to get coffee, go to the bathroom, check their personal emails or whatever else needs to be done. The mobbing doesn’t need to stop because one person leaves.&lt;/p&gt;
+
+&lt;p&gt;In fact it can be helpful when working with new technology to go back to your own PC to do some research, or even better if you have a laptop handy bring that to the mobbing session. Ideally if you need to Google a solution this can be done as a mob, but there have been times we’ve paused the mobbing to all go away and research / spike a problem and regroup later.&lt;/p&gt;
+
+&lt;p&gt;If someone gets interrupted by an email, phone call or a walk up, some teams will even mob on that. Again it keeps everyone across what is being asked for and how we propose to solve it.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-benefits&quot;&gt;The benefits&lt;/h2&gt;
+
+&lt;p&gt;So why mob?&lt;/p&gt;
+
+&lt;h4 id=&quot;team-cohesion--redundancy&quot;&gt;Team cohesion &amp;amp; redundancy&lt;/h4&gt;
+
+&lt;p&gt;Well firstly it improves team cohesion. Mob programming necessitates that the team communicate effectively to get things done. This ensures that everyone in the team is across the current code and creates redundancy in the team. If one team member is off sick it will have little impact on the output. If a new team member is added they will be able to contribute immediately and will quickly learn from the others without distraction.&lt;/p&gt;
+
+&lt;h4 id=&quot;upskilling&quot;&gt;Upskilling&lt;/h4&gt;
+
+&lt;p&gt;Mobbing encourage learning. It upskills existing team members as they learn new patterns, new architectures, new ways of thinking and tips to move around the IDE quicker. I find the first thing a new mobbing team learns is each other’s shortcuts. Nothing bothers a developer more than watching someone else fumble through menus when there’s a snappy keyboard shortcut to complete the task.&lt;/p&gt;
+
+&lt;h4 id=&quot;quality-control&quot;&gt;Quality control&lt;/h4&gt;
+
+&lt;p&gt;Mobbing also provides improved quality control, having 5 eyes on the code will reduce typos and 5 minds on the problem will think through the majority of the scenarios.&lt;/p&gt;
+
+&lt;p&gt;My team have been using mob testing lately as a twist on sprint reviews or showcases. The idea being that as we test and explore the product together, we spot more inconsistencies and decide how to resolve them as we find them. We also think through many more scenarios than we would on our own and by regularly passing control of the keyboard everyone is kept engaged in the process.&lt;/p&gt;
+
+&lt;p&gt;And mobbing isn’t just for developers. Product owners, business analysts and testers are encouraged to be involved in the process. They can sit with the team and be apart of the discussion going on.&lt;/p&gt;
+
+&lt;h2 id=&quot;common-fallicies&quot;&gt;Common fallicies&lt;/h2&gt;
+
+&lt;p&gt;There’s some comment arguments against mob programming, the first one is that productivity will drop.&lt;/p&gt;
+
+&lt;p&gt;Yes, the number of stories you deliver per sprint will probably decrease, but the number of stories delivered isn’t an accurate measure of productivity. Delivering working, fit for purpose software is a better measure. The quality of your code will improve when the whole team is focused on it which will mean less support and rework later. Better code is also easier to build upon and means future functionality can be implemented quicker. The quality of the solution will improve, by which I mean the team will discuss and agree on the requirements and how it will work. It won’t get to done and someone says that’s not how I expected it to work. And difficult problems won’t hold up the team as much. How often do you find yourself working alone through a problem, only to have someone else look at it with a new lens and say “what if we did it this way”. It can unlock the whole issue and allow you to move forward. This process is expedited if the whole team if focused on a problem at once.&lt;/p&gt;
+
+&lt;h2 id=&quot;more-information&quot;&gt;More information&lt;/h2&gt;
+
+&lt;p&gt;So, if you’re interested in mob programming, I’d highly recommend watching &lt;a href=&quot;https://www.youtube.com/watch?v=p_pvslS4gEI&quot;&gt;this youtube video which shows a mob programming team in action&lt;/a&gt; over a whole day. Woody Zuill, who was the agile coach from the original mob programming team also maintains a blog at &lt;a href=&quot;http://mobprogramming.org&quot;&gt;mobprogramming.org&lt;/a&gt; which provides useful tips, and you can read the &lt;a href=&quot;https://www.agilealliance.org/wp-content/uploads/2015/12/ExperienceReport.2014.Zuill_.pdf&quot;&gt;original report of the technical and findings in the PDF here&lt;/a&gt;.&lt;/p&gt;</content><author><name></name></author><category term="pairing" /><category term="practices" /><category term="agile" /><summary type="html">First there came pair programming, a development disciple that promised team collaboration, improved quality, inbuilt mentoring and redundancy. Now the development community is taking it to the next level - mob programming. Mob programming, or mobbing, is where the entire team works together on a single problem, sharing one PC, one keyboard and one mouse.</summary></entry><entry><title type="html">Starting a promise chain to handle exceptions correctly</title><link href="http://phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly/" rel="alternate" type="text/html" title="Starting a promise chain to handle exceptions correctly" /><published>2017-01-04T00:00:00+11:00</published><updated>2017-01-04T00:00:00+11:00</updated><id>http://phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly</id><content type="html" xml:base="http://phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly/">&lt;p&gt;Here’s a little promises quirk that I’ve overlooked for a while. Generally we all write promises like this:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;doSomething()
   .then(doSomethingElse)
@@ -510,7 +570,7 @@ Done, without errors.&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 &lt;p&gt;Now when you run &lt;code class=&quot;highlighter-rouge&quot;&gt;pebble build&lt;/code&gt; it will call our Grunt system, lint and bundle the JavaScript and generate an &lt;em&gt;appinfo.h&lt;/em&gt; file.&lt;/p&gt;
 
 &lt;p&gt;All in a good day’s work.&lt;/p&gt;</content><author><name></name></author><category term="grunt" /><category term="pebble" /><summary type="html">Pebble watchapps communicate with the phone via PebbleKit, a sandboxed JavaScript environment that runs within the Pebble phone app. It's pretty simple to setup the interactions on the JavaScript side, but what happens when the JavaScript starts to get more complex? Using Grunt we can manage a scalable JS app, including running linters, bundling and running unit tests.</summary></entry><entry><title type="html">Replace your CMS with GitHub Pages, Jekyll and Grunt</title><link href="http://phdesign.com.au/programming/github-pages-jekyll-and-grunt/" rel="alternate" type="text/html" title="Replace your CMS with GitHub Pages, Jekyll and Grunt" /><published>2015-09-23T00:00:00+10:00</published><updated>2015-09-23T00:00:00+10:00</updated><id>http://phdesign.com.au/programming/github-pages-jekyll-and-grunt</id><content type="html" xml:base="http://phdesign.com.au/programming/github-pages-jekyll-and-grunt/">&lt;div class=&quot;alert alert-info&quot; role=&quot;alert&quot;&gt;
-  This post is adapted from a presentation I gave at &lt;a class=&quot;alert-link&quot; href=&quot;http://www.webdirections.org/events/what-do-you-know-melbourne-september-2015/&quot;&gt;What Do You Know Melbourne&lt;/a&gt; on 3 September 2015
+  This post is adapted from a presentation I gave at &lt;a class=&quot;alert-link&quot; href=&quot;http://www.webdirections.org/events/what-do-you-know-melbourne-september-2015/&quot; target=&quot;_blank&quot;&gt;What Do You Know Melbourne&lt;/a&gt; on 3 September 2015
 &lt;/div&gt;
 
 &lt;p&gt;For years I’ve used Wordpress to host my site, which has been great but it’s overkill for what I need. I’d be happier to write the HTML myself if it wasn’t such a maintenance pain keeping consistency across all the pages. I hated having to update WordPress continually to ensure my site is secure. In order to keep all my site source in Git I have to synchronise the changes that happen automatically on the server, like updates and uploads / media files back to my working copy to commit them. And it doesn’t enable me to keep any of my content in Git, which is most important, I have to take regular database backups for this.&lt;/p&gt;
@@ -968,33 +1028,4 @@ Whereas:&lt;/p&gt;
     &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
     &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;fail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
         &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;warn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'fail2'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;err&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;</content><author><name></name></author><category term="javascript" /><category term="jquery" /><category term="promises" /><summary type="html">For those familiar with JavaScript Promises, jQuery’s Deferred.fail() handling can act unexpectedly. Standard Promises implementations allow the first catch handler to deal with the error and then return to normal execution flow (see JavaScript Promises: There and back again). jQuery on the other hand appears to execute all fail handlers, in the order they were defined with no chance to recover normal flow.</summary></entry><entry><title type="html">Excel templates for Scrum Product and Sprint Backlogs</title><link href="http://phdesign.com.au/general/excel-templates-for-scrum-product-and-sprint-backlogs/" rel="alternate" type="text/html" title="Excel templates for Scrum Product and Sprint Backlogs" /><published>2014-05-13T00:00:00+10:00</published><updated>2014-05-13T00:00:00+10:00</updated><id>http://phdesign.com.au/general/excel-templates-for-scrum-product-and-sprint-backlogs</id><content type="html" xml:base="http://phdesign.com.au/general/excel-templates-for-scrum-product-and-sprint-backlogs/">&lt;p&gt;Here’s some useful templates for managing Scrum projects using Excel. Why use Excel? For simplicity. Sometimes great software and tools are necessary, sometimes they just over complicate the process.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;“Individuals and interactions over processes and tools”&lt;br /&gt;
-- &lt;a href=&quot;http://agilemanifesto.org/&quot;&gt;Manifestio for Agile Software&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;“Simplicity–the art of maximizing the amount of work not done–is essential.”&lt;br /&gt;
-- &lt;a href=&quot;http://agilemanifesto.org/principles.html&quot;&gt;Principles behind the Agile Manifesto&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;“Many time management techniques fail because they subject the people who use them to a higher level of added complexity with respect to the intrinsic complexity of the task at hand.”&lt;br /&gt;
-- &lt;a href=&quot;http://pomodorotechnique.com/&quot;&gt;The Pomodoro Technique&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h3 id=&quot;product-backlog&quot;&gt;Product Backlog&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;/assets/files/Product-Backlog-Template.xlsx&quot;&gt;Download the Product Backlog Excel Template (incl. Release Burndown Chart)&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/img/blog/release-burndown1.png&quot; alt=&quot;Release Burndown Chart&quot; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&quot;sprint-backlog&quot;&gt;Sprint Backlog&lt;/h3&gt;
-
-&lt;p&gt;&lt;a href=&quot;/assets/files/Sprint-Backlog-Template.xlsx&quot;&gt;Download the Sprint Backlog Excel Template (incl. Sprint Burndown Chart)&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/img/blog/sprint-burndown.png&quot; alt=&quot;Sprint Burndown Chart&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><category term="agile" /><category term="excel" /><category term="scrum" /><category term="templates" /><summary type="html">Here’s some useful templates for managing Scrum projects using Excel. Why use Excel? For simplicity. Sometimes great software and tools are necessary, sometimes they just over complicate the process.</summary></entry></feed>
+    &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;</content><author><name></name></author><category term="javascript" /><category term="jquery" /><category term="promises" /><summary type="html">For those familiar with JavaScript Promises, jQuery’s Deferred.fail() handling can act unexpectedly. Standard Promises implementations allow the first catch handler to deal with the error and then return to normal execution flow (see JavaScript Promises: There and back again). jQuery on the other hand appears to execute all fail handlers, in the order they were defined with no chance to recover normal flow.</summary></entry></feed>
