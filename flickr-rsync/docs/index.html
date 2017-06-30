@@ -1,0 +1,371 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Paul Heasley">
+  
+
+  <title>flickr-rsync Documentation | phdesign</title>
+  <meta name="description" content="Website of Paul Heasley, .NET Web Developer Technical advice, bits of software, maybe some woodworking">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/flickr-rsync/docs/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-2414000-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  
+
+  <!-- Google Web Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  
+</head>
+
+  <body class="page docs">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/programming">programming</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+              <li><a href="/Woodworking">Woodworking</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/flickr-rsync">flickr-rsync</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+            <li><a href="/phreplace">phReplace</a></li>
+          </ul>
+        </li>
+        <li><a href="/presentations">Presentations</a></li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+
+      
+
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+    <main class="content" aria-label="Content">
+  	  <div class="container">
+  <div class="row">
+    <div class="col-sm-8">
+
+      <h1 id="flickr-rsync-documentation">flickr-rsync Documentation</h1>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>flickr-rsync is a python script to manage synchronising a local directory of photos with Flickr based on an rsync 
+interaction pattern. It also allows listing files / folders in a consistent way from the local file system or flickr
+in a diff-friendly mannner.</p>
+
+<h2 id="installation">Installation</h2>
+
+<p>Run the following to install flickr-rsync globally (or append <code class="highlighter-rouge">--user</code> to install for just the current user)</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>$ python setup.py install
+</code></pre>
+</div>
+
+<h2 id="authenticating-with-flickr">Authenticating with Flickr</h2>
+
+<p>Two keys are provided by Flickr, an api key and a secret. To make your application aware of these keys there are two methods:</p>
+<ul>
+  <li>provide <code class="highlighter-rouge">--api-key</code> and <code class="highlighter-rouge">--api-secret</code> arguments to the command line</li>
+  <li>create a config file in $HOME/.flickr-rsync.ini with the following entries</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>API_KEY = xxxxxxxxxxxxxxxxxxx
+API_SECRET = yyyyyyyyyyyyyy
+</code></pre>
+</div>
+
+<p>where x’s and y’s are replaced by the values provided by Flickr.</p>
+
+<h2 id="listing-files">Listing files</h2>
+
+<p>The <code class="highlighter-rouge">--list-only</code> flag will print a list of files in the source storage provider, this can either be Flickr by specifying the <code class="highlighter-rouge">src</code> as <code class="highlighter-rouge">Flickr</code> or a local file system path. Use <code class="highlighter-rouge">--sort-files</code> to sort the files alphabetically. This feature is useful for manually creating a diff between your local files and Flickr files.</p>
+
+<p>e.g. List all files in Flickr photo sets</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ flickr-rsync flickr --list-only
+</code></pre>
+</div>
+
+<p>Or List all files in a local folder</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ flickr-rsync ~/Pictures --list-only
+</code></pre>
+</div>
+
+<h3 id="tree-view-vs-csv-view">Tree view vs. csv view</h3>
+
+<p>You can change the output from a tree view to a comma separated values view by using <code class="highlighter-rouge">--list-format=tree</code> or <code class="highlighter-rouge">--list-format=csv</code>. By default the tree view is used.</p>
+
+<p>e.g. Print in tree format</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ flickr-rsync flickr --list-only --list-format=tree
+
+├─── 2017-04-24 Family Holiday
+│   ├─── IMG_2546.jpg [70ebf9]
+│   ├─── IMG_2547.jpg [3d3046]
+│   ├─── IMG_2548.jpg [2f2385]
+│   └─── IMG_2549.jpg [d8e946]
+│   
+└─── 2017-04-16 Easter Camping
+    ├─── IMG_2515.jpg [aabe74]
+    ├─── IMG_2516.jpg [0eb4f2]
+    └─── IMG_2517.jpg [4fe908]
+</code></pre>
+</div>
+
+<p>Or csv format</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ flickr-rsync flickr --list-only --list-format=csv
+
+Folder, Filename, Checksum
+2017-04-24 Family Holiday, IMG_2546.jpg, 70ebf9be4d8301e94c65582977332754
+2017-04-24 Family Holiday, IMG_2547.jpg, 3d3046b37ba338793a762ab7bd83e85c
+2017-04-24 Family Holiday, IMG_2548.jpg, 2f23853abeb742551043a3514ba4315b
+2017-04-24 Family Holiday, IMG_2549.jpg, d8e946e73700b9c2890d3681c3c0fa0b
+2017-04-16 Easter Camping, IMG_2515.jpg, aabe74b06c3a53e801893347eb6bd7f5
+2017-04-16 Easter Camping, IMG_2516.jpg, 0eb4f2519f6562ff66069618637a7b10
+2017-04-16 Easter Camping, IMG_2517.jpg, 4fe9085b9f320a67988f84e85338a3ff
+</code></pre>
+</div>
+
+<h2 id="syncing-files">Syncing files</h2>
+
+<p>e.g. To copy all files from Flickr to a local folder</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ flickr-rsync flickr ~/Pictures/flickr
+</code></pre>
+</div>
+
+<p>Or to copy all files from a local folder up to Flickr</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ flickr-rsync ~/Pictures/flickr flickr
+</code></pre>
+</div>
+
+<p>You can even copy from a local folder to another local folder</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ flickr-rsync ~/Pictures/from ~/Pictures/to
+</code></pre>
+</div>
+
+<p>Files are matched by folder names and file names. E.g. if you have a Flickr photoset called <code class="highlighter-rouge">2017-04-16 Easter Camping</code> and a file called <code class="highlighter-rouge">IMG_2517.jpg</code>, and you are trying to copy from a folder with <code class="highlighter-rouge">2017-04-16 Easter Camping\IMG_2517.jpg</code> it will assume this file is the same and will not try to copy it.</p>
+
+<h3 id="will-never-delete">Will never delete!</h3>
+
+<p><code class="highlighter-rouge">flickr-rsync</code> will never delete any files, either from Flickr or your local system, it is append only. It will not overwrite any files either, if a file with the same name exists in the same photoset / folder, it will be skipped.</p>
+
+<h2 id="filtering">Filtering</h2>
+
+<p>Filtering is done using regular expressions. The following four options control filtering the files:</p>
+
+<ul>
+  <li><code class="highlighter-rouge">--include=</code> specifies a pattern that <strong>file paths</strong> must match to be included in the operation</li>
+  <li><code class="highlighter-rouge">--include-dir=</code> specifies a pattern that <strong>folder names</strong> must match to be included in the operation</li>
+  <li><code class="highlighter-rouge">--exclude=</code> specifies a pattern that <strong>file paths</strong> must NOT match to be included in the operation</li>
+  <li><code class="highlighter-rouge">--exclude-dir=</code> specifies a pattern that <strong>folder names</strong> must NOT match to be included in the operation</li>
+</ul>
+
+<p>Note that filtering by folders is more performant than by file paths, prefer folder name filtering where possible.</p>
+
+<p>Also note that exclude filters take preference and will override include filters.</p>
+
+<h3 id="root-files">Root files</h3>
+
+<p>Note that filtering does not apply to root files, root files (files in the target folder if local file system, or files not in a photoset on Flickr) are excluded by default. To include them, use <code class="highlighter-rouge">--root-files</code>.</p>
+
+<h2 id="options">Options</h2>
+
+<p>All options can be provided by either editing the config file <code class="highlighter-rouge">flickr-rsync.ini</code> or using the command line interface.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>usage: flickr-rsync [-h] [-l] [--list-format {tree,csv}] [--list-sort]
+                    [--include REGEX] [--include-dir REGEX] [--exclude REGEX]
+                    [--exclude-dir REGEX] [--root-files] [-n]
+                    [--throttling SEC] [--retry NUM] [--api-key API_KEY]
+                    [--api-secret API_SECRET] [--tags "TAG1 TAG2"] [-v]
+                    [--version]
+                    [src] [dest]
+
+A python script to manage synchronising a local directory of photos to flickr
+
+positional arguments:
+  src                   the source directory to copy or list files from, or
+                        FLICKR to specify flickr
+  dest                  the destination directory to copy files to, or FLICKR
+                        to specify flickr
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -l, --list-only       list the files in --src instead of copying them
+  --list-format {tree,csv}
+                        output format for --list-only, TREE for a tree based
+                        output or CSV
+  --list-sort           sort alphabetically when --list-only, note that this
+                        forces buffering of remote sources so will be slower
+  -c, --checksum        calculate file checksums for local files. Print
+                        checksum when listing, use checksum for comparison
+                        when syncing
+  --include REGEX       include only files matching REGEX. Defaults to
+                        media file extensions only
+  --include-dir REGEX   include only directories matching REGEX
+  --exclude REGEX       exclude any files matching REGEX, note this takes
+                        precedent over --include
+  --exclude-dir REGEX   exclude any directories matching REGEX, note this
+                        takes precedent over --include-dir
+  --root-files          includes roots files (not in a directory or a
+                        photoset) in the list or copy 
+  -n, --dry-run         in sync mode, don't actually copy anything, just
+                        simulate the process and output
+  --throttling SEC      the delay in seconds (may be decimal) before each
+                        network call
+  --retry NUM           the number of times to retry a network call before
+                        failing
+  --api-key API_KEY     flickr API key
+  --api-secret API_SECRET
+                        flickr API secret
+  --tags "TAG1 TAG2"    space seperated list of tags to apply to uploaded
+                        files on flickr
+  -v, --verbose         increase verbosity
+  --version             show program's version number and exit
+</code></pre>
+</div>
+
+<h3 id="config-and-token-file-discovery">Config and token file discovery</h3>
+
+<p>The config file <code class="highlighter-rouge">flickr-rsync.ini</code> and Flickr token file <code class="highlighter-rouge">flickr-rsync.token</code> are searched for in the following locations in order:</p>
+<ul>
+  <li><code class="highlighter-rouge">&lt;current working dir&gt;/flickr-rsync.ini</code></li>
+  <li><code class="highlighter-rouge">&lt;current working dir&gt;/.flickr-rsync.ini</code></li>
+  <li><code class="highlighter-rouge">&lt;users home dir&gt;/flickr-rsync.ini</code></li>
+  <li><code class="highlighter-rouge">&lt;users home dir&gt;/.flickr-rsync.ini</code></li>
+  <li><code class="highlighter-rouge">&lt;executable dir&gt;/flickr-rsync.ini</code></li>
+  <li><code class="highlighter-rouge">&lt;executable dir&gt;/.flickr-rsync.ini</code></li>
+</ul>
+
+
+
+    </div><!-- end .col-sm-8 -->
+    <aside class="col-sm-4">
+
+      
+<div class="sidebar">
+  <div class="widget">
+
+    <h5>Documentation</h5>
+
+    <nav>
+      <ul class="alt">
+        <li><a href="/flickr-rsync/docs/#introduction">Introduction</a></li>
+        <li><a href="/flickr-rsync/docs/#installation">Installation</a></li>
+        <li><a href="/flickr-rsync/docs/#authenticating-with-flickr">Authenticating with Flickr</a></li>
+        <li><a href="/flickr-rsync/docs/#listing-files">Listing Files</a></li>
+        <li><a href="/flickr-rsync/docs/#syncing-files">Syncing Files</a></li>
+        <li><a href="/flickr-rsync/docs/#filtering">Filtering</a></li>
+        <li><a href="/flickr-rsync/docs/#options">Options</a></li>
+      </ul>
+    </nav>
+
+  </div><!-- end .widget -->
+</div><!-- end .sidebar -->
+
+
+    </aside><!-- end .col-sm-4 -->
+  </div><!-- end .row -->
+</div><!-- end .container -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="/assets/js/search.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+  </body>
+
+</html>
