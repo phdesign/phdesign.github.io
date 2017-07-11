@@ -1,5 +1,151 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://phdesign.com.au/feed.xml" rel="self" type="application/atom+xml" /><link href="http://phdesign.com.au/" rel="alternate" type="text/html" /><updated>2017-07-06T08:05:14+10:00</updated><id>http://phdesign.com.au/</id><title type="html">phdesign</title><subtitle>Website of Paul Heasley, .NET Web Developer Technical advice, bits of software, maybe some woodworking
-</subtitle><entry><title type="html">No iOS code signing key matches provisioning profile</title><link href="http://phdesign.com.au/programming/No-iOS-code-signing-key-matches-provisioning-profile/" rel="alternate" type="text/html" title="No iOS code signing key matches provisioning profile" /><published>2017-07-06T00:00:00+10:00</published><updated>2017-07-06T00:00:00+10:00</updated><id>http://phdesign.com.au/programming/No-iOS-code-signing-key-matches-provisioning-profile</id><content type="html" xml:base="http://phdesign.com.au/programming/No-iOS-code-signing-key-matches-provisioning-profile/">&lt;p&gt;Recently my team have come up against this error a few times building a Xamarin app using Visual Studio 2017 both on the Mac and PC, and it took a bit to work out the fix.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://phdesign.com.au/feed.xml" rel="self" type="application/atom+xml" /><link href="http://phdesign.com.au/" rel="alternate" type="text/html" /><updated>2017-07-11T17:48:29+10:00</updated><id>http://phdesign.com.au/</id><title type="html">phdesign</title><subtitle>Website of Paul Heasley, .NET Web Developer Technical advice, bits of software, maybe some woodworking
+</subtitle><entry><title type="html">Advanced Redux in Xamarin Part 1: Action Creators</title><link href="http://phdesign.com.au/programming/advanced-redux-in-xamarin-part1-action-creators/" rel="alternate" type="text/html" title="Advanced Redux in Xamarin Part 1: Action Creators" /><published>2017-07-11T00:00:00+10:00</published><updated>2017-07-11T00:00:00+10:00</updated><id>http://phdesign.com.au/programming/advanced-redux-in-xamarin-part1-action-creators</id><content type="html" xml:base="http://phdesign.com.au/programming/advanced-redux-in-xamarin-part1-action-creators/">&lt;p&gt;&lt;a href=&quot;http://redux.js.org/&quot;&gt;Redux&lt;/a&gt; is an implementation of the &lt;a href=&quot;https://facebook.github.io/flux/&quot;&gt;Flux architecture&lt;/a&gt; that manages UI changes through a single global State object that can only be mutated by dispatching Actions. It provides a way to easily reason about state changes and to share that state across multiple separated areas of the UI.&lt;/p&gt;
+
+&lt;p&gt;Originally developed for React in JavaScript, it’s now finding its way into other languages, there are a number of implementations of Redux in .NET (e.g. &lt;a href=&quot;https://github.com/GuillaumeSalles/redux.NET&quot;&gt;Redux.NET&lt;/a&gt;, &lt;a href=&quot;https://github.com/MassivePixel/YAXL.Redux&quot;&gt;YAXL.Redux&lt;/a&gt; and &lt;a href=&quot;https://github.com/pshomov/reducto&quot;&gt;Reducto&lt;/a&gt;). Rather than rehashing the basics of how to use Redux in Xamarin (there are &lt;a href=&quot;http://massivepixel.co/blog/post/redux-csharp-part1&quot;&gt;plenty&lt;/a&gt; of &lt;a href=&quot;https://spin.atomicobject.com/2017/03/13/adapting-redux-c-sharp-xamarin/&quot;&gt;good&lt;/a&gt; &lt;a href=&quot;http://www.michaelridland.com/xamarin/mvvm-mvc-is-dead-is-unidirectional-a-mvvm-mvc-killer/&quot;&gt;articles&lt;/a&gt;), in this post series we’ll look at some more advanced concepts, starting with Action Creators.&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;In Redux the only way to manipulate state is by dispatching an Action, an Action is a simple POCO that carries enough information for the Reducers to update the state. Action Creators are simply methods that create Actions, e.g&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class TodoActionCreators
+{
+    public IAction AddTodo(Guid id, string text)
+    {
+        return new AddTodoAction() {
+            Id = id,
+            Text = text
+        };
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Action Creators can be thought of as an SDK for your Actions, they provide a clean interface for your code to create Actions and can encapsulate any external or impure interactions, like calling an API.&lt;/p&gt;
+
+&lt;h2 id=&quot;redux-thunks&quot;&gt;Redux Thunks&lt;/h2&gt;
+
+&lt;p&gt;A &lt;a href=&quot;https://github.com/gaearon/redux-thunk&quot;&gt;Redux Thunk&lt;/a&gt; provides a way to return a function from an Action Creator rather than returning an Action directly. This allows you to do conditional or asynchronous dispatching. There is a &lt;a href=&quot;https://github.com/taiste/redux.NET-thunk&quot;&gt;Redux.NET Thunk&lt;/a&gt; middleware available, but I prefer the store extensions approach found in the &lt;a href=&quot;https://github.com/GuillaumeSalles/redux.NET/blob/master/examples/async/Redux.Async/StoreExtensions.cs&quot;&gt;Redux.NET examples&lt;/a&gt;. We’ve adapted it slightly to allow it to return asynchronous or synchronous actions.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;namespace Redux
+{
+    public delegate Task AsyncActionsCreator&amp;lt;TState&amp;gt;(Dispatcher dispatcher, Func&amp;lt;TState&amp;gt; getState);
+    public delegate void ActionsCreator&amp;lt;TState&amp;gt;(Dispatcher dispatcher, Func&amp;lt;TState&amp;gt; getState);
+
+    public static class StoreExtensions
+    {
+        /// &amp;lt;summary&amp;gt;
+        /// Extension on IStore to dispatch multiple actions via a thunk. 
+        /// Can be used like https://github.com/gaearon/redux-thunk without the need of middleware.
+        /// &amp;lt;/summary&amp;gt;
+        public static Task DispatchAsync&amp;lt;TState&amp;gt;(this IStore&amp;lt;TState&amp;gt; store, AsyncActionsCreator&amp;lt;TState&amp;gt; actionsCreator)
+        {
+            return actionsCreator(store.Dispatch, store.GetState);
+        }
+
+        public static void Dispatch&amp;lt;TState&amp;gt;(this IStore&amp;lt;TState&amp;gt; store, ActionsCreator&amp;lt;TState&amp;gt; actionsCreator)
+        {
+            actionsCreator(store.Dispatch, store.GetState);
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;And it’s used like this&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class TodoActionCreators
+{
+    public AsyncActionsCreator&amp;lt;ApplicationState&amp;gt; AddTodo(Guid id, string text)
+    {
+        return async (dispatch, getState) =&amp;gt;
+        {
+            dispatch(new AddTodoRequestAction() { Id = id, Text = text })
+            var resp = await ApiService.AddTodo(text)
+            if (resp.IsSuccess) 
+            {
+                dispatch(new AddTodoSuccessAction() { Id = id, Text = text });
+            }
+            else 
+            {
+                dispatch(new AddTodoFailureAction() { Id = id, Error = resp.Error });
+            }
+        };
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;By emitting a Request action and matching Success or Failure actions, you can optimistically update the application state / display, then rollback the change only if it fails. An optimistic Reducer would look like this&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public class Reducers
+{
+    public static ApplicationState ReduceApplication(ApplicationState previousState, IAction action)
+    {
+        return new ApplicationState { Todos = TodosReducer(previousState.Todos, action) };
+    }
+
+    private static ImmutableArray&amp;lt;Todo&amp;gt; TodosReducer(ImmutableArray&amp;lt;Todo&amp;gt; previousState, IAction action)
+    {
+        if (action is AddTodoRequestAction)
+        {
+            return AddTodoRequestReducer(previousState, (AddTodoRequestAction)action);
+        }
+        if (action is AddTodoSuccessAction)
+        {
+            return AddTodoSuccessReducer(previousState, (AddTodoSuccessAction)action);
+        }
+        if (action is AddTodoFailureAction)
+        {
+            return AddTodoFailureReducer(previousState, (AddTodoFailureAction)action);
+        }
+        return previousState;
+    }
+
+    private static ImmutableArray&amp;lt;Todo&amp;gt; AddTodoRequestReducer(ImmutableArray&amp;lt;Todo&amp;gt; previousState, AddTodoRequestAction action)
+    {
+        return previousState
+            .Insert(0, new Todo()
+            {
+                Id = action.Id,
+                Text = action.Text,
+                Pending = true
+            });
+    }
+
+    private static ImmutableArray&amp;lt;Todo&amp;gt; AddTodoSuccessReducer(ImmutableArray&amp;lt;Todo&amp;gt; previousState, AddTodoRequestAction action)
+    {
+        return previousState
+            .Select(x =&amp;gt; {
+                if (x.Id == action.Id) {
+                    return new Activity()
+                    {
+                        Id = action.Id
+                        Text = action.Text,
+                        Pending = false
+                    };
+                }
+                return x;
+            })
+            .ToImmutableArray();
+    }
+
+    private static ImmutableArray&amp;lt;Todo&amp;gt; AddTodoFailureReducer(ImmutableArray&amp;lt;Todo&amp;gt; previousState, AddTodoFailureAction action)
+    {
+        return previousState
+            .Where(x =&amp;gt; x.Id != action.Id)
+            .ToImmutableArray();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Alternatively, you could set an IsLoading property of the state and show a spinner while you wait for the Success / Failure.&lt;/p&gt;
+
+&lt;h2 id=&quot;project-structure&quot;&gt;Project Structure&lt;/h2&gt;
+
+&lt;p&gt;There are a few best practices for structuring Redux projects, the most typical is to collect all Actions, Reducers, Action Creators and Middleware into separate folders (see the &lt;a href=&quot;https://github.com/reactjs/redux/tree/master/examples/real-world/src&quot;&gt;Redux sample projects&lt;/a&gt;), we put ours all within a Redux folder in our PCL.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/redux-xamarin-project-structure.png&quot; alt=&quot;Redux Project Structure in a Xamarin app&quot; /&gt;&lt;/p&gt;</content><author><name></name></author><category term="xamarin" /><category term="redux" /><category term="howto" /><summary type="html">Redux is an implementation of the Flux architecture that manages UI changes through a single global State object that can only be mutated by dispatching Actions. It provides a way to easily reason about state changes and to share that state across multiple separated areas of the UI. Originally developed for React in JavaScript, it’s now finding its way into other languages, there are a number of implementations of Redux in .NET (e.g. Redux.NET, YAXL.Redux and Reducto). Rather than rehashing the basics of how to use Redux in Xamarin (there are plenty of good articles), in this post series we’ll look at some more advanced concepts, starting with Action Creators.</summary></entry><entry><title type="html">No iOS code signing key matches provisioning profile</title><link href="http://phdesign.com.au/programming/no-ios-code-signing-key-matches-provisioning-profile/" rel="alternate" type="text/html" title="No iOS code signing key matches provisioning profile" /><published>2017-07-06T00:00:00+10:00</published><updated>2017-07-06T00:00:00+10:00</updated><id>http://phdesign.com.au/programming/no-ios-code-signing-key-matches-provisioning-profile</id><content type="html" xml:base="http://phdesign.com.au/programming/no-ios-code-signing-key-matches-provisioning-profile/">&lt;p&gt;Recently my team have come up against this error a few times building a Xamarin app using Visual Studio 2017 both on the Mac and PC, and it took a bit to work out the fix.&lt;/p&gt;
 
 &lt;blockquote&gt;
   &lt;p&gt;No iOS code signing key matches specified provisioning profile ‘xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx’&lt;/p&gt;
@@ -873,33 +1019,4 @@ Configuration file: /Users/paul/Projects/demo/_config.yml
   &lt;span class=&quot;nx&quot;&gt;init&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;You’ll also find that IE doesn’t record console output while the developer tools are open, to enable this in IE11 go to Settings (The Gear) &amp;gt; Internet options &amp;gt; Advanced &amp;gt; Check ‘Always record developer console messages’.&lt;/p&gt;</content><author><name></name></author><category term="ie" /><category term="javascript" /><category term="logging" /><summary type="html">Compared to other browsers, IE’s JavaScript console is pretty lacking in it’s ability to log objects, they just appear as [Object object]. As a work around for this below is a shim that will JSON.stringify any objects that are passed as parameters to console.log (or it’s sister functions like error, warn…).</summary></entry><entry><title type="html">Catching JavaScript errors with Promises</title><link href="http://phdesign.com.au/programming/catching-javascript-errors-with-promises/" rel="alternate" type="text/html" title="Catching JavaScript errors with Promises" /><published>2014-08-02T00:00:00+10:00</published><updated>2014-08-02T00:00:00+10:00</updated><id>http://phdesign.com.au/programming/catching-javascript-errors-with-promises</id><content type="html" xml:base="http://phdesign.com.au/programming/catching-javascript-errors-with-promises/">&lt;p&gt;If your JS function needs to return a &lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise&quot; title=&quot;About Promises by the Mozilla Developer Network&quot;&gt;Promise&lt;/a&gt; but doesn’t do any asynchronous activity, you may be tempted to use the static Promise.resolve() function rather than instantiating a new Promise object. Be aware that doing this will change the way javascript errors are dealt with.&lt;/p&gt;
-
-&lt;!--more--&gt;
-
-&lt;p&gt;Using the static method means normal JavaScript error handling will take place and your Promise catch() function won’t be called. E.g.&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'new error'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;resolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'hi'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'there was an error'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Will result in seeing the error ‘new error’ logged by the console. The promise then / catch functions are never called.
-Whereas:&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Promise&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;resolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;reject&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;throw&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'new error'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-    &lt;span class=&quot;nx&quot;&gt;resolve&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'hi'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;p&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;then&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;})&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;catch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;error&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'there was an error'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;Will allow the Promise to handle the error and pass it to the catch function, resulting in ‘there was an error’ in the console.&lt;/p&gt;</content><author><name></name></author><category term="javascript" /><category term="promises" /><summary type="html">If your JS function needs to return a Promise but doesn’t do any asynchronous activity, you may be tempted to use the static Promise.resolve() function rather than instantiating a new Promise object. Be aware that doing this will change the way javascript errors are dealt with.</summary></entry></feed>
+&lt;p&gt;You’ll also find that IE doesn’t record console output while the developer tools are open, to enable this in IE11 go to Settings (The Gear) &amp;gt; Internet options &amp;gt; Advanced &amp;gt; Check ‘Always record developer console messages’.&lt;/p&gt;</content><author><name></name></author><category term="ie" /><category term="javascript" /><category term="logging" /><summary type="html">Compared to other browsers, IE’s JavaScript console is pretty lacking in it’s ability to log objects, they just appear as [Object object]. As a work around for this below is a shim that will JSON.stringify any objects that are passed as parameters to console.log (or it’s sister functions like error, warn…).</summary></entry></feed>

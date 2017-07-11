@@ -13,11 +13,11 @@
   <meta name="author" content="Paul Heasley">
   
 
-  <title>No iOS code signing key matches provisioning profile | phdesign</title>
-  <meta name="description" content="Recently my team have come up against this error a few times building a Xamarin app using Visual Studio 2017 both on the Mac and PC, and it took a bit to wor...">
+  <title>redux | phdesign</title>
+  <meta name="description" content="Website of Paul Heasley, .NET Web Developer Technical advice, bits of software, maybe some woodworking">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="canonical" href="http://phdesign.com.au/programming/No-iOS-code-signing-key-matches-provisioning-profile/">
+  <link rel="canonical" href="http://phdesign.com.au/tag/redux/">
   <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
   <link rel="shortcut icon" href="/favicon.ico">
   
@@ -49,7 +49,7 @@
   
 </head>
 
-  <body class="post">
+  <body class="archive">
 
     <div class="header-background-image"></div>
     <header role="banner">
@@ -107,115 +107,30 @@
 
     </header>
     <main class="content" aria-label="Content">
-  	  <article>
-  <div class="container">
+  	  <div class="container">
 
-    
+  <div class="meta-label-lg">
+    Showing 1 posts  tagged with 
+    <span class="meta-value">#redux</span>
+  </div><!-- end .meta-label-lg -->
 
-    <div class="date-stamp">
-      <div class="month">Jul</div>
-      <div class="day">06</div>
-    </div><!-- end .date-stamp -->
-
-    <h2 class="post-header">No iOS code signing key matches provisioning profile</h2>
-
-    <div class="meta-label">
-      posted on <span class="meta-value muted">06 July 2017</span>
-      
-        in <span class="meta-value"><a href="/programming">programming</a></span>
-      
-      with <span class="meta-value"><a data-disqus-identifier="No iOS code signing key matches provisioning profile" href="#disqus_thread">0 Comments</a></span>
-    </div><!-- end .meta-label -->
-    <br />
-
-    
-    
-    
-    
-
-    <p>Recently my team have come up against this error a few times building a Xamarin app using Visual Studio 2017 both on the Mac and PC, and it took a bit to work out the fix.</p>
-
-<blockquote>
-  <p>No iOS code signing key matches specified provisioning profile ‘xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx’</p>
-</blockquote>
-
-<!--more-->
-
-<p>The simplest thing to try is open the properties window (or Options on Mac) of the iOS project, select the ‘iOS Bundle Signing’ tab and change the Signing Identity and Provisioning Profile back to Automatic. Save the project and close and reopen Visual Studio, now set the Signing Identity and Provisioning Profile back to the desired values and rebuild.</p>
-
-<p><img src="/assets/img/blog/xamarin-ios-bundle-signing.png" alt="iOS Bundle Signing options for iOS Xamarin project" /></p>
-
-<p>However, if like us this doesn’t fix the problem, open the <code class="highlighter-rouge">ProjectName.iOS.csproj</code> file for editing (either in your favourite text editor or by unloading the project first in Visual Studio) and look for the <code class="highlighter-rouge">&lt;CodesignProvision&gt;</code> tag. In our case(s) we found there were two entries, which must have been what was confusing Visual Studio.</p>
-
-<p><img src="/assets/img/blog/ios-csproj-duplicate-provisioning.png" alt="Duplicate CodesignProvision tags in iOS.csproj file" /></p>
-
-<p>To fix this, delete one of the entires (and for good measure we cleared the value out of the other entry), now reload the project, open the iOS Bundle Signing options and set the Signing Identity and Provisioning Profile to your desired values. You should now be able to build successfully.</p>
-
-
-    <ul class="post-tags">
-      
-        <li><a href="/tag/xamarin" title="View posts tagged with xamarin">#xamarin</a></li>
-      
-        <li><a href="/tag/ios" title="View posts tagged with ios">#ios</a></li>
-      
-        <li><a href="/tag/howto" title="View posts tagged with howto">#howto</a></li>
-      
-    </ul>
-
-    
-
-  </div><!-- end .container -->
-</article>
-
-<div class="stripe">
-  <div class="container">
-
-    <div class="comments">
-      
-        
-
-      <div id="disqus_thread"></div>
-      <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES * * */
-        var disqus_shortname = 'phdesign';
-        var disqus_identifier = 'http://phdesign.com.au/programming/No-iOS-code-signing-key-matches-provisioning-profile/';
-        var disqus_title = 'No iOS code signing key matches provisioning profile';
-        var disqus_url = 'http://phdesign.com.au/programming/No-iOS-code-signing-key-matches-provisioning-profile/';
-
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
-
-
-      
-    </div><!-- end .comments -->
-
-  </div><!-- end .container -->
 </div>
 
-<div class="stripe alt">
-  <div class="container">
+  <article>
+    <div class="container">
 
-    <nav class="row pager">
-      <div class="previous col-xs-6 col-sm-4">
+      <h3><a href="/programming/advanced-redux-in-xamarin-part1-action-creators/" title="Read full article">Advanced Redux in Xamarin Part 1: Action Creators</a></h3>
+      <div class="meta-label">
+        posted on <span class="meta-value muted">11 July 2017</span>
         
-          <div class="meta-label"><a href="/programming/mob-programming/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
-          <div class="meta-value"><a href="/programming/mob-programming/">Two's company, three's a mob: Mob programming</a></div>
+          in <span class="meta-value"><a href="/programming">programming</a></span>
         
-      </div>
-      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
-        
-      </div>
-    </nav><!-- end .post_nav -->
+        with <span class="meta-value"><a data-disqus-identifier="Advanced Redux in Xamarin Part 1: Action Creators" href="#disqus_thread">0 Comments</a></span>
+      </div><!-- end .meta-label -->
 
-  </div><!-- end .container -->
-</div><!-- end .stripe.alt -->
+    </div>
+  </article>
+
 
     </main><!-- end .content -->
 
