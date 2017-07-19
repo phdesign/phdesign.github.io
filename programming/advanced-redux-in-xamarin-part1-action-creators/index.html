@@ -141,16 +141,16 @@
 
 <p>In Redux the only way to manipulate state is by dispatching an Action, an Action is a simple POCO that carries enough information for the Reducers to update the state. Action Creators are simply methods that create Actions, e.g</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>public class TodoActionCreators
-{
-    public IAction AddTodo(Guid id, string text)
-    {
-        return new AddTodoAction() {
-            Id = id,
-            Text = text
-        };
-    }
-}
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">TodoActionCreators</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="n">IAction</span> <span class="nf">AddTodo</span><span class="p">(</span><span class="n">Guid</span> <span class="n">id</span><span class="p">,</span> <span class="kt">string</span> <span class="n">text</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="nf">AddTodoAction</span><span class="p">()</span> <span class="p">{</span>
+            <span class="n">Id</span> <span class="p">=</span> <span class="n">id</span><span class="p">,</span>
+            <span class="n">Text</span> <span class="p">=</span> <span class="n">text</span>
+        <span class="p">};</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre>
 </div>
 
@@ -160,116 +160,118 @@
 
 <p>A <a href="https://github.com/gaearon/redux-thunk">Redux Thunk</a> provides a way to return a function from an Action Creator rather than returning an Action directly. This allows you to do conditional or asynchronous dispatching. There is a <a href="https://github.com/taiste/redux.NET-thunk">Redux.NET Thunk</a> middleware available, but I prefer the store extensions approach found in the <a href="https://github.com/GuillaumeSalles/redux.NET/blob/master/examples/async/Redux.Async/StoreExtensions.cs">Redux.NET examples</a>. We’ve adapted it slightly to allow it to return asynchronous or synchronous actions.</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>namespace Redux
-{
-    public delegate Task AsyncActionsCreator&lt;TState&gt;(Dispatcher dispatcher, Func&lt;TState&gt; getState);
-    public delegate void ActionsCreator&lt;TState&gt;(Dispatcher dispatcher, Func&lt;TState&gt; getState);
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">namespace</span> <span class="nn">Helpers</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">delegate</span> <span class="n">Task</span> <span class="n">AsyncActionsCreator</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;(</span><span class="n">Dispatcher</span> <span class="n">dispatcher</span><span class="p">,</span> <span class="n">Func</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="n">getState</span><span class="p">);</span>
+    <span class="k">public</span> <span class="k">delegate</span> <span class="k">void</span> <span class="n">ActionsCreator</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;(</span><span class="n">Dispatcher</span> <span class="n">dispatcher</span><span class="p">,</span> <span class="n">Func</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="n">getState</span><span class="p">);</span>
 
-    public static class StoreExtensions
-    {
-        /// &lt;summary&gt;
-        /// Extension on IStore to dispatch multiple actions via a thunk. 
-        /// Can be used like https://github.com/gaearon/redux-thunk without the need of middleware.
-        /// &lt;/summary&gt;
-        public static Task DispatchAsync&lt;TState&gt;(this IStore&lt;TState&gt; store, AsyncActionsCreator&lt;TState&gt; actionsCreator)
-        {
-            return actionsCreator(store.Dispatch, store.GetState);
-        }
+    <span class="k">public</span> <span class="k">static</span> <span class="k">class</span> <span class="nc">StoreExtensions</span>
+    <span class="p">{</span>
+        <span class="c1">/// &lt;summary&gt;
+</span>        <span class="c1">/// Extension on IStore to dispatch multiple actions via a thunk. 
+</span>        <span class="c1">/// Can be used like https://github.com/gaearon/redux-thunk without the need of middleware.
+</span>        <span class="c1">/// &lt;/summary&gt;
+</span>        <span class="k">public</span> <span class="k">static</span> <span class="n">Task</span> <span class="n">DispatchAsync</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;(</span><span class="k">this</span> <span class="n">IStore</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="n">store</span><span class="p">,</span> <span class="n">AsyncActionsCreator</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="n">actionsCreator</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nf">actionsCreator</span><span class="p">(</span><span class="n">store</span><span class="p">.</span><span class="n">Dispatch</span><span class="p">,</span> <span class="n">store</span><span class="p">.</span><span class="n">GetState</span><span class="p">);</span>
+        <span class="p">}</span>
 
-        public static void Dispatch&lt;TState&gt;(this IStore&lt;TState&gt; store, ActionsCreator&lt;TState&gt; actionsCreator)
-        {
-            actionsCreator(store.Dispatch, store.GetState);
-        }
-    }
-}
+        <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> <span class="n">Dispatch</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;(</span><span class="k">this</span> <span class="n">IStore</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="n">store</span><span class="p">,</span> <span class="n">ActionsCreator</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="n">actionsCreator</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nf">actionsCreator</span><span class="p">(</span><span class="n">store</span><span class="p">.</span><span class="n">Dispatch</span><span class="p">,</span> <span class="n">store</span><span class="p">.</span><span class="n">GetState</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre>
 </div>
 
 <p>And it’s used like this</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>public class TodoActionCreators
-{
-    public AsyncActionsCreator&lt;ApplicationState&gt; AddTodo(Guid id, string text)
-    {
-        return async (dispatch, getState) =&gt;
-        {
-            dispatch(new AddTodoRequestAction() { Id = id, Text = text })
-            var resp = await ApiService.AddTodo(text)
-            if (resp.IsSuccess) 
-            {
-                dispatch(new AddTodoSuccessAction() { Id = id, Text = text });
-            }
-            else 
-            {
-                dispatch(new AddTodoFailureAction() { Id = id, Error = resp.Error });
-            }
-        };
-    }
-}
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">TodoActionCreators</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="n">AsyncActionsCreator</span><span class="p">&lt;</span><span class="n">ApplicationState</span><span class="p">&gt;</span> <span class="nf">AddTodo</span><span class="p">(</span><span class="n">Guid</span> <span class="n">id</span><span class="p">,</span> <span class="kt">string</span> <span class="n">text</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">async</span> <span class="p">(</span><span class="n">dispatch</span><span class="p">,</span> <span class="n">getState</span><span class="p">)</span> <span class="p">=&gt;</span>
+        <span class="p">{</span>
+            <span class="nf">dispatch</span><span class="p">(</span><span class="k">new</span> <span class="nf">AddTodoRequestAction</span><span class="p">()</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="n">id</span><span class="p">,</span> <span class="n">Text</span> <span class="p">=</span> <span class="n">text</span> <span class="p">});</span>
+            <span class="kt">var</span> <span class="n">resp</span> <span class="p">=</span> <span class="k">await</span> <span class="n">ApiService</span><span class="p">.</span><span class="nf">AddTodo</span><span class="p">(</span><span class="n">text</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">IsSuccess</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="nf">dispatch</span><span class="p">(</span><span class="k">new</span> <span class="nf">AddTodoSuccessAction</span><span class="p">()</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="n">id</span><span class="p">,</span> <span class="n">Text</span> <span class="p">=</span> <span class="n">text</span> <span class="p">});</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="nf">dispatch</span><span class="p">(</span><span class="k">new</span> <span class="nf">AddTodoFailureAction</span><span class="p">()</span> <span class="p">{</span> <span class="n">Id</span> <span class="p">=</span> <span class="n">id</span><span class="p">,</span> <span class="n">Error</span> <span class="p">=</span> <span class="n">resp</span><span class="p">.</span><span class="n">Error</span> <span class="p">});</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre>
 </div>
 
 <p>By emitting a Request action and matching Success or Failure actions, you can optimistically update the application state / display, then rollback the change only if it fails. An optimistic Reducer would look like this</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>public class Reducers
-{
-    public static ApplicationState ReduceApplication(ApplicationState previousState, IAction action)
-    {
-        return new ApplicationState { Todos = TodosReducer(previousState.Todos, action) };
-    }
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">Reducers</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="n">ApplicationState</span> <span class="nf">ReduceApplication</span><span class="p">(</span><span class="n">ApplicationState</span> <span class="n">previousState</span><span class="p">,</span> <span class="n">IAction</span> <span class="n">action</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="k">new</span> <span class="n">ApplicationState</span> <span class="p">{</span> <span class="n">Todos</span> <span class="p">=</span> <span class="nf">TodosReducer</span><span class="p">(</span><span class="n">previousState</span><span class="p">.</span><span class="n">Todos</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span> <span class="p">};</span>
+    <span class="p">}</span>
 
-    private static ImmutableArray&lt;Todo&gt; TodosReducer(ImmutableArray&lt;Todo&gt; previousState, IAction action)
-    {
-        if (action is AddTodoRequestAction)
-        {
-            return AddTodoRequestReducer(previousState, (AddTodoRequestAction)action);
-        }
-        if (action is AddTodoSuccessAction)
-        {
-            return AddTodoSuccessReducer(previousState, (AddTodoSuccessAction)action);
-        }
-        if (action is AddTodoFailureAction)
-        {
-            return AddTodoFailureReducer(previousState, (AddTodoFailureAction)action);
-        }
-        return previousState;
-    }
+    <span class="k">private</span> <span class="k">static</span> <span class="n">ImmutableArray</span><span class="p">&lt;</span><span class="n">TodoItem</span><span class="p">&gt;</span> <span class="nf">TodosReducer</span><span class="p">(</span><span class="n">ImmutableArray</span><span class="p">&lt;</span><span class="n">TodoItem</span><span class="p">&gt;</span> <span class="n">previousState</span><span class="p">,</span> <span class="n">IAction</span> <span class="n">action</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">action</span> <span class="k">is</span> <span class="n">AddTodoRequestAction</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nf">AddTodoRequestReducer</span><span class="p">(</span><span class="n">previousState</span><span class="p">,</span> <span class="p">(</span><span class="n">AddTodoRequestAction</span><span class="p">)</span><span class="n">action</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">action</span> <span class="k">is</span> <span class="n">AddTodoSuccessAction</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nf">AddTodoSuccessReducer</span><span class="p">(</span><span class="n">previousState</span><span class="p">,</span> <span class="p">(</span><span class="n">AddTodoSuccessAction</span><span class="p">)</span><span class="n">action</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">action</span> <span class="k">is</span> <span class="n">AddTodoFailureAction</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">return</span> <span class="nf">AddTodoFailureReducer</span><span class="p">(</span><span class="n">previousState</span><span class="p">,</span> <span class="p">(</span><span class="n">AddTodoFailureAction</span><span class="p">)</span><span class="n">action</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">previousState</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    private static ImmutableArray&lt;Todo&gt; AddTodoRequestReducer(ImmutableArray&lt;Todo&gt; previousState, AddTodoRequestAction action)
-    {
-        return previousState
-            .Insert(0, new Todo()
-            {
-                Id = action.Id,
-                Text = action.Text,
-                Pending = true
-            });
-    }
+    <span class="k">private</span> <span class="k">static</span> <span class="n">ImmutableArray</span><span class="p">&lt;</span><span class="n">TodoItem</span><span class="p">&gt;</span> <span class="nf">AddTodoRequestReducer</span><span class="p">(</span><span class="n">ImmutableArray</span><span class="p">&lt;</span><span class="n">TodoItem</span><span class="p">&gt;</span> <span class="n">previousState</span><span class="p">,</span> <span class="n">AddTodoRequestAction</span> <span class="n">action</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">previousState</span>
+            <span class="p">.</span><span class="nf">Insert</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="k">new</span> <span class="nf">TodoItem</span><span class="p">()</span>
+                    <span class="p">{</span>
+                    <span class="n">Id</span> <span class="p">=</span> <span class="n">action</span><span class="p">.</span><span class="n">Id</span><span class="p">,</span>
+                    <span class="n">Text</span> <span class="p">=</span> <span class="n">action</span><span class="p">.</span><span class="n">Text</span><span class="p">,</span>
+                    <span class="n">Pending</span> <span class="p">=</span> <span class="k">true</span>
+                    <span class="p">});</span>
+    <span class="p">}</span>
 
-    private static ImmutableArray&lt;Todo&gt; AddTodoSuccessReducer(ImmutableArray&lt;Todo&gt; previousState, AddTodoRequestAction action)
-    {
-        return previousState
-            .Select(x =&gt; {
-                if (x.Id == action.Id) {
-                    return new Activity()
-                    {
-                        Id = action.Id
-                        Text = action.Text,
-                        Pending = false
-                    };
-                }
-                return x;
-            })
-            .ToImmutableArray();
-    }
+    <span class="k">private</span> <span class="k">static</span> <span class="n">ImmutableArray</span><span class="p">&lt;</span><span class="n">TodoItem</span><span class="p">&gt;</span> <span class="nf">AddTodoSuccessReducer</span><span class="p">(</span><span class="n">ImmutableArray</span><span class="p">&lt;</span><span class="n">TodoItem</span><span class="p">&gt;</span> <span class="n">previousState</span><span class="p">,</span> <span class="n">AddTodoRequestAction</span> <span class="n">action</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">previousState</span>
+            <span class="p">.</span><span class="nf">Select</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span>
+                    <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">Id</span> <span class="p">==</span> <span class="n">action</span><span class="p">.</span><span class="n">Id</span><span class="p">)</span>
+                    <span class="p">{</span>
+                    <span class="k">return</span> <span class="k">new</span> <span class="nf">TodoItem</span><span class="p">()</span>
+                    <span class="p">{</span>
+                    <span class="n">Id</span> <span class="p">=</span> <span class="n">action</span><span class="p">.</span><span class="n">Id</span><span class="p">,</span>
+                    <span class="n">Text</span> <span class="p">=</span> <span class="n">action</span><span class="p">.</span><span class="n">Text</span><span class="p">,</span>
+                    <span class="n">Pending</span> <span class="p">=</span> <span class="k">false</span>
+                    <span class="p">};</span>
+                    <span class="p">}</span>
+                    <span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+                    <span class="p">})</span>
+        <span class="p">.</span><span class="nf">ToImmutableArray</span><span class="p">();</span>
+    <span class="p">}</span>
 
-    private static ImmutableArray&lt;Todo&gt; AddTodoFailureReducer(ImmutableArray&lt;Todo&gt; previousState, AddTodoFailureAction action)
-    {
-        return previousState
-            .Where(x =&gt; x.Id != action.Id)
-            .ToImmutableArray();
-    }
-}
+    <span class="k">private</span> <span class="k">static</span> <span class="n">ImmutableArray</span><span class="p">&lt;</span><span class="n">TodoItem</span><span class="p">&gt;</span> <span class="nf">AddTodoFailureReducer</span><span class="p">(</span><span class="n">ImmutableArray</span><span class="p">&lt;</span><span class="n">TodoItem</span><span class="p">&gt;</span> <span class="n">previousState</span><span class="p">,</span> <span class="n">AddTodoFailureAction</span> <span class="n">action</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">previousState</span>
+            <span class="p">.</span><span class="nf">Where</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">Id</span> <span class="p">!=</span> <span class="n">action</span><span class="p">.</span><span class="n">Id</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">ToImmutableArray</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </code></pre>
 </div>
 
@@ -281,6 +283,10 @@
 
 <p><img src="/assets/img/blog/redux-xamarin-project-structure.png" alt="Redux Project Structure in a Xamarin app" /></p>
 
+<p>&nbsp;</p>
+<p>In part 2 of this series we’ll look at how to persist and restore Actions on app restart using Redux Middleware.</p>
+
+<p><a class="btn btn-primary" href="../advanced-redux-in-xamarin-part2-persistent-actions-middleware" title="Part 2: Persistent Actions Middleware">Part 2  <i class="fa fa-chevron-right"></i></a></p>
 
 
     <ul class="post-tags">
@@ -341,6 +347,9 @@
         
       </div>
       <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+          <div class="meta-label"><a href="/programming/advanced-redux-in-xamarin-part2-persistent-actions-middleware/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/programming/advanced-redux-in-xamarin-part2-persistent-actions-middleware/">Advanced Redux in Xamarin Part 2: Persistent Actions Middleware</a></div>
         
       </div>
     </nav><!-- end .post_nav -->

@@ -134,7 +134,7 @@
     
 
     <div class="alert alert-info" role="alert">
-<a href="https://gist.github.com/phdesign/d46425bc4a2b72cd4802" title="Get the Gist">Want to skip to the code? Get the Gist here.</a>
+<a href="https://gist.github.com/phdesign/d46425bc4a2b72cd4802" title="Get the Gist" target="_blank">Want to skip to the code? Get the Gist here.</a>
 </div>
 
 <p>Pebble watchapps communicate with the phone via PebbleKit, a sandboxed JavaScript environment that runs within the Pebble phone app. It’s pretty simple to setup the interactions on the JavaScript side, but what happens when the JavaScript starts to get more complex? Using <a href="http://gruntjs.com/">Grunt</a> we can manage a scalable JS app, including running linters, bundling and running unit tests.</p>
@@ -211,14 +211,14 @@ Done, without errors.</code></pre></figure>
 <p>The configuration of the task goes under <code class="highlighter-rouge">grunt.initConfig({</code>, you can find more details on how to customise the <a href="https://www.npmjs.com/package/grunt-contrib-jshint">grunt-contrib-jshint task on NPM</a>. In our example you’ll see we’re telling JSHint to check our Grunt file and any JavaScript file(s) in the <em>src/js/</em> folder. <code class="highlighter-rouge">jshintrc: true</code> tells the task to look for a <em>.jshintrc</em> file somewhere in the folder heirarchy relative to the file we’re checking, this file defines our rules for JSHint, below is a sample your can use or you can see all the possible rules <a href="https://github.com/jshint/jshint/blob/master/examples/.jshintrc">in the default configuration file</a>. Save the following to a <em>.jshintrc</em> file in your project root folder:</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="cm">/*
- * Example jshint configuration file for Pebble development.
- * Adapted from http://developer.getpebble.com/blog/2014/01/12/Using-JSHint-For-Pebble-Development/
- *
- * Check out the full documentation at http://www.jshint.com/docs/options/
- */</span>
-<span class="p">{</span>
-  <span class="c1">// Declares the existence of a global 'Pebble' object</span>
-  <span class="s2">"globals"</span><span class="err">:</span> <span class="p">{</span> <span class="s2">"Pebble"</span> <span class="err">:</span> <span class="kc">true</span> <span class="p">},</span>
+* Example jshint configuration file for Pebble development.
+* Adapted from http://developer.getpebble.com/blog/2014/01/12/Using-JSHint-For-Pebble-Development/
+   *
+* Check out the full documentation at http://www.jshint.com/docs/options/
+   */</span>
+   <span class="p">{</span>
+   <span class="c1">// Declares the existence of a global 'Pebble' object</span>
+   <span class="s2">"globals"</span><span class="err">:</span> <span class="p">{</span> <span class="s2">"Pebble"</span> <span class="err">:</span> <span class="kc">true</span> <span class="p">},</span>
 
   <span class="c1">// And standard objects (XMLHttpRequest and console)</span>
   <span class="s2">"browser"</span><span class="err">:</span> <span class="kc">true</span><span class="p">,</span>
@@ -232,9 +232,9 @@ Done, without errors.</code></pre></figure>
   <span class="s2">"evil"</span><span class="err">:</span> <span class="kc">false</span><span class="p">,</span>
 
   <span class="cm">/*
-   * The options below are more style/developer dependent.
+* The options below are more style/developer dependent.
    * Customize to your liking.
-   */</span>
+     */</span>
 
   <span class="c1">// Do not allow blocks without { }</span>
   <span class="s2">"curly"</span><span class="err">:</span> <span class="kc">false</span><span class="p">,</span>
@@ -253,13 +253,13 @@ Done, without errors.</code></pre></figure>
 
   <span class="c1">// Spot unused variables</span>
   <span class="s2">"unused"</span><span class="err">:</span> <span class="s2">"true"</span><span class="p">,</span>
-  
+
   <span class="c1">// Require capitalization of all constructor functions e.g. `new F()`</span>
   <span class="s2">"newcap"</span> <span class="err">:</span> <span class="kc">true</span><span class="p">,</span>
-  
+
   <span class="c1">// Enforce use of single quotes (') everywhere</span>
   <span class="s2">"quotmark"</span> <span class="err">:</span> <span class="s2">"single"</span><span class="p">,</span>
-  
+
   <span class="c1">// Tolerate use of `== null`</span>
   <span class="s2">"eqnull"</span> <span class="err">:</span> <span class="kc">false</span><span class="p">,</span>
 
@@ -299,7 +299,7 @@ Done, without errors.</code></pre></figure>
         <span class="k">this</span><span class="p">.</span><span class="nx">settings</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">localStorage</span><span class="p">.</span><span class="nx">config</span><span class="p">);</span>
       <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span> 
     <span class="p">}</span>
-
+    
     <span class="nx">weather</span><span class="p">.</span><span class="nx">setWeatherService</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">settings</span><span class="p">.</span><span class="nx">weatherService</span><span class="p">);</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Config loaded, using '</span> <span class="o">+</span> <span class="nx">weather</span><span class="p">.</span><span class="nx">activeService</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s1">' service'</span><span class="p">);</span>
   <span class="p">}</span>
@@ -325,7 +325,7 @@ Done, without errors.</code></pre></figure>
         <span class="na">jshintrc</span><span class="p">:</span> <span class="kc">true</span>
       <span class="p">}</span>
     <span class="p">},</span>
-
+    
     <span class="na">browserify</span><span class="p">:</span> <span class="p">{</span>
       <span class="na">build</span><span class="p">:</span> <span class="p">{</span>
         <span class="na">src</span><span class="p">:</span> <span class="p">[</span>
@@ -377,7 +377,7 @@ Done, without errors.</code></pre></figure>
         <span class="p">}</span>
       <span class="p">},</span>
     <span class="p">},</span>
-
+    
     <span class="p">...</span>
 
   <span class="p">});</span>
@@ -456,14 +456,14 @@ Done, without errors.</code></pre></figure>
 
     <span class="n">build_worker</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="nf">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="s1">'worker_src'</span><span class="p">)</span>
     <span class="n">binaries</span> <span class="o">=</span> <span class="p">[]</span>
-
+    
     <span class="k">for</span> <span class="nb">p</span> <span class="k">in</span> <span class="n">ctx</span><span class="p">.</span><span class="nf">env</span><span class="o">.</span><span class="no">TARGET_PLATFORMS</span><span class="p">:</span>
         <span class="n">ctx</span><span class="p">.</span><span class="nf">set_env</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="nf">all_envs</span><span class="p">[</span><span class="nb">p</span><span class="p">])</span>
         <span class="n">ctx</span><span class="p">.</span><span class="nf">set_group</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="nf">env</span><span class="o">.</span><span class="no">PLATFORM_NAME</span><span class="p">)</span>
         <span class="n">app_elf</span><span class="o">=</span><span class="s1">'{}/pebble-app.elf'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="nf">env</span><span class="o">.</span><span class="no">BUILD_DIR</span><span class="p">)</span>
         <span class="n">ctx</span><span class="p">.</span><span class="nf">pbl_program</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">ctx</span><span class="p">.</span><span class="nf">path</span><span class="p">.</span><span class="nf">ant_glob</span><span class="p">(</span><span class="s1">'src/**/*.c'</span><span class="p">),</span>
         <span class="n">target</span><span class="o">=</span><span class="n">app_elf</span><span class="p">)</span>
-
+    
         <span class="k">if</span> <span class="ss">build_worker:
             </span><span class="n">worker_elf</span><span class="o">=</span><span class="s1">'{}/pebble-worker.elf'</span><span class="p">.</span><span class="nf">format</span><span class="p">(</span><span class="n">ctx</span><span class="p">.</span><span class="nf">env</span><span class="o">.</span><span class="no">BUILD_DIR</span><span class="p">)</span>
             <span class="n">binaries</span><span class="p">.</span><span class="nf">append</span><span class="p">({</span><span class="s1">'platform'</span><span class="p">:</span> <span class="nb">p</span><span class="p">,</span> <span class="s1">'app_elf'</span><span class="p">:</span> <span class="n">app_elf</span><span class="p">,</span> <span class="s1">'worker_elf'</span><span class="p">:</span> <span class="n">worker_elf</span><span class="p">})</span>
@@ -471,7 +471,7 @@ Done, without errors.</code></pre></figure>
             <span class="n">target</span><span class="o">=</span><span class="n">worker_elf</span><span class="p">)</span>
         <span class="ss">else:
             </span><span class="n">binaries</span><span class="p">.</span><span class="nf">append</span><span class="p">({</span><span class="s1">'platform'</span><span class="p">:</span> <span class="nb">p</span><span class="p">,</span> <span class="s1">'app_elf'</span><span class="p">:</span> <span class="n">app_elf</span><span class="p">})</span>
-
+    
     <span class="n">ctx</span><span class="p">.</span><span class="nf">set_group</span><span class="p">(</span><span class="s1">'bundle'</span><span class="p">)</span>
     <span class="n">ctx</span><span class="p">.</span><span class="nf">pbl_bundle</span><span class="p">(</span><span class="n">binaries</span><span class="o">=</span><span class="n">binaries</span><span class="p">,</span> <span class="n">js</span><span class="o">=</span><span class="n">ctx</span><span class="p">.</span><span class="nf">path</span><span class="p">.</span><span class="nf">ant_glob</span><span class="p">(</span><span class="s1">'src/js/pebble-js-app.js'</span><span class="p">))</span></code></pre></figure>
 

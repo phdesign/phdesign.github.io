@@ -135,10 +135,10 @@
 
     <p>Here’s a little promises quirk that I’ve overlooked for a while. Generally we all write promises like this:</p>
 
-<div class="highlighter-rouge"><pre class="highlight"><code>doSomething()
-  .then(doSomethingElse)
-  .then(doSomethingFurther)
-  .catch(handleError);
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">doSomething</span><span class="p">()</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingElse</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingFurther</span><span class="p">)</span>
+  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">handleError</span><span class="p">);</span>
 </code></pre>
 </div>
 
@@ -147,29 +147,29 @@
 <ol>
   <li>Ensure that <code class="highlighter-rouge">doSomething</code> always returns a promise, e.g. wrap the whole thing in a <code class="highlighter-rouge">new Promise(function (resolve, reject) { .. })</code>. While this isn’t a bad practice it requires the calling code to assume the function has been implemented correctly, not something I’d rely on.</li>
   <li>Wrap the start of the promise chain in a promise like this:
-    <div class="highlighter-rouge"><pre class="highlight"><code>new Promise(function (resolve, reject) {
- resolve(doSomething());
-  })
-  .then(doSomethingElse)
-  .then(doSomethingFurther)
-  .catch(handleError);
+    <div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
+ <span class="nx">resolve</span><span class="p">(</span><span class="nx">doSomething</span><span class="p">());</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingElse</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingFurther</span><span class="p">)</span>
+  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">handleError</span><span class="p">);</span>
 </code></pre>
     </div>
   </li>
   <li>Start the promise chain with a dummy promise like this (my preferred approach):
-    <div class="highlighter-rouge"><pre class="highlight"><code>Promise.resolve()
-  .then(doSomething)
-  .then(doSomethingElse)
-  .then(doSomethingFurther)
-  .catch(handleError);
+    <div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">()</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomething</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingElse</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingFurther</span><span class="p">)</span>
+  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">handleError</span><span class="p">);</span>
 </code></pre>
     </div>
     <p>or in angular:</p>
-    <div class="highlighter-rouge"><pre class="highlight"><code>$q.when()
-  .then(doSomething)
-  .then(doSomethingElse)
-  .then(doSomethingFurther)
-  .catch(handleError);
+    <div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">$q</span><span class="p">.</span><span class="nx">when</span><span class="p">()</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomething</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingElse</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingFurther</span><span class="p">)</span>
+  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">handleError</span><span class="p">);</span>
 </code></pre>
     </div>
   </li>
