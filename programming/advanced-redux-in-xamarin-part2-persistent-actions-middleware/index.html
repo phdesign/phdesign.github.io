@@ -137,7 +137,7 @@
 <a href="https://gist.github.com/phdesign/6677a9bb337643691f9180e89b440343" title="Get the Gist" target="_blank">Want to skip to the code? Get the Gist here.</a>
 </div>
 
-<p>In this second post in the series on advanced Redux in Xamarin, we’ll look at how to persist Actions so application state can be restored when the app restarts. We’ll do this by creating Middleware that will intercept each action and save it to a persistent store, then rehydrate the application state from that store on app startup.</p>
+<p>In this second post in the series on advanced Redux in Xamarin, we’ll look at how to persist Actions so application state can be restored when the app restarts. We’ll do this by creating Middleware that will intercept each action and save it to a persistent store, then replay these Actions on app startup to restore our state.</p>
 
 <!--more-->
 
@@ -228,36 +228,32 @@
 
 <p>This uses LiteDb to persist all the actions and dispatches all actions again when the store is first initialised. This example doesn’t work as illustrated, so we’re going to need to modify it a bit.</p>
 
+<h4 id="persist-actions">Persist Actions</h4>
+
 <p>First, we’ll store all actions into a LiteDb database. We need to create an <code class="highlighter-rouge">ActionHistory</code> wrapper because LiteDb expects all objects to have an <code class="highlighter-rouge">Id</code> property.</p>
 
-<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">using</span> <span class="nn">LiteDB</span><span class="p">;</span>
-<span class="k">using</span> <span class="nn">Redux</span><span class="p">;</span>
-
-<span class="k">namespace</span> <span class="nn">TodoRedux.Middleware</span>
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">PersistActionsMiddleware</span>
 <span class="p">{</span>
-    <span class="k">public</span> <span class="k">class</span> <span class="nc">LiteDbMiddleware</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="n">Middleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="n">CreateMiddleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;(</span><span class="kt">string</span> <span class="n">databaseName</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">public</span> <span class="k">static</span> <span class="n">Middleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="n">CreateMiddleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;(</span><span class="kt">string</span> <span class="n">databaseName</span><span class="p">)</span>
+        <span class="kt">var</span> <span class="n">db</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">LiteDatabase</span><span class="p">(</span><span class="n">databaseName</span><span class="p">);</span>
+        <span class="kt">var</span> <span class="n">actionCollection</span> <span class="p">=</span> <span class="n">db</span><span class="p">.</span><span class="n">GetCollection</span><span class="p">&lt;</span><span class="n">ActionHistory</span><span class="p">&gt;(</span><span class="s">"ActionHistory"</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">store</span> <span class="p">=&gt;</span>
         <span class="p">{</span>
-            <span class="kt">var</span> <span class="n">db</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">LiteDatabase</span><span class="p">(</span><span class="n">databaseName</span><span class="p">);</span>
-            <span class="kt">var</span> <span class="n">actionCollection</span> <span class="p">=</span> <span class="n">db</span><span class="p">.</span><span class="n">GetCollection</span><span class="p">&lt;</span><span class="n">ActionHistory</span><span class="p">&gt;(</span><span class="s">"ActionHistory"</span><span class="p">);</span>
-            <span class="k">return</span> <span class="n">store</span> <span class="p">=&gt;</span>
+            <span class="k">return</span> <span class="n">next</span> <span class="p">=&gt;</span> <span class="n">action</span> <span class="p">=&gt;</span>
             <span class="p">{</span>
-                <span class="k">return</span> <span class="n">next</span> <span class="p">=&gt;</span> <span class="n">action</span> <span class="p">=&gt;</span>
-                <span class="p">{</span>
-                    <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="nf">next</span><span class="p">(</span><span class="n">action</span><span class="p">);</span>
-                    <span class="n">actionCollection</span><span class="p">.</span><span class="nf">Insert</span><span class="p">(</span><span class="k">new</span> <span class="n">ActionHistory</span> <span class="p">{</span> <span class="n">Action</span> <span class="p">=</span> <span class="n">action</span> <span class="p">});</span>
-                    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
-                <span class="p">};</span>
+                <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="nf">next</span><span class="p">(</span><span class="n">action</span><span class="p">);</span>
+                <span class="n">actionCollection</span><span class="p">.</span><span class="nf">Insert</span><span class="p">(</span><span class="k">new</span> <span class="n">ActionHistory</span> <span class="p">{</span> <span class="n">Action</span> <span class="p">=</span> <span class="n">action</span> <span class="p">});</span>
+                <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
             <span class="p">};</span>
-        <span class="p">}</span>
+        <span class="p">};</span>
     <span class="p">}</span>
+<span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">class</span> <span class="nc">ActionHistory</span>
-    <span class="p">{</span>
-        <span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
-        <span class="k">public</span> <span class="n">IAction</span> <span class="n">Action</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
-    <span class="p">}</span>
+<span class="k">public</span> <span class="k">class</span> <span class="nc">ActionHistory</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">public</span> <span class="n">IAction</span> <span class="n">Action</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 </div>
@@ -272,53 +268,42 @@
 </code></pre>
 </div>
 
-<p>Our LiteDbMiddleware will now store all actions, but we want to replay the actions when the app starts up. To do this we’ll add a <code class="highlighter-rouge">ReplayHistory()</code>and need to give our class some instance level variables, so <code class="highlighter-rouge">CreateMiddleware</code> will no longer be static.</p>
+<h4 id="replay-actions">Replay Actions</h4>
 
-<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
-<span class="k">using</span> <span class="nn">LiteDB</span><span class="p">;</span>
-<span class="k">using</span> <span class="nn">Redux</span><span class="p">;</span>
+<p>Our PersistActionsMiddleware will now store all Actions, but we want to replay the Actions when the app starts up. To do this we’ll add a <code class="highlighter-rouge">ReplayHistory()</code> method and give our class some instance level variables, so <code class="highlighter-rouge">CreateMiddleware</code> will no longer be static.</p>
 
-<span class="k">namespace</span> <span class="nn">TodoRedux.Middleware</span>
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">PersistActionsMiddleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span>
 <span class="p">{</span>
-    <span class="k">public</span> <span class="k">class</span> <span class="nc">LiteDbMiddleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span>
+    <span class="k">private</span> <span class="n">IStore</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="n">_store</span><span class="p">;</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="n">LiteCollection</span><span class="p">&lt;</span><span class="n">ActionHistory</span><span class="p">&gt;</span> <span class="n">_actionCollection</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="nf">PersistActionsMiddleware</span><span class="p">(</span><span class="n">String</span> <span class="n">databaseName</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">private</span> <span class="n">IStore</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="n">_store</span><span class="p">;</span>
-        <span class="k">private</span> <span class="k">readonly</span> <span class="n">LiteCollection</span><span class="p">&lt;</span><span class="n">ActionHistory</span><span class="p">&gt;</span> <span class="n">_actionCollection</span><span class="p">;</span>
+        <span class="kt">var</span> <span class="n">db</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">LiteDatabase</span><span class="p">(</span><span class="n">databaseName</span><span class="p">);</span>
+        <span class="n">_actionCollection</span> <span class="p">=</span> <span class="n">db</span><span class="p">.</span><span class="n">GetCollection</span><span class="p">&lt;</span><span class="n">ActionHistory</span><span class="p">&gt;(</span><span class="s">"ActionHistory"</span><span class="p">);</span>
+    <span class="p">}</span>
 
-        <span class="k">public</span> <span class="nf">LiteDbMiddleware</span><span class="p">(</span><span class="n">String</span> <span class="n">databaseName</span><span class="p">)</span>
+    <span class="k">public</span> <span class="n">Middleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="nf">CreateMiddleware</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">store</span> <span class="p">=&gt;</span>
         <span class="p">{</span>
-            <span class="kt">var</span> <span class="n">db</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">LiteDatabase</span><span class="p">(</span><span class="n">databaseName</span><span class="p">);</span>
-            <span class="n">_actionCollection</span> <span class="p">=</span> <span class="n">db</span><span class="p">.</span><span class="n">GetCollection</span><span class="p">&lt;</span><span class="n">ActionHistory</span><span class="p">&gt;(</span><span class="s">"ActionHistory"</span><span class="p">);</span>
-        <span class="p">}</span>
-
-        <span class="k">public</span> <span class="n">Middleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="nf">CreateMiddleware</span><span class="p">()</span>
-        <span class="p">{</span>
-            <span class="k">return</span> <span class="n">store</span> <span class="p">=&gt;</span>
+            <span class="n">_store</span> <span class="p">=</span> <span class="n">store</span><span class="p">;</span>
+            <span class="k">return</span> <span class="n">next</span> <span class="p">=&gt;</span> <span class="n">action</span> <span class="p">=&gt;</span>
             <span class="p">{</span>
-                <span class="n">_store</span> <span class="p">=</span> <span class="n">store</span><span class="p">;</span>
-                <span class="k">return</span> <span class="n">next</span> <span class="p">=&gt;</span> <span class="n">action</span> <span class="p">=&gt;</span>
-                <span class="p">{</span>
-                    <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="nf">next</span><span class="p">(</span><span class="n">action</span><span class="p">);</span>
-                    <span class="n">_actionCollection</span><span class="p">.</span><span class="nf">Insert</span><span class="p">(</span><span class="k">new</span> <span class="n">ActionHistory</span> <span class="p">{</span> <span class="n">Action</span> <span class="p">=</span> <span class="n">action</span> <span class="p">});</span>
-                    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
-                <span class="p">};</span>
+                <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="nf">next</span><span class="p">(</span><span class="n">action</span><span class="p">);</span>
+                <span class="n">_actionCollection</span><span class="p">.</span><span class="nf">Insert</span><span class="p">(</span><span class="k">new</span> <span class="n">ActionHistory</span> <span class="p">{</span> <span class="n">Action</span> <span class="p">=</span> <span class="n">action</span> <span class="p">});</span>
+                <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
             <span class="p">};</span>
-        <span class="p">}</span>
-
-        <span class="k">public</span> <span class="k">void</span> <span class="nf">ReplayHistory</span><span class="p">()</span>
-        <span class="p">{</span>
-            <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">actionHistory</span> <span class="k">in</span> <span class="n">_actionCollection</span><span class="p">.</span><span class="nf">FindAll</span><span class="p">())</span>
-            <span class="p">{</span>
-                <span class="n">_store</span><span class="p">.</span><span class="nf">Dispatch</span><span class="p">(</span><span class="n">actionHistory</span><span class="p">.</span><span class="n">Action</span><span class="p">);</span>
-            <span class="p">}</span>
-        <span class="p">}</span> 
+        <span class="p">};</span>
     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">class</span> <span class="nc">ActionHistory</span>
+    <span class="k">public</span> <span class="k">void</span> <span class="nf">ReplayHistory</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
-        <span class="k">public</span> <span class="n">IAction</span> <span class="n">Action</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
-    <span class="p">}</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">actionHistory</span> <span class="k">in</span> <span class="n">_actionCollection</span><span class="p">.</span><span class="nf">FindAll</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="n">_store</span><span class="p">.</span><span class="nf">Dispatch</span><span class="p">(</span><span class="n">actionHistory</span><span class="p">.</span><span class="n">Action</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span> 
 <span class="p">}</span>
 </code></pre>
 </div>
@@ -347,66 +332,64 @@
 
 <p>But unfortunately, this won’t work with the current implementation of Redux.NET. To setup the <code class="highlighter-rouge">Dispatcher</code> on the store, Redux.NET is calling our <code class="highlighter-rouge">CreateMiddleware</code> function, so when we try to dispatch an action in our middleware creation, <code class="highlighter-rouge">store.Dispatch</code> is null.</p>
 
-<p>So we can now reload our Actions. But there’s a big problem! Every time we dispatch a saved Action, the LiteDbMiddleware saves it again to our database. Let’s tell it not to save Actions while we’re replaying the history by introducing a _isReplaying field.</p>
+<h4 id="avoid-persisting-the-replayed-actions">Avoid persisting the replayed Actions</h4>
 
-<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">using</span> <span class="nn">System</span><span class="p">;</span>
-<span class="k">using</span> <span class="nn">LiteDB</span><span class="p">;</span>
-<span class="k">using</span> <span class="nn">Redux</span><span class="p">;</span>
+<p>So we can now replay our Actions. But there’s a big problem! Every time we dispatch a saved Action, the PersistActionsMiddleware saves it again to our database. Let’s tell it not to save Actions while we’re replaying the history by introducing a _isReplaying field.</p>
 
-<span class="k">namespace</span> <span class="nn">TodoRedux.Middleware</span>
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">PersistActionsMiddleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span>
 <span class="p">{</span>
-    <span class="k">public</span> <span class="k">class</span> <span class="nc">LiteDbMiddleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span>
+    <span class="k">private</span> <span class="n">IStore</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="n">_store</span><span class="p">;</span>
+    <span class="k">private</span> <span class="k">readonly</span> <span class="n">LiteCollection</span><span class="p">&lt;</span><span class="n">ActionHistory</span><span class="p">&gt;</span> <span class="n">_actionCollection</span><span class="p">;</span>
+    <span class="k">private</span> <span class="kt">bool</span> <span class="n">_isReplaying</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="nf">PersistActionsMiddleware</span><span class="p">(</span><span class="n">String</span> <span class="n">databaseName</span><span class="p">)</span>
     <span class="p">{</span>
-        <span class="k">private</span> <span class="n">IStore</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="n">_store</span><span class="p">;</span>
-        <span class="k">private</span> <span class="k">readonly</span> <span class="n">LiteCollection</span><span class="p">&lt;</span><span class="n">ActionHistory</span><span class="p">&gt;</span> <span class="n">_actionCollection</span><span class="p">;</span>
-        <span class="k">private</span> <span class="kt">bool</span> <span class="n">_isReplaying</span><span class="p">;</span>
+        <span class="kt">var</span> <span class="n">db</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">LiteDatabase</span><span class="p">(</span><span class="n">databaseName</span><span class="p">);</span>
+        <span class="n">_actionCollection</span> <span class="p">=</span> <span class="n">db</span><span class="p">.</span><span class="n">GetCollection</span><span class="p">&lt;</span><span class="n">ActionHistory</span><span class="p">&gt;(</span><span class="s">"ActionHistory"</span><span class="p">);</span>
+    <span class="p">}</span>
 
-        <span class="k">public</span> <span class="nf">LiteDbMiddleware</span><span class="p">(</span><span class="n">String</span> <span class="n">databaseName</span><span class="p">)</span>
+    <span class="k">public</span> <span class="n">Middleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="nf">CreateMiddleware</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">store</span> <span class="p">=&gt;</span>
         <span class="p">{</span>
-            <span class="kt">var</span> <span class="n">db</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">LiteDatabase</span><span class="p">(</span><span class="n">databaseName</span><span class="p">);</span>
-            <span class="n">_actionCollection</span> <span class="p">=</span> <span class="n">db</span><span class="p">.</span><span class="n">GetCollection</span><span class="p">&lt;</span><span class="n">ActionHistory</span><span class="p">&gt;(</span><span class="s">"ActionHistory"</span><span class="p">);</span>
-        <span class="p">}</span>
-
-        <span class="k">public</span> <span class="n">Middleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="nf">CreateMiddleware</span><span class="p">()</span>
-        <span class="p">{</span>
-            <span class="k">return</span> <span class="n">store</span> <span class="p">=&gt;</span>
+            <span class="n">_store</span> <span class="p">=</span> <span class="n">store</span><span class="p">;</span>
+            <span class="k">return</span> <span class="n">next</span> <span class="p">=&gt;</span> <span class="n">action</span> <span class="p">=&gt;</span>
             <span class="p">{</span>
-                <span class="n">_store</span> <span class="p">=</span> <span class="n">store</span><span class="p">;</span>
-                <span class="k">return</span> <span class="n">next</span> <span class="p">=&gt;</span> <span class="n">action</span> <span class="p">=&gt;</span>
-                <span class="p">{</span>
-                    <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="nf">next</span><span class="p">(</span><span class="n">action</span><span class="p">);</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="n">_isReplaying</span><span class="p">)</span> <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
-                    <span class="n">_actionCollection</span><span class="p">.</span><span class="nf">Insert</span><span class="p">(</span><span class="k">new</span> <span class="n">ActionHistory</span> <span class="p">{</span> <span class="n">Action</span> <span class="p">=</span> <span class="n">action</span> <span class="p">});</span>
-                    <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
-                <span class="p">};</span>
+                <span class="kt">var</span> <span class="n">result</span> <span class="p">=</span> <span class="nf">next</span><span class="p">(</span><span class="n">action</span><span class="p">);</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">_isReplaying</span><span class="p">)</span> <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+                <span class="n">_actionCollection</span><span class="p">.</span><span class="nf">Insert</span><span class="p">(</span><span class="k">new</span> <span class="n">ActionHistory</span> <span class="p">{</span> <span class="n">Action</span> <span class="p">=</span> <span class="n">action</span> <span class="p">});</span>
+                <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
             <span class="p">};</span>
-        <span class="p">}</span>
-
-        <span class="k">public</span> <span class="k">void</span> <span class="nf">ReplayHistory</span><span class="p">()</span>
-        <span class="p">{</span>
-            <span class="n">_isReplaying</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
-            <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">actionHistory</span> <span class="k">in</span> <span class="n">_actionCollection</span><span class="p">.</span><span class="nf">FindAll</span><span class="p">())</span>
-            <span class="p">{</span>
-                <span class="n">_store</span><span class="p">.</span><span class="nf">Dispatch</span><span class="p">(</span><span class="n">actionHistory</span><span class="p">.</span><span class="n">Action</span><span class="p">);</span>
-            <span class="p">}</span>
-            <span class="n">_isReplaying</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
-        <span class="p">}</span>   
+        <span class="p">};</span>
     <span class="p">}</span>
 
-    <span class="k">public</span> <span class="k">class</span> <span class="nc">ActionHistory</span>
+    <span class="k">public</span> <span class="k">void</span> <span class="nf">ReplayHistory</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="k">public</span> <span class="kt">int</span> <span class="n">Id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
-        <span class="k">public</span> <span class="n">IAction</span> <span class="n">Action</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
-    <span class="p">}</span>
+        <span class="n">_isReplaying</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">actionHistory</span> <span class="k">in</span> <span class="n">_actionCollection</span><span class="p">.</span><span class="nf">FindAll</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="n">_store</span><span class="p">.</span><span class="nf">Dispatch</span><span class="p">(</span><span class="n">actionHistory</span><span class="p">.</span><span class="n">Action</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="n">_isReplaying</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span>
+    <span class="p">}</span>   
 <span class="p">}</span>
 </code></pre>
 </div>
 
-<p>We now have a working implementation of LiteDbMiddleware.</p>
+<p>We now have a working implementation of PersistActionsMiddleware.</p>
 
-<h2 id="warning-dont-do-this">Warning: Don’t do this!</h2>
+<h3 id="warning-dont-do-this">Warning: Don’t do this!</h3>
 
-<p>After looking at how we’d save all Actions to a persistent store, I would caution you not to do this in a Xamarin app, or at least think carefully about it. Redux Actions are intended to be raised for many UI changes and user input, most have no relevance (other than analytics) once performed, and storing all these to the user’s device is going to consume more and more device storage over time. So how should we record the state of the app without an ever growing Action stream? In the final post in this series, we’ll look at writing Middleware to store the current application state to disk, and we’ll use the Middleware we built here to store a temporary stream of Actions that can be sent to the server to synchronise the app with the server state.</p>
+<p>After looking at how we’d save all Actions to a persistent store, I would caution you not to do this in a Xamarin app, or at least think carefully about it. Redux Actions are intended to be raised for many UI changes and user input, most have no relevance (other than analytics) once performed, and storing all these to the user’s device is going to consume more and more device storage over time.</p>
+
+<h2 id="using-persistent-actions-to-sync-with-the-server">Using persistent actions to sync with the server</h2>
+
+<p>At <a href="https://www.pageuppeople.com">PageUp</a> we’re using persistent Actions Middleware to record our Actions and send them to the server at regular intervals in order to synchronise our application state with the server. The server then replies with a list of actions that have occurred on the server and we dispatch them on the app to update our local state. Once we’ve successfully synced with the server we clear out the stored list of Actions and start recording them again.</p>
+
+<p> </p>
+<p>So how should we record the state of the app without an ever growing Action stream? In the final post in this series, we’ll look at writing Middleware to store the current application state to a local database and reloading that state at startup.</p>
+
+<p><a class="btn btn-primary" href="../advanced-redux-in-xamarin-part3-database-middleware" title="Part 3: Database Middleware">Part 3  <i class="fa fa-chevron-right"></i></a></p>
 
 
     <ul class="post-tags">
@@ -467,6 +450,9 @@
         
       </div>
       <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+          <div class="meta-label"><a href="/programming/advanced-redux-in-xamarin-part3-database-middleware/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/programming/advanced-redux-in-xamarin-part3-database-middleware/">Advanced Redux in Xamarin Part 3: Database Middleware</a></div>
         
       </div>
     </nav><!-- end .post_nav -->
