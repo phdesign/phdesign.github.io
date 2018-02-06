@@ -1,0 +1,428 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Paul Heasley">
+  
+
+  <title>How to write better AngularJS | phdesign</title>
+  <meta name="description" content="When React became mainstream it changed the way we thought about writing single page JavaScript applications, it promoted readability and maintainability ove...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/programming/how-to-write-better-angularjs/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+  
+  
+  
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-2414000-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  
+
+  <!-- Google Web Fonts -->
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+  
+</head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/programming">programming</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+              <li><a href="/woodworking">woodworking</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/flickr-rsync">flickr-rsync</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+            <li><a href="/phreplace">phReplace</a></li>
+          </ul>
+        </li>
+        <li><a href="/presentations">Presentations</a></li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+
+      
+
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+    <main class="content" aria-label="Content">
+  	  <article>
+  <div class="container">
+
+    <div class="date-stamp">
+      <div class="month">Feb</div>
+      <div class="day">07</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">How to write better AngularJS</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">07 February 2018</span>
+      
+        in <span class="meta-value"><a href="/programming">programming</a></span>
+      
+      with <span class="meta-value"><a data-disqus-identifier="How to write better AngularJS" href="#disqus_thread">0 Comments</a></span>
+    </div><!-- end .meta-label -->
+    <br />
+
+    
+    
+    
+    
+
+    <p>When React became mainstream it changed the way we thought about writing single page JavaScript applications, it promoted readability and maintainability over abstracting complex interactions. These principles resonated with the JavaScript community and influenced the development of Angular, unfortunately many of us are still stuck maintaining AngularJS (Angular 1.x) apps that are growing ever more complex.</p>
+
+<p>This post presents 9 tips for writing better AngularJS based on more modern principles. These tips are the distilled learnings from working with a team of developers managing an AngularJS app over the last 3 years that has grown to over 25,000 lines of Angular.</p>
+
+<!--more-->
+
+<h2 id="1-use-angularjs-component-syntax">1. Use AngularJS component syntax</h2>
+
+<p>Available from version 1.5+, AngularJS’s <a href="https://docs.angularjs.org/guide/component">new component syntax</a> is an opinionated way to write directives, leveraging principles from Angular 2+ and <a href="https://reactjs.org/tutorial/tutorial.html">React</a>.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">TodoItemController</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">styles</span> <span class="o">=</span> <span class="nx">styles</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">angular</span>
+  <span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'todos.todo-list.todo-item'</span><span class="p">,</span> <span class="p">[])</span>
+  <span class="p">.</span><span class="nx">component</span><span class="p">(</span><span class="s1">'todoItem'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">templateUrl</span><span class="p">:</span> <span class="nx">template</span><span class="p">,</span>
+    <span class="na">bindings</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">todo</span><span class="p">:</span> <span class="s1">'&lt;'</span>
+    <span class="p">},</span>
+    <span class="na">controller</span><span class="p">:</span> <span class="nx">TodoListController</span>
+  <span class="p">});</span>
+</code></pre>
+</div>
+
+<p>Components promote the use of Controller functions over linking functions. Controllers are the correct place to put initialisation code as they are executed inside-out, so parents are initialised before children. Post-link functions (commonly used with directives) are executed outside-in so children are linked before parents which can cause confusion.</p>
+
+<p>Components can only be used as elements, not properties. Where you could use a directive as an attribute <code class="highlighter-rouge">&lt;div my-component&gt;</code>, a component must be <code class="highlighter-rouge">&lt;my-component&gt;</code>.</p>
+
+<p>Don’t use self closing elements (e.g. <code class="highlighter-rouge">&lt;my-component /&gt;</code>), always include the closing tag <code class="highlighter-rouge">&lt;my-component&gt;&lt;/my-component&gt;</code>. The self closing tag syntax is valid XML (which is why it’s used in React’s JSX), but is invalid in HTML5, it causes browsers to silently ignore any following elements, which can be a pain to debug.</p>
+
+<h2 id="2-use-one-way-bindings--callbacks">2. Use one-way bindings &amp; callbacks</h2>
+
+<p>Avoid using two-way bindings <code class="highlighter-rouge">'='</code> which promotes multiple components updating a shared model. Changes to the model can be hard to trace and requires watchers to trigger behaviour on changes. Use one-way bindings <code class="highlighter-rouge">'&lt;'</code> to pass data to a component, and callbacks for receiving data from a component.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">bindings</span><span class="err">:</span> <span class="p">{</span>
+  <span class="nl">todo</span><span class="p">:</span> <span class="s1">'&lt;'</span><span class="p">,</span>
+  <span class="nx">onItemCompleted</span><span class="err">:</span> <span class="s1">'&lt;'</span><span class="p">,</span>
+  <span class="nx">onItemRemoved</span><span class="err">:</span> <span class="s1">'&lt;'</span><span class="p">,</span>
+  <span class="nx">onItemTitleChanged</span><span class="err">:</span> <span class="s1">'&lt;'</span>
+<span class="p">},</span>
+</code></pre>
+</div>
+
+<p>Use the one-way binding modifier even for callbacks, do not use expression bindings <code class="highlighter-rouge">'&amp;'</code>.</p>
+
+<p>Expression bindings allow you to execute ad hoc code in the binding, e.g.</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;my-component</span> <span class="na">on-update=</span><span class="s">"$ctrl.value = newValue"</span><span class="nt">/&gt;</span>
+</code></pre>
+</div>
+
+<p>But they come at the cost of readability, where did <code class="highlighter-rouge">newValue</code> come from? And you need to remember to use the special syntax when invoking them from the component.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">this</span><span class="p">.</span><span class="nx">onUpdate</span><span class="p">({</span> <span class="na">newValue</span><span class="p">:</span> <span class="nx">theNewValue</span> <span class="p">});</span>
+</code></pre>
+</div>
+
+<p>Make your life simpler by always passing a function reference using one-way bindings. e.g.</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="c">&lt;!-- handleUpdate is a function defined on your controller --&gt;</span> 
+<span class="nt">&lt;my-component</span> <span class="na">on-update=</span><span class="s">"$ctrl.handleUpdate"</span><span class="nt">/&gt;</span>
+</code></pre>
+</div>
+
+<h3 id="callback-naming-conventions">Callback naming conventions</h3>
+
+<p>The component that receives a callback should be named <code class="highlighter-rouge">onVerb</code>, this aligns with standard HTML event handlers like <code class="highlighter-rouge">onclick</code>.</p>
+
+<p>The callback function that is passed to the component should be named <code class="highlighter-rouge">handleVerb</code>.</p>
+
+<h2 id="3-prefer-small-stateless-components">3. Prefer small, stateless components</h2>
+
+<p>Make your components as small as is feasible, small components are easier to reuse, read and to test. Try to follow to the single responsibility principle for a component, one component should do or draw one thing.</p>
+
+<p>Aim to create stateless components, a stateless component’s output (rendered HTML) is only dependant on it’s inputs (bindings). Avoid injecting services and making API calls inside your component, which makes testing and reasoning about your component more difficult.</p>
+
+<h2 id="4-hoist-state-management-up">4. Hoist state management up</h2>
+
+<p>Obviously, somewhere in the app needs to manage state, try to identify the lowest common component in the component tree that uses state and make this the state management / ‘impure’ component. E.g. a <code class="highlighter-rouge">todo-list</code> component might be the appropriate place to fetch a collection of todos, then each <code class="highlighter-rouge">todo-item</code> would be passed a todo model and callbacks to edit or delete the model. <code class="highlighter-rouge">todo-list</code> is the stateful component, <code class="highlighter-rouge">todo-item</code> is a stateless component.</p>
+
+<h3 id="using-stateful-containers">Using stateful containers</h3>
+
+<p>An alternative approach used by <a href="https://redux.js.org/docs/introduction/">Redux</a> is to only ever allow stateless components, and state management like fetching data is done by a container. A container is component that is not allowed to do any rendering, it simply passes the managed data to a component. Extending our first example we could have a <code class="highlighter-rouge">containers/todo-list</code> that fetches the data then passes it to a <code class="highlighter-rouge">components/todo-list</code> which is a stateless component that renders the list and also renders individual <code class="highlighter-rouge">components/todo-item</code>.</p>
+
+<h2 id="5-structure-your-project-correctly">5. Structure your project correctly</h2>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>src/
+├─── components/
+│   ├─── header/
+│   │   ├─── index.js
+│   │   ├─── styles.css
+│   │   └─── template.html
+│   └─── todo-list/
+│       ├─── todo-item/
+│       │   ├─── index.js
+│       │   ├─── styles.css
+│       │   └─── template.html
+│       ├─── index.js
+│       ├─── styles.css
+│       └─── template.html
+├─── models/
+│   └─── todo.js
+├─── services/
+│   └─── todos-store.js
+├─── filters/
+│   └─── trim.js
+├─── index.html
+└─── app.js
+</code></pre>
+</div>
+<p>All components live in a <code class="highlighter-rouge">components</code> folder. Keep the template, styles and code that relate to a component in one folder. I prefer to name them <code class="highlighter-rouge">index.js</code>, <code class="highlighter-rouge">template.html</code> and <code class="highlighter-rouge">styles.css</code>. Nest any dependant components under the parent component folder.</p>
+
+<h2 id="6-define-a-new-module-for-every-component">6. Define a new module for every component.</h2>
+
+<p>Each component should import all dependencies within the component, and should be it’s own contained module. This makes the component more portable and avoids ordering issues when bundling. E.g.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="s1">'use strict'</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">angular</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'angular'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">template</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./template.html'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">styles</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./styles.css'</span><span class="p">);</span>
+<span class="nx">require</span><span class="p">(</span><span class="s1">'components/todo-list/todo-item'</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">TodoListController</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">styles</span> <span class="o">=</span> <span class="nx">styles</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">angular</span>
+  <span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'todos.todo-list'</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s1">'todos.todo-list.todo-item'</span>
+  <span class="p">])</span>
+  <span class="p">.</span><span class="nx">component</span><span class="p">(</span><span class="s1">'todoList'</span><span class="p">,</span> <span class="p">{</span>
+    <span class="na">templateUrl</span><span class="p">:</span> <span class="nx">template</span><span class="p">,</span>
+    <span class="na">bindings</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">todos</span><span class="p">:</span> <span class="s1">'&lt;'</span><span class="p">,</span>
+      <span class="na">onItemAdded</span><span class="p">:</span> <span class="s1">'&lt;'</span>
+    <span class="p">},</span>
+    <span class="na">controller</span><span class="p">:</span> <span class="nx">TodoListController</span>
+  <span class="p">});</span>
+</code></pre>
+</div>
+
+<h2 id="7-use-prefixes-for-component-and-module-names">7. Use prefixes for component and module names</h2>
+
+<p>To avoid clashes with other packages, pick a root module name for your app and prefix all modules in your app with it. Prefix any dependent components with the name of its parent. E.g. <code class="highlighter-rouge">'my-app.parent-component.child-component'</code>.</p>
+
+<p>Again, to avoid name clashes with other packages, use a short prefix for all your components, try to keep it to 3 characters or less. e.g. <code class="highlighter-rouge">&lt;my-foo&gt;</code>, <code class="highlighter-rouge">&lt;my-bar&gt;</code>.</p>
+
+<h2 id="8-use-css-modules">8. Use CSS Modules</h2>
+
+<p><a href="https://github.com/css-modules/css-modules">CSS Modules</a> allow you to scope your styles to a single component by obfuscating the class name. You’ll need to use a CSS processor that supports this, like webpack and css-loader. Import the stylesheet and use the style dictionary to access class names, e.g.</p>
+
+<div class="language-css highlighter-rouge"><pre class="highlight"><code><span class="c">/* styles.css */</span>
+<span class="nc">.todo-item</span> <span class="p">{</span>
+  <span class="nl">font-size</span><span class="p">:</span> <span class="m">24px</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="c1">// index.js</span>
+<span class="kd">var</span> <span class="nx">styles</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./styles.css'</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">TodoListController</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">this</span><span class="p">.</span><span class="nx">styles</span> <span class="o">=</span> <span class="nx">styles</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code>
+<span class="c">&lt;!-- template.html --&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"{{$ctrl.styles.todoItem}}"</span><span class="nt">&gt;&lt;/div&gt;</span>
+</code></pre>
+</div>
+
+<p>When using css-loader I recommend turning on the following options:</p>
+
+<p><code class="highlighter-rouge">modules: true</code></p>
+
+<p>Makes every style a local (obfuscated) style by default. You can still reference global styles with <code class="highlighter-rouge">:global(.row)</code>.</p>
+
+<p><code class="highlighter-rouge">camelCase: true</code></p>
+
+<p>Converts spinal-case style names to camelCase so they are JavaScript friendly.</p>
+
+<p><code class="highlighter-rouge">localIdentName: '[name]__[local]__[hash:base64:5]'</code></p>
+
+<p>Makes the obfuscated style name more readable (e.g. <code class="highlighter-rouge">styles__todo-item__2RWzh</code>) and aids in debugging.</p>
+
+<h2 id="9-prefer-unit-tests-to-e2e-tests">9. Prefer unit tests to e2e tests</h2>
+
+<p>Unit (spec) tests are faster to run. Where possible prefer to write unit tests rather than protractor e2e tests. Our project has over 300 protractor tests that take around 15 minutes to run on Travis. There are some circumstances where e2e tests are preferable, for example testing routing, testing the interaction between components or testing style / layouts. For unit tests you can manually compile angular templates then use jQuery operations to query or interact with the generated DOM element.</p>
+
+<h2 id="example-code">Example code</h2>
+
+<p>A reference project is available at <a href="https://github.com/phdesign/todo-better-angular">https://github.com/phdesign/todo-better-angular</a>, using webpack and ES5 JavaScript.</p>
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tag/angular" title="View posts tagged with angular">#angular</a></li>
+      
+        <li><a href="/tag/architecture" title="View posts tagged with architecture">#architecture</a></li>
+      
+        <li><a href="/tag/javascript" title="View posts tagged with javascript">#javascript</a></li>
+      
+        <li><a href="/tag/cssmodules" title="View posts tagged with cssmodules">#cssmodules</a></li>
+      
+    </ul>
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <div class="comments">
+      
+        
+
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES * * */
+        var disqus_shortname = 'phdesign';
+        var disqus_identifier = 'http://phdesign.com.au/programming/how-to-write-better-angularjs/';
+        var disqus_title = 'How to write better AngularJS';
+        var disqus_url = 'http://phdesign.com.au/programming/how-to-write-better-angularjs/';
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+      
+    </div><!-- end .comments -->
+
+  </div><!-- end .container -->
+</div>
+
+<div class="stripe alt">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/programming/vanilla-mvvm-for-xamarin-forms/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/programming/vanilla-mvvm-for-xamarin-forms/">Vanilla MVVM for Xamarin Forms</a></div>
+        
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+      </div>
+    </nav><!-- end .post_nav -->
+
+  </div><!-- end .container -->
+</div><!-- end .stripe.alt -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="/assets/js/search.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+  </body>
+
+</html>
