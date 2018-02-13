@@ -17,37 +17,12 @@
   <meta name="description" content="In this second post in the series on advanced Redux in Xamarin, we&#39;ll look at how to persist Actions so application state can be restored when the app restar...">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="canonical" href="http://phdesign.com.au/programming/advanced-redux-in-xamarin-part2-persistent-actions-middleware/">
+  <link rel="canonical" href="http://localhost:4000/programming/advanced-redux-in-xamarin-part2-persistent-actions-middleware/">
   <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
   <link rel="shortcut icon" href="/favicon.ico">
   
   
-  
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-2414000-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
-
-  
-
-  <!-- Google Web Fonts -->
-  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-  <![endif]-->
-  
-</head>
+<script src="http://127.0.0.1:35729/livereload.js"></script></head>
 
   <body class="post">
 
@@ -122,7 +97,7 @@
       
         in <span class="meta-value"><a href="/programming">programming</a></span>
       
-      with <span class="meta-value"><a data-disqus-identifier="Advanced Redux in Xamarin Part 2: Persistent Actions Middleware" href="#disqus_thread">0 Comments</a></span>
+      with <span class="meta-value"><a data-disqus-identifier="http://localhost:4000/programming/advanced-redux-in-xamarin-part2-persistent-actions-middleware/" href="#disqus_thread">0 Comments</a></span>
     </div><!-- end .meta-label -->
     <br />
 
@@ -141,7 +116,7 @@
 
 <h2 id="middleware">Middleware</h2>
 
-<p>Middleware is a composable chain of custom code where you can manipulate actions before they are received by the reducers. You can see how the middleware pattern is implemented in <a href="https://github.com/GuillaumeSalles/redux.NET/blob/master/src/Redux/Store.cs#L45">Redux.NET here</a></p>
+<p>Middleware is a composable chain of custom code where you can manipulate actions before they are received by the reducers. You can see how the middleware pattern is implemented in <a href="https://github.com/GuillaumeSalles/redux.NET/blob/master/src/Redux/Store.cs#L45" target="_blank">Redux.NET here</a></p>
 
 <div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">private</span> <span class="n">Dispatcher</span> <span class="nf">ApplyMiddlewares</span><span class="p">(</span><span class="k">params</span> <span class="n">Middleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;[]</span> <span class="n">middlewares</span><span class="p">)</span>
 <span class="p">{</span>
@@ -195,7 +170,7 @@
 
 <h2 id="persistent-actions-middleware">Persistent Actions Middleware</h2>
 
-<p>We want to write Middleware that will save all Actions to a persistent data store, then rehydrate all those Actions back into State when we restart the app. There are already a <a href="https://github.com/rt2zz/redux-persist">couple</a> of <a href="https://github.com/explorigin/persistent-redux">implementations</a> of this for the JavaScript version of Redux, and fortunately for us, the author of Redux.NET has already provided us with <a href="https://github.com/GuillaumeSalles/redux.NET/issues/51#issuecomment-289504068">reference .NET implementation</a></p>
+<p>We want to write Middleware that will save all Actions to a persistent data store, then rehydrate all those Actions back into State when we restart the app. There are already a <a href="https://github.com/rt2zz/redux-persist" target="_blank">couple</a> of <a href="https://github.com/explorigin/persistent-redux" target="_blank">implementations</a> of this for the JavaScript version of Redux, and fortunately for us, the author of Redux.NET has already provided us with <a href="https://github.com/GuillaumeSalles/redux.NET/issues/51#issuecomment-289504068" target="_blank">reference .NET implementation</a></p>
 
 <div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">LiteDbMiddleware</span> <span class="p">{</span>
     <span class="k">public</span> <span class="k">static</span> <span class="n">Middleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="n">CreateMiddleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;(</span><span class="n">String</span> <span class="n">databaseName</span><span class="p">)</span> <span class="p">{</span>
@@ -382,7 +357,7 @@
 
 <h2 id="using-persistent-actions-to-sync-with-the-server">Using persistent actions to sync with the server</h2>
 
-<p>At <a href="https://www.pageuppeople.com">PageUp</a> we’re using persistent Actions Middleware to record our Actions and send them to the server at regular intervals in order to synchronise our application state with the server. The server then replies with a list of actions that have occurred on the server and we dispatch them on the app to update our local state. Once we’ve successfully synced with the server we clear out the stored list of Actions and start recording them again.</p>
+<p>At <a href="https://www.pageuppeople.com" target="_blank">PageUp</a> we’re using persistent Actions Middleware to record our Actions and send them to the server at regular intervals in order to synchronise our application state with the server. The server then replies with a list of actions that have occurred on the server and we dispatch them on the app to update our local state. Once we’ve successfully synced with the server we clear out the stored list of Actions and start recording them again.</p>
 
 <p> </p>
 <p>So how should we record the state of the app without an ever growing Action stream? In the final post in this series, we’ll look at writing Middleware to store the current application state to a local database and reloading that state at startup.</p>
@@ -409,25 +384,6 @@
     <div class="comments">
       
         
-
-      <div id="disqus_thread"></div>
-      <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES * * */
-        var disqus_shortname = 'phdesign';
-        var disqus_identifier = 'http://phdesign.com.au/programming/advanced-redux-in-xamarin-part2-persistent-actions-middleware/';
-        var disqus_title = 'Advanced Redux in Xamarin Part 2: Persistent Actions Middleware';
-        var disqus_url = 'http://phdesign.com.au/programming/advanced-redux-in-xamarin-part2-persistent-actions-middleware/';
-
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
-
 
       
     </div><!-- end .comments -->

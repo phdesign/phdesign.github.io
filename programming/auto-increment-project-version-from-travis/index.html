@@ -17,37 +17,12 @@
   <meta name="description" content="Can you effectively use GitHub and Travis for continuous delivery? You sure can, but managing the version number can be difficult, here’s a way to automatica...">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="canonical" href="http://phdesign.com.au/programming/auto-increment-project-version-from-travis/">
+  <link rel="canonical" href="http://localhost:4000/programming/auto-increment-project-version-from-travis/">
   <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
   <link rel="shortcut icon" href="/favicon.ico">
   
   
-  
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-2414000-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
-
-  
-
-  <!-- Google Web Fonts -->
-  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-  <![endif]-->
-  
-</head>
+<script src="http://127.0.0.1:35729/livereload.js"></script></head>
 
   <body class="post">
 
@@ -122,7 +97,7 @@
       
         in <span class="meta-value"><a href="/programming">programming</a></span>
       
-      with <span class="meta-value"><a data-disqus-identifier="Increment project version from Travis" href="#disqus_thread">0 Comments</a></span>
+      with <span class="meta-value"><a data-disqus-identifier="http://localhost:4000/programming/auto-increment-project-version-from-travis/" href="#disqus_thread">0 Comments</a></span>
     </div><!-- end .meta-label -->
     <br />
 
@@ -131,11 +106,11 @@
     
     
 
-    <p>Can you effectively use <a href="https://github.com">GitHub</a> and <a href="https://travis-ci.org">Travis</a> for continuous delivery? You sure can, but managing the version number can be difficult, here’s a way to automatically increment the patch number on every deployment from Travis.</p>
+    <p>Can you effectively use <a href="https://github.com" target="_blank">GitHub</a> and <a href="https://travis-ci.org" target="_blank">Travis</a> for continuous delivery? You sure can, but managing the version number can be difficult, here’s a way to automatically increment the patch number on every deployment from Travis.</p>
 
 <!--more-->
 
-<p>We use a <a href="https://gist.github.com/seshness/3943237">shared repository model</a> for our JavaScript project on GitHub, the workflow goes something like this:</p>
+<p>We use a <a href="https://gist.github.com/seshness/3943237" target="_blank">shared repository model</a> for our JavaScript project on GitHub, the workflow goes something like this:</p>
 
 <ul>
   <li>The <code class="highlighter-rouge">master</code> branch is always the currently deployed production code</li>
@@ -143,7 +118,7 @@
   <li>Travis builds all commits to all branches and runs the continuous integration test suite</li>
   <li>Once development is complete and tests pass they open a Pull Request</li>
   <li>Once someone has approved the Pull Request (we love the new functionality - thanks GitHub!), they then merge and squash onto <code class="highlighter-rouge">master</code></li>
-  <li>Travis builds all commits onto the <code class="highlighter-rouge">master</code> branch, if tests pass it deploys the package to a private <a href="https://www.npmjs.com/">npm</a> repository and deploys the artefacts to S3</li>
+  <li>Travis builds all commits onto the <code class="highlighter-rouge">master</code> branch, if tests pass it deploys the package to a private <a href="https://www.npmjs.com/" target="_blank">npm</a> repository and deploys the artefacts to S3</li>
 </ul>
 
 <p>The trick is that the version number in the <code class="highlighter-rouge">package.json</code> file must be updated on every commit to master otherwise npm will reject it (rightly so). We used to manually update this before merging the Pull Request by doing an <code class="highlighter-rouge">npm version patch</code>, but people forget to do this or they do it too early and get merge conflicts.</p>
@@ -170,7 +145,8 @@
     <span class="s">skip_cleanup</span><span class="pi">:</span> <span class="s">true</span>
     <span class="s">script</span><span class="pi">:</span> <span class="s">git push --tags</span>
     <span class="s">on</span><span class="pi">:</span>
-      <span class="s">branch</span><span class="pi">:</span> <span class="s">master</span></code></pre></figure>
+      <span class="s">branch</span><span class="pi">:</span> <span class="s">master</span>
+    </code></pre></figure>
 
 <p>Let’s decompose that bash one-liner:</p>
 
@@ -240,25 +216,6 @@
       
         
 
-      <div id="disqus_thread"></div>
-      <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES * * */
-        var disqus_shortname = 'phdesign';
-        var disqus_identifier = 'http://phdesign.com.au/programming/auto-increment-project-version-from-travis/';
-        var disqus_title = 'Increment project version from Travis';
-        var disqus_url = 'http://phdesign.com.au/programming/auto-increment-project-version-from-travis/';
-
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
-
-
       
     </div><!-- end .comments -->
 
@@ -277,8 +234,8 @@
       </div>
       <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
         
-          <div class="meta-label"><a href="/programming/starting-a-promise-chain-to-handle-exceptions-correctly/">Next post <span aria-hidden="true">&raquo;</span></a></div>
-          <div class="meta-value"><a href="/programming/starting-a-promise-chain-to-handle-exceptions-correctly/">Starting a promise chain to handle exceptions correctly</a></div>
+          <div class="meta-label"><a href="/proxying-large-files-through-webapi/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/proxying-large-files-through-webapi/">Proxying Large Files Through Webapi</a></div>
         
       </div>
     </nav><!-- end .post_nav -->

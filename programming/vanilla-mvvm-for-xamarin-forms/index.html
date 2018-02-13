@@ -17,37 +17,12 @@
   <meta name="description" content="Want to do MVVM without the frameworks? Xamarin Forms provides everything we need to implement the pattern and make our ViewModels testable. Note that some n...">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="canonical" href="http://phdesign.com.au/programming/vanilla-mvvm-for-xamarin-forms/">
+  <link rel="canonical" href="http://localhost:4000/programming/vanilla-mvvm-for-xamarin-forms/">
   <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
   <link rel="shortcut icon" href="/favicon.ico">
   
   
-  
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-2414000-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
-
-  
-
-  <!-- Google Web Fonts -->
-  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-  <![endif]-->
-  
-</head>
+<script src="http://127.0.0.1:35729/livereload.js"></script></head>
 
   <body class="post">
 
@@ -122,7 +97,7 @@
       
         in <span class="meta-value"><a href="/programming">programming</a></span>
       
-      with <span class="meta-value"><a data-disqus-identifier="Vanilla MVVM for Xamarin Forms" href="#disqus_thread">0 Comments</a></span>
+      with <span class="meta-value"><a data-disqus-identifier="http://localhost:4000/programming/vanilla-mvvm-for-xamarin-forms/" href="#disqus_thread">0 Comments</a></span>
     </div><!-- end .meta-label -->
     <br />
 
@@ -133,7 +108,7 @@
 
     <p>Want to do MVVM without the frameworks? Xamarin Forms provides everything we need to implement the pattern and make our ViewModels testable.</p>
 
-<p><em>Note that some naming, patterns and code have been borrowed from the excellent <a href="https://github.com/rid00z/FreshMvvm">FreshMVVM</a> framework. This is a great lightweight framework to get started with if you don’t want to roll your own.</em></p>
+<p><em>Note that some naming, patterns and code have been borrowed from the excellent <a href="https://github.com/rid00z/FreshMvvm" target="_blank">FreshMVVM</a> framework. This is a great lightweight framework to get started with if you don’t want to roll your own.</em></p>
 
 <p>Simply put, MVVM helps us to abstract any UI logic out of the View and into a ViewModel to make it testable, while the data and business logic remains in the Model.</p>
 
@@ -193,7 +168,7 @@
 
 <p>Borrowing from FreshMVVM, our <code class="highlighter-rouge">Init()</code> method allows us to pass custom data to the ViewModel. You’re going to have to cast it from an object, but if that makes you uneasy then it wouldn’t be too hard to extend this example to support a generic interface for the initialisation data.</p>
 
-<p>I’ve thrown in a <code class="highlighter-rouge">Title</code> property here, it’s not really needed but demonstrates that you should be adding any common properties to this class that your ViewModels will need. Note that while Title is bindable, we’re not emitting a PropertyChanged event, this is because I use <a href="https://github.com/Fody/PropertyChanged">Fody.PropertyChanged</a> to automatically add that boilerplate code when compiling.</p>
+<p>I’ve thrown in a <code class="highlighter-rouge">Title</code> property here, it’s not really needed but demonstrates that you should be adding any common properties to this class that your ViewModels will need. Note that while Title is bindable, we’re not emitting a PropertyChanged event, this is because I use <a href="https://github.com/Fody/PropertyChanged" target="_blank">Fody.PropertyChanged</a> to automatically add that boilerplate code when compiling.</p>
 
 <p>Lastly, and again borrowing from FreshMVVM, we’re going to allow the ViewModel access to some of the page lifecycle events through the <code class="highlighter-rouge">WireEvents</code> method.</p>
 
@@ -387,25 +362,6 @@
       
         
 
-      <div id="disqus_thread"></div>
-      <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES * * */
-        var disqus_shortname = 'phdesign';
-        var disqus_identifier = 'http://phdesign.com.au/programming/vanilla-mvvm-for-xamarin-forms/';
-        var disqus_title = 'Vanilla MVVM for Xamarin Forms';
-        var disqus_url = 'http://phdesign.com.au/programming/vanilla-mvvm-for-xamarin-forms/';
-
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-          dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-      </script>
-      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
-
-
       
     </div><!-- end .comments -->
 
@@ -424,8 +380,8 @@
       </div>
       <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
         
-          <div class="meta-label"><a href="/programming/how-to-write-better-angularjs/">Next post <span aria-hidden="true">&raquo;</span></a></div>
-          <div class="meta-value"><a href="/programming/how-to-write-better-angularjs/">How to write better AngularJS</a></div>
+          <div class="meta-label"><a href="/programming/write-angularjs-like-its-2018/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/programming/write-angularjs-like-its-2018/">Write AngularJS like it's 2018</a></div>
         
       </div>
     </nav><!-- end .post_nav -->

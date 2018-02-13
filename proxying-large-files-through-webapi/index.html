@@ -13,11 +13,11 @@
   <meta name="author" content="Paul Heasley">
   
 
-  <title>Create branch of modified working copy in TFS | phdesign</title>
-  <meta name="description" content="So you’ve been working on your code from Team Foundation Server (TFS), made changes then realised you should really have started a branch for it. I couldn’t ...">
+  <title>Proxying Large Files Through Webapi | phdesign</title>
+  <meta name="description" content="Proxying large files through Web API Here’s a few different implementations for proxying a large (1GB+) file through a Web API end point and onto another API...">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="canonical" href="http://localhost:4000/programming/create-branch-of-modified-working-copy-in-tfs/">
+  <link rel="canonical" href="http://localhost:4000/proxying-large-files-through-webapi/">
   <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
   <link rel="shortcut icon" href="/favicon.ico">
   
@@ -86,18 +86,16 @@
   <div class="container">
 
     <div class="date-stamp">
-      <div class="month">Mar</div>
+      <div class="month">Nov</div>
       <div class="day">29</div>
     </div><!-- end .date-stamp -->
 
-    <h2 class="post-header">Create branch of modified working copy in TFS</h2>
+    <h2 class="post-header">Proxying Large Files Through Webapi</h2>
 
     <div class="meta-label">
-      posted on <span class="meta-value muted">29 March 2012</span>
+      posted on <span class="meta-value muted">29 November 2016</span>
       
-        in <span class="meta-value"><a href="/programming">programming</a></span>
-      
-      with <span class="meta-value"><a data-disqus-identifier="http://localhost:4000/programming/create-branch-of-modified-working-copy-in-tfs/" href="#disqus_thread">0 Comments</a></span>
+      with <span class="meta-value"><a data-disqus-identifier="http://localhost:4000/proxying-large-files-through-webapi/" href="#disqus_thread">0 Comments</a></span>
     </div><!-- end .meta-label -->
     <br />
 
@@ -105,44 +103,43 @@
     
     
     
-      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 5 years old and the content may no longer be relevant.</p>
-    
 
-    <p>So you’ve been working on your code from Team Foundation Server (TFS), made changes then realised you should really have started a branch for it.</p>
+    <h1 id="proxying-large-files-through-web-api">Proxying large files through Web API</h1>
 
-<p>I couldn’t find a good tutorial anywhere for how to do this so here’s the best workflow I found.</p>
+<p>Here’s a few different implementations for proxying a large (1GB+) file through a Web API end point and onto another API.</p>
 
-<!--more-->
+<p>Before you do anything, you need to update the web.config to support large file requests, it’s good practice to limit this to just the controllers / actions that you want to open up large file requests to, e.g.</p>
 
-<ol>
-  <li>
-    <p><strong>Create a shelveset of your current working copy</strong><br />
-File &gt; Source Control &gt; Shelve Pending Changes<br />
-Uncheck ‘Preserve pending changes locally’. This will undo all your pending changes.</p>
-  </li>
-  <li>
-    <p><strong>Create branch</strong><br />
-One way to do this is go to the Team Explorer tab &gt; Source Control. Right click on the branch, trunk or root folder and select Branching and Merging &gt; Branch.<br />
-In Branch From Version, select By Workspace Version.</p>
-  </li>
-  <li>
-    <p><strong>Map branch to a working folder</strong><br />
-Right click on new branch and select Map to Local Folder.</p>
-  </li>
-  <li>
-    <p><strong>Unshelve your changes to the new branch</strong><br />
-To do this you need TFS Power Tools ‘unshelve’. More info here:<br />
-<a href="http://geekswithblogs.net/TarunArora/archive/2011/06/06/unshelve-shelveset-created-from-one-branch-to-another.aspx">http://geekswithblogs.net/TarunArora/archive/2011/06/06/unshelve-shelveset-created-from-one-branch-to-another.aspx</a></p>
-  </li>
-</ol>
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;location</span> <span class="na">path=</span><span class="s">"api/learning/activities/uploadscorm"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;system.web&gt;</span>
+    <span class="nt">&lt;httpRuntime</span> <span class="na">maxRequestLength=</span><span class="s">"2097151"</span> <span class="na">executionTimeout=</span><span class="s">"360000"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/system.web&gt;</span>
+  <span class="nt">&lt;system.webServer&gt;</span>
+    <span class="nt">&lt;security&gt;</span>
+      <span class="nt">&lt;requestFiltering&gt;</span>
+        <span class="nt">&lt;requestLimits</span> <span class="na">maxAllowedContentLength=</span><span class="s">"2147482624"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/requestFiltering&gt;</span>
+    <span class="nt">&lt;/security&gt;</span>
+  <span class="nt">&lt;/system.webServer&gt;</span>
+<span class="nt">&lt;/location&gt;</span>
+</code></pre>
+</div>
 
-<p>You can can now check in your changes to the new branch</p>
+<p>We’ll need somewhere to post to, a great tool for this is requestb.in, you can anonymously create temporary endpoints to send data to and inspect the request.</p>
+
+<h3 id="1-multipartmemorystreamprovider">1. MultipartMemoryStreamProvider</h3>
+
+<p>This seems to be the preferred way to manage file uploads in Web API, unfortu</p>
+
+<h3 id="2-custommultipartprovider">2. CustomMultipartProvider</h3>
+
+<h3 id="3-copytoasync">3. CopyToAsync</h3>
+
+<h3 id="3-httpcontextcurrentrequestfiles">3. HttpContext.Current.Request.Files</h3>
 
 
 
     <ul class="post-tags">
-      
-        <li><a href="/tag/tfs" title="View posts tagged with tfs">#tfs</a></li>
       
     </ul>
 
@@ -168,14 +165,14 @@ To do this you need TFS Power Tools ‘unshelve’. More info here:<br />
     <nav class="row pager">
       <div class="previous col-xs-6 col-sm-4">
         
-          <div class="meta-label"><a href="/programming/delete-dependent-entities-when-removed-from-ef-collection/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
-          <div class="meta-value"><a href="/programming/delete-dependent-entities-when-removed-from-ef-collection/">Delete Dependents When Removing an Entity From Entity Framework</a></div>
+          <div class="meta-label"><a href="/programming/auto-increment-project-version-from-travis/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/programming/auto-increment-project-version-from-travis/">Increment project version from Travis</a></div>
         
       </div>
       <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
         
-          <div class="meta-label"><a href="/programming/tfs-undo-checkout-of-unedited-files/">Next post <span aria-hidden="true">&raquo;</span></a></div>
-          <div class="meta-value"><a href="/programming/tfs-undo-checkout-of-unedited-files/">TFS undo checkout of unedited files</a></div>
+          <div class="meta-label"><a href="/programming/starting-a-promise-chain-to-handle-exceptions-correctly/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/programming/starting-a-promise-chain-to-handle-exceptions-correctly/">Starting a promise chain to handle exceptions correctly</a></div>
         
       </div>
     </nav><!-- end .post_nav -->

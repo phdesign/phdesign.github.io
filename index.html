@@ -19,37 +19,12 @@
   <meta name="description" content="Website of Paul Heasley, .NET Web Developer Technical advice, bits of software, maybe some woodworking">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="canonical" href="http://phdesign.com.au/">
+  <link rel="canonical" href="http://localhost:4000/">
   <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
   <link rel="shortcut icon" href="/favicon.ico">
   
   
-  
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  ga('create', 'UA-2414000-1', 'auto');
-  ga('send', 'pageview');
-
-</script>
-
-  
-
-  <!-- Google Web Fonts -->
-  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-  <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-  <![endif]-->
-  
-</head>
+<script src="http://127.0.0.1:35729/livereload.js"></script></head>
 
   <body class="home">
 
@@ -161,14 +136,41 @@
   <article class="stripe">
     <div class="container">
 
-      <h2 class="post-header"><a href="/programming/how-to-write-better-angularjs/" title="Read full article">How to write better AngularJS</a></h2>
+      <h2 class="post-header"><a href="/programming/faster-angularjs-tests-using-the-component-driver-pattern/" title="Read full article">Faster AngularJS tests using the component driver pattern</a></h2>
+
+      <div class="meta-label">
+        posted on <span class="meta-value muted">13 February 2018</span>
+        
+          in <span class="meta-value"><a href="/programming">programming</a></span>
+        
+        with <span class="meta-value"><a data-disqus-identifier="Faster AngularJS tests using the component driver pattern" href="#disqus_thread">0 Comments</a></span>
+      </div><!-- end .meta-label -->
+      <br />
+
+      <p>When writing tests I prefer to test multiple functions and their interactions at once, rather than constraining a test to a single function or unit. This ensures that the test operates in more realistic way, and avoids maintaining unnecessary tests over code paths that can’t be reached.</p>
+
+<p>Protractor e2e tests for AngularJS interact directly with the DOM and usually provide more value than unit tests. I’m not interested in whether a controller behaves a certain way, I’m more interested in what happens when a user clicks a certain button on a page. But protractor tests are slow. In the largest AngularJS project I manage, there are over 300 protractor tests that take up to 15 minutes to complete, that’s a very slow feedback loop. In order to bring the test time down I’m turning back to AngularJS unit tests, using the component driver pattern to still inspect and interact with DOM elements.</p>
+
+
+
+      <a class="btn btn-default btn-read-more" href="/programming/faster-angularjs-tests-using-the-component-driver-pattern/" title="Read full article">Read Article</a>
+
+    </div><!-- end .container -->
+  </article><!-- end .stripe -->
+
+  
+  
+  <article class="stripe alt">
+    <div class="container">
+
+      <h2 class="post-header"><a href="/programming/write-angularjs-like-its-2018/" title="Read full article">Write AngularJS like it's 2018</a></h2>
 
       <div class="meta-label">
         posted on <span class="meta-value muted">07 February 2018</span>
         
           in <span class="meta-value"><a href="/programming">programming</a></span>
         
-        with <span class="meta-value"><a data-disqus-identifier="How to write better AngularJS" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="Write AngularJS like it's 2018" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
@@ -178,14 +180,14 @@
 
 
 
-      <a class="btn btn-default btn-read-more" href="/programming/how-to-write-better-angularjs/" title="Read full article">Read Article</a>
+      <a class="btn btn-default btn-read-more" href="/programming/write-angularjs-like-its-2018/" title="Read full article">Read Article</a>
 
     </div><!-- end .container -->
   </article><!-- end .stripe -->
 
   
   
-  <article class="stripe alt">
+  <article class="stripe">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/vanilla-mvvm-for-xamarin-forms/" title="Read full article">Vanilla MVVM for Xamarin Forms</a></h2>
@@ -201,7 +203,7 @@
 
       <p>Want to do MVVM without the frameworks? Xamarin Forms provides everything we need to implement the pattern and make our ViewModels testable.</p>
 
-<p><em>Note that some naming, patterns and code have been borrowed from the excellent <a href="https://github.com/rid00z/FreshMvvm">FreshMVVM</a> framework. This is a great lightweight framework to get started with if you don’t want to roll your own.</em></p>
+<p><em>Note that some naming, patterns and code have been borrowed from the excellent <a href="https://github.com/rid00z/FreshMvvm" target="_blank">FreshMVVM</a> framework. This is a great lightweight framework to get started with if you don’t want to roll your own.</em></p>
 
 <p>Simply put, MVVM helps us to abstract any UI logic out of the View and into a ViewModel to make it testable, while the data and business logic remains in the Model.</p>
 
@@ -216,7 +218,7 @@
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/advanced-redux-in-xamarin-part3-database-middleware/" title="Read full article">Advanced Redux in Xamarin Part 3: Database Middleware</a></h2>
@@ -239,7 +241,7 @@
 
   
   
-  <article class="stripe alt">
+  <article class="stripe">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/advanced-redux-in-xamarin-part2-persistent-actions-middleware/" title="Read full article">Advanced Redux in Xamarin Part 2: Persistent Actions Middleware</a></h2>
@@ -262,7 +264,7 @@
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/advanced-redux-in-xamarin-part1-action-creators/" title="Read full article">Advanced Redux in Xamarin Part 1: Action Creators</a></h2>
@@ -276,9 +278,9 @@
       </div><!-- end .meta-label -->
       <br />
 
-      <p><a href="http://redux.js.org/">Redux</a> is an implementation of the <a href="https://facebook.github.io/flux/">Flux architecture</a> that manages UI changes through a single global State object that can only be mutated by dispatching Actions. It provides a way to easily reason about state changes and to share that state across multiple separated areas of the UI.</p>
+      <p><a href="http://redux.js.org/" target="_blank">Redux</a> is an implementation of the <a href="https://facebook.github.io/flux/" target="_blank">Flux architecture</a> that manages UI changes through a single global State object that can only be mutated by dispatching Actions. It provides a way to easily reason about state changes and to share that state across multiple separated areas of the UI.</p>
 
-<p>Originally developed for React in JavaScript, it’s now finding its way into other languages, there are a number of implementations of Redux in .NET (e.g. <a href="https://github.com/GuillaumeSalles/redux.NET">Redux.NET</a>, <a href="https://github.com/MassivePixel/YAXL.Redux">YAXL.Redux</a> and <a href="https://github.com/pshomov/reducto">Reducto</a>). Rather than rehashing the basics of how to use Redux in Xamarin (there are <a href="http://massivepixel.co/blog/post/redux-csharp-part1">plenty</a> of <a href="https://spin.atomicobject.com/2017/03/13/adapting-redux-c-sharp-xamarin/">good</a> <a href="http://www.michaelridland.com/xamarin/mvvm-mvc-is-dead-is-unidirectional-a-mvvm-mvc-killer/">articles</a>), in this post series we’ll look at some more advanced concepts, starting with Action Creators.</p>
+<p>Originally developed for React in JavaScript, it’s now finding its way into other languages, there are a number of implementations of Redux in .NET (e.g. <a href="https://github.com/GuillaumeSalles/redux.NET" target="_blank">Redux.NET</a>, <a href="https://github.com/MassivePixel/YAXL.Redux" target="_blank">YAXL.Redux</a> and <a href="https://github.com/pshomov/reducto" target="_blank">Reducto</a>). Rather than rehashing the basics of how to use Redux in Xamarin (there are <a href="http://massivepixel.co/blog/post/redux-csharp-part1" target="_blank">plenty</a> of <a href="https://spin.atomicobject.com/2017/03/13/adapting-redux-c-sharp-xamarin/" target="_blank">good</a> <a href="http://www.michaelridland.com/xamarin/mvvm-mvc-is-dead-is-unidirectional-a-mvvm-mvc-killer/" target="_blank">articles</a>), in this post series we’ll look at some more advanced concepts, starting with Action Creators.</p>
 
 
 
@@ -289,7 +291,7 @@
 
   
   
-  <article class="stripe alt">
+  <article class="stripe">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/no-ios-code-signing-key-matches-provisioning-profile/" title="Read full article">No iOS code signing key matches provisioning profile</a></h2>
@@ -318,7 +320,7 @@
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/mob-programming/" title="Read full article">Two's company, three's a mob: Mob programming</a></h2>
@@ -341,7 +343,7 @@
 
   
   
-  <article class="stripe alt">
+  <article class="stripe">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/starting-a-promise-chain-to-handle-exceptions-correctly/" title="Read full article">Starting a promise chain to handle exceptions correctly</a></h2>
@@ -375,50 +377,54 @@
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
-      <h2 class="post-header"><a href="/programming/auto-increment-project-version-from-travis/" title="Read full article">Increment project version from Travis</a></h2>
+      <h2 class="post-header"><a href="/proxying-large-files-through-webapi/" title="Read full article">Proxying Large Files Through Webapi</a></h2>
 
       <div class="meta-label">
         posted on <span class="meta-value muted">29 November 2016</span>
         
-          in <span class="meta-value"><a href="/programming">programming</a></span>
-        
-        with <span class="meta-value"><a data-disqus-identifier="Increment project version from Travis" href="#disqus_thread">0 Comments</a></span>
+        with <span class="meta-value"><a data-disqus-identifier="Proxying Large Files Through Webapi" href="#disqus_thread">0 Comments</a></span>
       </div><!-- end .meta-label -->
       <br />
 
-      <p>Can you effectively use <a href="https://github.com">GitHub</a> and <a href="https://travis-ci.org">Travis</a> for continuous delivery? You sure can, but managing the version number can be difficult, here’s a way to automatically increment the patch number on every deployment from Travis.</p>
+      <h1 id="proxying-large-files-through-web-api">Proxying large files through Web API</h1>
+
+<p>Here’s a few different implementations for proxying a large (1GB+) file through a Web API end point and onto another API.</p>
+
+<p>Before you do anything, you need to update the web.config to support large file requests, it’s good practice to limit this to just the controllers / actions that you want to open up large file requests to, e.g.</p>
+
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;location</span> <span class="na">path=</span><span class="s">"api/learning/activities/uploadscorm"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;system.web&gt;</span>
+    <span class="nt">&lt;httpRuntime</span> <span class="na">maxRequestLength=</span><span class="s">"2097151"</span> <span class="na">executionTimeout=</span><span class="s">"360000"</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/system.web&gt;</span>
+  <span class="nt">&lt;system.webServer&gt;</span>
+    <span class="nt">&lt;security&gt;</span>
+      <span class="nt">&lt;requestFiltering&gt;</span>
+        <span class="nt">&lt;requestLimits</span> <span class="na">maxAllowedContentLength=</span><span class="s">"2147482624"</span> <span class="nt">/&gt;</span>
+      <span class="nt">&lt;/requestFiltering&gt;</span>
+    <span class="nt">&lt;/security&gt;</span>
+  <span class="nt">&lt;/system.webServer&gt;</span>
+<span class="nt">&lt;/location&gt;</span>
+</code></pre>
+</div>
+
+<p>We’ll need somewhere to post to, a great tool for this is requestb.in, you can anonymously create temporary endpoints to send data to and inspect the request.</p>
+
+<h3 id="1-multipartmemorystreamprovider">1. MultipartMemoryStreamProvider</h3>
+
+<p>This seems to be the preferred way to manage file uploads in Web API, unfortu</p>
+
+<h3 id="2-custommultipartprovider">2. CustomMultipartProvider</h3>
+
+<h3 id="3-copytoasync">3. CopyToAsync</h3>
+
+<h3 id="3-httpcontextcurrentrequestfiles">3. HttpContext.Current.Request.Files</h3>
 
 
 
-      <a class="btn btn-default btn-read-more" href="/programming/auto-increment-project-version-from-travis/" title="Read full article">Read Article</a>
-
-    </div><!-- end .container -->
-  </article><!-- end .stripe -->
-
-  
-  
-  <article class="stripe alt">
-    <div class="container">
-
-      <h2 class="post-header"><a href="/general/adding-font-awesome-icons-to-google-slides/" title="Read full article">Adding font-awesome (or any SVG) to Google Slides</a></h2>
-
-      <div class="meta-label">
-        posted on <span class="meta-value muted">12 May 2016</span>
-        
-          in <span class="meta-value"><a href="/general">general</a></span>
-        
-        with <span class="meta-value"><a data-disqus-identifier="Adding font-awesome (or any SVG) to Google Slides" href="#disqus_thread">0 Comments</a></span>
-      </div><!-- end .meta-label -->
-      <br />
-
-      <p>Getting images into Google Slides is simple right, just upload the image and voila. What if instead of images you want icons? You can always take a screenshot of an icon and upload that, but then you’re stuck with the size because resizing that thing is going to make it ugly. There’s a better way.</p>
-
-
-
-      <a class="btn btn-default btn-read-more" href="/general/adding-font-awesome-icons-to-google-slides/" title="Read full article">Read Article</a>
+      <a class="btn btn-default btn-read-more" href="/proxying-large-files-through-webapi/" title="Read full article">Read Article</a>
 
     </div><!-- end .container -->
   </article><!-- end .stripe -->
