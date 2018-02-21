@@ -282,7 +282,7 @@
 
 <h2 id="8-use-css-modules">8. Use CSS Modules</h2>
 
-<p><a href="https://github.com/css-modules/css-modules" target="_blank">CSS Modules</a> allow you to scope your styles to a single component by obfuscating the class name. You’ll need to use a CSS processor that supports this, like webpack and css-loader. Import the stylesheet and use the style dictionary to access class names, e.g.</p>
+<p><a href="https://github.com/css-modules/css-modules" target="_blank">CSS Modules</a> allows you to scope your styles to a single component by obfuscating the class name. You’ll need to use a CSS processor that supports this, like webpack and css-loader. Import the stylesheet and use the style dictionary to access class names, e.g.</p>
 
 <div class="language-css highlighter-rouge"><pre class="highlight"><code><span class="c">/* styles.css */</span>
 <span class="nc">.todo-item</span> <span class="p">{</span>
@@ -300,8 +300,7 @@
 </code></pre>
 </div>
 
-<div class="language-html highlighter-rouge"><pre class="highlight"><code>
-<span class="c">&lt;!-- template.html --&gt;</span>
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="c">&lt;!-- template.html --&gt;</span>
 <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"{{$ctrl.styles.todoItem}}"</span><span class="nt">&gt;&lt;/div&gt;</span>
 </code></pre>
 </div>
