@@ -189,7 +189,7 @@
 
 <p>Seeing <code class="highlighter-rouge">ContentPage</code> here may ring some alarm bells. This is a code smell, one of the rules of MVVM is that the ViewModel should know nothing about the View in order to be easily testable, and ContentPage is a View. In my experience, this is an acceptable trade-off for reducing complexity, and is still easy to test. If you don’t like it, use an MVVM Framework to abstract away the navigation.</p>
 
-<p>For navigation, we accept a Xamarin.Forms.INavigation object, this is easily mockable in our tests and is future proof, if Xamarin extends that interface in the future we won’t need any changes to use it.</p>
+<p>For navigation, we accept a Xamarin.Forms.INavigation object. This is easily mockable in our tests and is future proof. If Xamarin extends that interface in the future we won’t need any changes to use it.</p>
 
 <p>Borrowing from FreshMVVM, our <code class="highlighter-rouge">Init()</code> method allows us to pass custom data to the ViewModel. You’re going to have to cast it from an object, but if that makes you uneasy then it wouldn’t be too hard to extend this example to support a generic interface for the initialisation data.</p>
 
@@ -199,7 +199,7 @@
 
 <h2 id="contentpagebase">ContentPageBase</h2>
 
-<p>Our base class for the View will allow us to wire up all the page events, the bindings and pass the navigation object.</p>
+<p>Our base class for the View will allow us to wire up all the page events and the bindings and pass the navigation object.</p>
 
 <div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">ContentPageBase</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">:</span> <span class="n">ContentPage</span> <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">ViewModelBase</span>
 <span class="p">{</span>
@@ -225,7 +225,7 @@
 </code></pre>
 </div>
 
-<p>Xamarin Forms provides a BindingContext for it’s views, allowing us to delegate bindings to a seperate class. We’re going to take advantage of this and provide a custom base ContentPage class that will setup our ViewModel for every page.</p>
+<p>Xamarin Forms provides a BindingContext for it’s views, allowing us to delegate bindings to a separate class. We’re going to take advantage of this and provide a custom base ContentPage class that will setup our ViewModel for every page.</p>
 
 <p>Note that the ContentPageBase is generic, it accepts the associated ViewModel as a type. We then use dependency injection to resolve the ViewModel, here I’m using Autofac and I register the current Navigation instance for this scope. To do this however we need access to IoC container, again it’s not pretty but I expose the container as a property on the App object (<code class="highlighter-rouge">App.Container</code>).</p>
 
@@ -243,7 +243,7 @@
 </code></pre>
 </div>
 
-<p>Finally, we need to wire up the BindingContext in the code behind. Ideally I’d do this in the ContentPageBase but if you set BindingContext before InitializeComponent is called, weird things can happen. Note that specifying the base class is optional in the code behind (e.g. <code class="highlighter-rouge">: ContentPageBase&lt;AboutViewModel&gt;</code>)</p>
+<p>Finally, we need to wire up the BindingContext in the code behind. Ideally I’d do this in the ContentPageBase but if you set BindingContext before InitializeComponent is called, weird things can happen. Note that specifying the base class is optional in the code behind (e.g. <code class="highlighter-rouge">: ContentPageBase&lt;AboutViewModel&gt;</code>).</p>
 
 <div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">partial</span> <span class="k">class</span> <span class="nc">AboutPage</span>
 <span class="p">{</span>
@@ -258,7 +258,7 @@
 
 <h2 id="viewmodel-resolution">ViewModel Resolution</h2>
 
-<p>All MVVM frameworks rely on dependency injection to resolve the ViewModel for a particular view, in ContentPageBase you saw us retrieve the ViewModel from <code class="highlighter-rouge">App.Container</code>, so we need to register all the ViewModels into the container.</p>
+<p>All MVVM frameworks rely on dependency injection to resolve the ViewModel for a particular view. In ContentPageBase you saw us retrieve the ViewModel from <code class="highlighter-rouge">App.Container</code>, so we need to register all the ViewModels into the container.</p>
 
 <div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">partial</span> <span class="k">class</span> <span class="nc">App</span>
 <span class="p">{</span>
