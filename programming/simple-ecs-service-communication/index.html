@@ -13,11 +13,11 @@
   <meta name="author" content="Paul Heasley">
   
 
-  <title>Catching JavaScript errors with Promises | phdesign</title>
-  <meta name="description" content="If your JS function needs to return a Promise but doesn’t do any asynchronous activity, you may be tempted to use the static Promise.resolve() function rathe...">
+  <title>Simple, Cost Effective ECS Service Communication | phdesign</title>
+  <meta name="description" content="3 Docker containers want to communicate with each other. They live on a single host with no scaling, it should be a trivial problem right? If you’re hosting ...">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="canonical" href="http://phdesign.com.au/programming/catching-javascript-errors-with-promises/">
+  <link rel="canonical" href="http://phdesign.com.au/programming/simple-ecs-service-communication/">
   <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
   <link rel="shortcut icon" href="/favicon.ico">
   
@@ -111,18 +111,18 @@
   <div class="container">
 
     <div class="date-stamp">
-      <div class="month">Aug</div>
-      <div class="day">02</div>
+      <div class="month">Feb</div>
+      <div class="day">07</div>
     </div><!-- end .date-stamp -->
 
-    <h2 class="post-header">Catching JavaScript errors with Promises</h2>
+    <h2 class="post-header">Simple, Cost Effective ECS Service Communication</h2>
 
     <div class="meta-label">
-      posted on <span class="meta-value muted">02 August 2014</span>
+      posted on <span class="meta-value muted">07 February 2020</span>
       
         in <span class="meta-value"><a href="/programming">programming</a></span>
       
-      with <span class="meta-value"><a href="http://phdesign.com.au/programming/catching-javascript-errors-with-promises/#disqus_thread">0 Comments</a></span>
+      with <span class="meta-value"><a href="http://phdesign.com.au/programming/simple-ecs-service-communication/#disqus_thread">0 Comments</a></span>
     </div><!-- end .meta-label -->
     <br />
 
@@ -130,46 +130,60 @@
     
     
     
-      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 5 years old and the content may no longer be relevant.</p>
-    
 
-    <p>If your JS function needs to return a <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" title="About Promises by the Mozilla Developer Network">Promise</a> but doesn’t do any asynchronous activity, you may be tempted to use the static Promise.resolve() function rather than instantiating a new Promise object. Be aware that doing this will change the way javascript errors are dealt with.</p>
+    <p>3 Docker containers want to communicate with each other. They live on a single host with no scaling, it should be a trivial problem right? If you’re hosting them on AWS ECS you can use ECS Service Discovery, but for this simple scenario it’s costly and overly complex. Here’s a cheaper, simpler way.</p>
 
 <!--more-->
 
-<p>Using the static method means normal JavaScript error handling will take place and your Promise catch() function won’t be called. E.g.</p>
+<h2 id="scenario">Scenario</h2>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="k">throw</span> <span class="s1">'new error'</span><span class="p">;</span>
-  <span class="k">return</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="s1">'hi'</span><span class="p">);</span>
-<span class="p">};</span>
+<p>I have 3 Docker containers, <code class="highlighter-rouge">A</code>, <code class="highlighter-rouge">B</code> and <code class="highlighter-rouge">C</code>. The need to be able to communicate with each other via HTTP, with a circular dependency between 2 of them, e.g. <code class="highlighter-rouge">A -&gt; B</code>, <code class="highlighter-rouge">A -&gt; C</code>, <code class="highlighter-rouge">B &lt;-&gt; C</code>.</p>
 
-<span class="nx">p</span><span class="p">()</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span> <span class="p">})</span>
-  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'there was an error'</span><span class="p">);</span> <span class="p">});</span></code></pre></figure>
+<p>Container <code class="highlighter-rouge">B</code> runs a 3rd party app that expects a URL to talk to <code class="highlighter-rouge">C</code>, therefore it needs to be a standard URL using an <code class="highlighter-rouge">A</code> record, not a <code class="highlighter-rouge">SRV</code> record.</p>
 
-<p>Will result in seeing the error ‘new error’ logged by the console. The promise then / catch functions are never called.
-Whereas:</p>
+<h2 id="small-scale-cost-effective-service-discovery">Small scale, cost-effective service discovery</h2>
 
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">p</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="k">return</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">throw</span> <span class="s1">'new error'</span><span class="p">;</span>
-    <span class="nx">resolve</span><span class="p">(</span><span class="s1">'hi'</span><span class="p">);</span>
-  <span class="p">});</span>
-<span class="p">};</span>
+<p>The solution is to use a <code class="highlighter-rouge">host</code> network type. This type of network exposes all ports on the host machine directly. <strong>Each service will require a dedicated port number.</strong> Assuming this isn’t a constraint for you, the containers can then communicate with each other via a port number on <code class="highlighter-rouge">localhost</code>, e.g:</p>
 
-<span class="nx">p</span><span class="p">()</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">a</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span> <span class="p">})</span>
-  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'there was an error'</span><span class="p">);</span> <span class="p">});</span></code></pre></figure>
+<ul>
+  <li><code class="highlighter-rouge">A</code> exposes <code class="highlighter-rouge">localhost:80</code></li>
+  <li><code class="highlighter-rouge">B</code> exposes <code class="highlighter-rouge">localhost:8080</code></li>
+  <li><code class="highlighter-rouge">C</code> exposes <code class="highlighter-rouge">localhost:80801</code></li>
+</ul>
 
-<p>Will allow the Promise to handle the error and pass it to the catch function, resulting in ‘there was an error’ in the console.</p>
+<p>These port number configurations can be provided as environment variables.</p>
+
+<h2 id="alternative-approaches">Alternative approaches</h2>
+
+<h3 id="docker-links">Docker links</h3>
+
+<p><a href="https://docs.docker.com/network/links/">Docker links</a> are the simplest solution, and worked perfectly for me in a local development environment. Unfortunately the AWS ECS implementation only supports one way links, and chokes if you have a circular dependency (e.g. <code class="highlighter-rouge">B &lt;-&gt; C</code>).</p>
+
+<p>Note also that links are a legacy feature and are deprecated.</p>
+
+<h3 id="user-defined-network">User-defined network</h3>
+
+<p>A <a href="https://docs.docker.com/network/bridge/">user-defined bridge network</a> in Docker is also perfect, providing automatic DNS resolution between containers. Unfortunately they are not supported at all on AWS ECS.</p>
+
+<h3 id="ecs-service-discovery">ECS Service Discovery</h3>
+
+<p>ECS Service Discovery is the preferred approach when working with Amazon Web Services. It uses AWS Cloud Map backed by Route 53 DNS to register service IPs / ports and provide service discovery. A private Hosted Zone on Route 53 will cost about <strong>$0.50</strong> per month.</p>
+
+<p>If using a <code class="highlighter-rouge">bridge</code> or <code class="highlighter-rouge">host</code> network, only <code class="highlighter-rouge">SRV</code> records are supported. If you’re working with 3rd party application that expects a standard DNS entry, this won’t be sufficient so you’ll need to use <code class="highlighter-rouge">awsvpc</code> networking so you get <code class="highlighter-rouge">A</code> DNS records.</p>
+
+<p><code class="highlighter-rouge">awsvpc</code> networking requires a private subnet, which in turn requires a NAT Gateway which will set you back around <strong>$32.40</strong> per month (at $0.045 per hour).</p>
+
+<h3 id="custom-ecs-optimised-ami">Custom ECS optimised AMI</h3>
+
+<p>Another idea that I didn’t fully explore was running a custom AMI with a full Docker daemon so I could make use of user-defined networks. I’m not sure how much effort would be involved in getting this to work with ECS, but I suppose you could forgo ECS altogether and just deploy <a href="https://docs.docker.com/compose/">Docker compose</a> on an EC2 instance and manually bootstrap the containers from there.</p>
+
 
 
     <ul class="post-tags">
       
-        <li><a href="/tag/javascript" title="View posts tagged with javascript">#javascript</a></li>
+        <li><a href="/tag/aws" title="View posts tagged with aws">#aws</a></li>
       
-        <li><a href="/tag/promises" title="View posts tagged with promises">#promises</a></li>
+        <li><a href="/tag/docker" title="View posts tagged with docker">#docker</a></li>
       
     </ul>
 
@@ -187,9 +201,9 @@ Whereas:</p>
       <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES * * */
         var disqus_shortname = 'phdesign';
-        var disqus_identifier = 'http://phdesign.com.au/programming/catching-javascript-errors-with-promises/';
-        var disqus_title = 'Catching JavaScript errors with Promises';
-        var disqus_url = 'http://phdesign.com.au/programming/catching-javascript-errors-with-promises/';
+        var disqus_identifier = 'http://phdesign.com.au/programming/simple-ecs-service-communication/';
+        var disqus_title = 'Simple, Cost Effective ECS Service Communication';
+        var disqus_url = 'http://phdesign.com.au/programming/simple-ecs-service-communication/';
 
         /* * * DON'T EDIT BELOW THIS LINE * * */
         (function() {
@@ -216,14 +230,11 @@ Whereas:</p>
     <nav class="row pager">
       <div class="previous col-xs-6 col-sm-4">
         
-          <div class="meta-label"><a href="/programming/mapping-errors-in-jquery-promises-deferred/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
-          <div class="meta-value"><a href="/programming/mapping-errors-in-jquery-promises-deferred/">Mapping errors in jQuery promises / deferred</a></div>
+          <div class="meta-label"><a href="/programming/notepadpp-textfx-64bit/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/programming/notepadpp-textfx-64bit/">Notepad++ TextFX 0.25 x64</a></div>
         
       </div>
       <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
-        
-          <div class="meta-label"><a href="/programming/logging-objects-to-the-console-in-internet-explorer/">Next post <span aria-hidden="true">&raquo;</span></a></div>
-          <div class="meta-value"><a href="/programming/logging-objects-to-the-console-in-internet-explorer/">Logging Objects to the Console in Internet Explorer</a></div>
         
       </div>
     </nav><!-- end .post_nav -->
