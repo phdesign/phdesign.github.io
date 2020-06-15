@@ -82,6 +82,8 @@
             
               <li><a href="/woodworking">woodworking</a></li>
             
+              <li><a href="/infosec">infosec</a></li>
+            
           </ul>
         </li>
         <li class="dropdown">
@@ -161,6 +163,33 @@
   <article class="stripe">
     <div class="container">
 
+      <h2 class="post-header"><a href="/infosec/owasp-zap-testing-cors-origin-reflection/" title="Read full article">Using OWASP ZAP to test for CORS origin reflection exploits</a></h2>
+
+      <div class="meta-label">
+        posted on <span class="meta-value muted">15 June 2020</span>
+        
+          in <span class="meta-value"><a href="/infosec">infosec</a></span>
+        
+        with <span class="meta-value"><a href="http://phdesign.com.au/infosec/owasp-zap-testing-cors-origin-reflection/#disqus_thread">0 Comments</a></span>
+      </div><!-- end .meta-label -->
+      <br />
+
+      <p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">Cross-Origin Resource Sharing (CORS)</a> protects a user from having sensitive information leaked from one site to another. If the browser allowed any cross-domain XHR requests, sites would be able to steal information from other sites that you are logged into by making authenticated requests to them via JavaScript (the target site’s cookies will be sent with the request). But CORS can be easily misconfigured and result in vulnerabilities in your site, one particular misconfiguration is CORS origin reflection, where the <code class="highlighter-rouge">Origin</code> request header is processed through a whitelist (or regular expression) on the server and if allowed, is returned in an <code class="highlighter-rouge">Access-Control-Allow-Origin:</code> response header. Poor regex can result in allowing unintended domains through.</p>
+
+<p>In this post I’ll walk you through using OWASP ZAP to manually test a list of domain names passed as origins to a webserver, and evaluating whether they are reflected in the allowed CORS domains.</p>
+
+
+
+      <a class="btn btn-default btn-read-more" href="/infosec/owasp-zap-testing-cors-origin-reflection/" title="Read full article">Read Article</a>
+
+    </div><!-- end .container -->
+  </article><!-- end .stripe -->
+
+  
+  
+  <article class="stripe alt">
+    <div class="container">
+
       <h2 class="post-header"><a href="/programming/wtforms-selectfield-custom-option-attributes/" title="Read full article">WTForms SelectField with Custom Option Attributes</a></h2>
 
       <div class="meta-label">
@@ -185,7 +214,7 @@
 
   
   
-  <article class="stripe alt">
+  <article class="stripe">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/simple-ecs-service-communication/" title="Read full article">Simple, Cost Effective ECS Service Communication</a></h2>
@@ -210,7 +239,7 @@
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/notepadpp-textfx-64bit/" title="Read full article">Notepad++ TextFX 0.25 x64</a></h2>
@@ -235,7 +264,7 @@
 
   
   
-  <article class="stripe alt">
+  <article class="stripe">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/using-css-modules-with-angular-typescript-and-bootstrap/" title="Read full article">Using CSS Modules with Angular, TypeScript and Bootstrap</a></h2>
@@ -262,7 +291,7 @@
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/faster-angularjs-tests-using-the-component-driver-pattern/" title="Read full article">Faster AngularJS tests using the component driver pattern</a></h2>
@@ -289,7 +318,7 @@
 
   
   
-  <article class="stripe alt">
+  <article class="stripe">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/write-angularjs-like-its-2018/" title="Read full article">Write AngularJS like it's 2018</a></h2>
@@ -316,7 +345,7 @@
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/vanilla-mvvm-for-xamarin-forms/" title="Read full article">Vanilla MVVM for Xamarin Forms</a></h2>
@@ -347,7 +376,7 @@
 
   
   
-  <article class="stripe alt">
+  <article class="stripe">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/advanced-redux-in-xamarin-part3-database-middleware/" title="Read full article">Advanced Redux in Xamarin Part 3: Database Middleware</a></h2>
@@ -370,7 +399,7 @@
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/advanced-redux-in-xamarin-part2-persistent-actions-middleware/" title="Read full article">Advanced Redux in Xamarin Part 2: Persistent Actions Middleware</a></h2>
@@ -387,33 +416,6 @@
       <p>In this second post in the series on advanced Redux in Xamarin, we'll look at how to persist Actions so application state can be restored when the app restarts. We'll do this by creating Middleware that will intercept each action and save it to a persistent store, then rehydrate the application state from that store on app startup.</p>
 
       <a class="btn btn-default btn-read-more" href="/programming/advanced-redux-in-xamarin-part2-persistent-actions-middleware/" title="Read full article">Read Article</a>
-
-    </div><!-- end .container -->
-  </article><!-- end .stripe -->
-
-  
-  
-  <article class="stripe alt">
-    <div class="container">
-
-      <h2 class="post-header"><a href="/programming/advanced-redux-in-xamarin-part1-action-creators/" title="Read full article">Advanced Redux in Xamarin Part 1: Action Creators</a></h2>
-
-      <div class="meta-label">
-        posted on <span class="meta-value muted">11 July 2017</span>
-        
-          in <span class="meta-value"><a href="/programming">programming</a></span>
-        
-        with <span class="meta-value"><a href="http://phdesign.com.au/programming/advanced-redux-in-xamarin-part1-action-creators/#disqus_thread">0 Comments</a></span>
-      </div><!-- end .meta-label -->
-      <br />
-
-      <p><a href="http://redux.js.org/" target="_blank">Redux</a> is an implementation of the <a href="https://facebook.github.io/flux/" target="_blank">Flux architecture</a> that manages UI changes through a single global State object that can only be mutated by dispatching Actions. It provides a way to easily reason about state changes and to share that state across multiple separated areas of the UI.</p>
-
-<p>Originally developed for React in JavaScript, it’s now finding its way into other languages, there are a number of implementations of Redux in .NET (e.g. <a href="https://github.com/GuillaumeSalles/redux.NET" target="_blank">Redux.NET</a>, <a href="https://github.com/MassivePixel/YAXL.Redux" target="_blank">YAXL.Redux</a> and <a href="https://github.com/pshomov/reducto" target="_blank">Reducto</a>). Rather than rehashing the basics of how to use Redux in Xamarin (there are <a href="http://massivepixel.co/blog/post/redux-csharp-part1" target="_blank">plenty</a> of <a href="https://spin.atomicobject.com/2017/03/13/adapting-redux-c-sharp-xamarin/" target="_blank">good</a> <a href="http://www.michaelridland.com/xamarin/mvvm-mvc-is-dead-is-unidirectional-a-mvvm-mvc-killer/" target="_blank">articles</a>), in this post series we’ll look at some more advanced concepts, starting with Action Creators.</p>
-
-
-
-      <a class="btn btn-default btn-read-more" href="/programming/advanced-redux-in-xamarin-part1-action-creators/" title="Read full article">Read Article</a>
 
     </div><!-- end .container -->
   </article><!-- end .stripe -->

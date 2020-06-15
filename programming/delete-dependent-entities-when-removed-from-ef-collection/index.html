@@ -80,6 +80,8 @@
             
               <li><a href="/woodworking">woodworking</a></li>
             
+              <li><a href="/infosec">infosec</a></li>
+            
           </ul>
         </li>
         <li class="dropdown">
@@ -138,7 +140,7 @@ I have an Entity Framework model being used in the business layer called Patient
 
 <!--more-->
 
-<p><img src="/assets/img/blog/ef-delete-relationship-models.png" alt="Response and Patient Model Diagram" /></p>
+<p><img src="/assets/img/blog/delete-dependent-entities-when-removed-from-ef-collection/ef-delete-relationship-models.png" alt="Response and Patient Model Diagram" /></p>
 
 <figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="c1">// This doesn’t work as expected, it removes the relationship but not the Response entity. 
 </span><span class="n">Patient</span><span class="p">.</span><span class="n">Responses</span><span class="p">.</span><span class="nf">Remove</span><span class="p">(</span><span class="n">Patient</span><span class="p">.</span><span class="n">Responses</span><span class="p">.</span><span class="nf">Where</span><span class="p">(</span><span class="n">r</span> <span class="p">=&gt;</span> <span class="n">r</span><span class="p">.</span><span class="n">Id</span> <span class="p">==</span> <span class="m">1</span><span class="p">));</span></code></pre></figure>

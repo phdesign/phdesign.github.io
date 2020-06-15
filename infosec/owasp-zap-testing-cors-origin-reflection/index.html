@@ -13,11 +13,11 @@
   <meta name="author" content="Paul Heasley">
   
 
-  <title>No iOS code signing key matches provisioning profile | phdesign</title>
-  <meta name="description" content="Recently my team have come up against this error a few times building a Xamarin app using Visual Studio 2017 both on the Mac and PC, and it took a bit to wor...">
+  <title>Using OWASP ZAP to test for CORS origin reflection exploits | phdesign</title>
+  <meta name="description" content="Cross-Origin Resource Sharing (CORS) protects a user from having sensitive information leaked from one site to another. If the browser allowed any cross-doma...">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="canonical" href="http://phdesign.com.au/programming/No-iOS-code-signing-key-matches-provisioning-profile/">
+  <link rel="canonical" href="http://phdesign.com.au/infosec/owasp-zap-testing-cors-origin-reflection/">
   <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
   <link rel="shortcut icon" href="/favicon.ico">
   
@@ -80,6 +80,8 @@
             
               <li><a href="/woodworking">woodworking</a></li>
             
+              <li><a href="/infosec">infosec</a></li>
+            
           </ul>
         </li>
         <li class="dropdown">
@@ -111,18 +113,18 @@
   <div class="container">
 
     <div class="date-stamp">
-      <div class="month">Jul</div>
-      <div class="day">06</div>
+      <div class="month">Jun</div>
+      <div class="day">15</div>
     </div><!-- end .date-stamp -->
 
-    <h2 class="post-header">No iOS code signing key matches provisioning profile</h2>
+    <h2 class="post-header">Using OWASP ZAP to test for CORS origin reflection exploits</h2>
 
     <div class="meta-label">
-      posted on <span class="meta-value muted">06 July 2017</span>
+      posted on <span class="meta-value muted">15 June 2020</span>
       
-        in <span class="meta-value"><a href="/programming">programming</a></span>
+        in <span class="meta-value"><a href="/infosec">infosec</a></span>
       
-      with <span class="meta-value"><a href="http://phdesign.com.au/programming/No-iOS-code-signing-key-matches-provisioning-profile/#disqus_thread">0 Comments</a></span>
+      with <span class="meta-value"><a href="http://phdesign.com.au/infosec/owasp-zap-testing-cors-origin-reflection/#disqus_thread">0 Comments</a></span>
     </div><!-- end .meta-label -->
     <br />
 
@@ -131,32 +133,68 @@
     
     
 
-    <p>Recently my team have come up against this error a few times building a Xamarin app using Visual Studio 2017 both on the Mac and PC, and it took a bit to work out the fix.</p>
+    <p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">Cross-Origin Resource Sharing (CORS)</a> protects a user from having sensitive information leaked from one site to another. If the browser allowed any cross-domain XHR requests, sites would be able to steal information from other sites that you are logged into by making authenticated requests to them via JavaScript (the target site’s cookies will be sent with the request). But CORS can be easily misconfigured and result in vulnerabilities in your site, one particular misconfiguration is CORS origin reflection, where the <code class="highlighter-rouge">Origin</code> request header is processed through a whitelist (or regular expression) on the server and if allowed, is returned in an <code class="highlighter-rouge">Access-Control-Allow-Origin:</code> response header. Poor regex can result in allowing unintended domains through.</p>
 
-<blockquote>
-  <p>No iOS code signing key matches specified provisioning profile ‘xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx’</p>
-</blockquote>
+<p>In this post I’ll walk you through using OWASP ZAP to manually test a list of domain names passed as origins to a webserver, and evaluating whether they are reflected in the allowed CORS domains.</p>
 
 <!--more-->
 
-<p>The simplest thing to try is open the properties window (or Options on Mac) of the iOS project, select the ‘iOS Bundle Signing’ tab and change the Signing Identity and Provisioning Profile back to Automatic. Save the project and close and reopen Visual Studio, now set the Signing Identity and Provisioning Profile back to the desired values and rebuild.</p>
+<p>Let’s imagine that a website has been configured to allow CORS requests from <code class="highlighter-rouge">https://target.com</code> or any subdomain of <code class="highlighter-rouge">target.com</code>. When a request is made to the server like</p>
 
-<p><img src="/assets/img/blog/xamarin-ios-bundle-signing.png" alt="iOS Bundle Signing options for iOS Xamarin project" /></p>
+<div class="highlighter-rouge"><pre class="highlight"><code>GET https://auth.target.com/token
+Host: https://auth.target.com
+Origin: https://app.target.com
+</code></pre>
+</div>
 
-<p>However, if like us this doesn’t fix the problem, open the <code class="highlighter-rouge">ProjectName.iOS.csproj</code> file for editing (either in your favourite text editor or by unloading the project first in Visual Studio) and look for the <code class="highlighter-rouge">&lt;CodesignProvision&gt;</code> tag. In our case(s) we found there were two entries, which must have been what was confusing Visual Studio.</p>
+<p>Then the webserver may compare the <code class="highlighter-rouge">Origin</code> header to a regex like <code class="highlighter-rouge">https:\/\/(.*)target.com</code>. If the origin matches the regex then the server returns a CORS header like</p>
 
-<p><img src="/assets/img/blog/ios-csproj-duplicate-provisioning.png" alt="Duplicate CodesignProvision tags in iOS.csproj file" /></p>
+<div class="highlighter-rouge"><pre class="highlight"><code>Access-Control-Allow-Origin: https://app.target.com
+</code></pre>
+</div>
 
-<p>To fix this, delete one of the entires (and for good measure we cleared the value out of the other entry), now reload the project, open the iOS Bundle Signing options and set the Signing Identity and Provisioning Profile to your desired values. You should now be able to build successfully.</p>
+<p>Echoing the same origin back to the browser. But this regex is too permissive. An attacker could register <code class="highlighter-rouge">https://eviltarget.com</code> and this would also pass the server check. We’re going to test for overly permissive server checks using <a href="https://www.zaproxy.org/">OWASP ZAP,</a> a free vulnerability scanner similar to BurpSuite.</p>
+
+<h3 id="steps-to-test-for-cors-origin-reflection">Steps to test for CORS origin reflection</h3>
+
+<p>Assuming you’ve configured a browser to proxy requests through OWASP ZAP, fire up ZAP, launch your browser and make a request to the target site.</p>
+
+<p>In OWASP ZAP, find the request you want to test, either within the Site tree or in the History tab, right click on it and select Attack &gt; Fuzz…</p>
+
+<p>This will open the Fuzzer dialog. The first thing we want to do is provide a list of origin payloads and where to inject them.</p>
+
+<p>On Fuzz Locations tab, highlight the Origin header where you want to inject different origin payloads.</p>
+
+<p><img src="/assets/img/blog/owasp-zap-fuzzer-testing-cors-origin-reflection/zap-fuzzer-dialog.png" alt="OWASP ZAP Fuzz Dialog" /></p>
+
+<p>On the right hand pane, under Fuzz Locations, click Add.</p>
+
+<p>On the Payloads dialog, click Add.</p>
+
+<p>On the Add Payload dialog, select the Type: String and enter the origins you want to test.</p>
+
+<p><img src="/assets/img/blog/owasp-zap-fuzzer-testing-cors-origin-reflection/zap-add-fuzz-locations.png" alt="OWASP ZAP Add Fuzz Locations Dialog" /></p>
+
+<p>Now we want to add a message processor to flag when we see an origin reflected in the CORS header.</p>
+
+<p>Click the Message Processors tab and click Add.</p>
+
+<p>Select Type: Tag Creator and choose the Extract option.</p>
+
+<p>In the Regex, enter: <code class="highlighter-rouge">Access-Control-Allow-Origin:(.*)</code></p>
+
+<p><img src="/assets/img/blog/owasp-zap-fuzzer-testing-cors-origin-reflection/zap-tag-creator.png" alt="OWASP ZAP Fuzzer Tag Creator" /></p>
+
+<p>Finally, click Start Fuzzer. You should see the results in the State column of the Fuzzer tab in the bottom panel.</p>
+
+<p><img src="/assets/img/blog/owasp-zap-fuzzer-testing-cors-origin-reflection/zap-fuzzer-results.png" alt="OWASP ZAP Fuzzer Results" /></p>
 
 
     <ul class="post-tags">
       
-        <li><a href="/tag/xamarin" title="View posts tagged with xamarin">#xamarin</a></li>
+        <li><a href="/tag/owasp-zap" title="View posts tagged with owasp-zap">#owasp-zap</a></li>
       
-        <li><a href="/tag/ios" title="View posts tagged with ios">#ios</a></li>
-      
-        <li><a href="/tag/howto" title="View posts tagged with howto">#howto</a></li>
+        <li><a href="/tag/cors" title="View posts tagged with cors">#cors</a></li>
       
     </ul>
 
@@ -174,9 +212,9 @@
       <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES * * */
         var disqus_shortname = 'phdesign';
-        var disqus_identifier = 'http://phdesign.com.au/programming/No-iOS-code-signing-key-matches-provisioning-profile/';
-        var disqus_title = 'No iOS code signing key matches provisioning profile';
-        var disqus_url = 'http://phdesign.com.au/programming/No-iOS-code-signing-key-matches-provisioning-profile/';
+        var disqus_identifier = 'http://phdesign.com.au/infosec/owasp-zap-testing-cors-origin-reflection/';
+        var disqus_title = 'Using OWASP ZAP to test for CORS origin reflection exploits';
+        var disqus_url = 'http://phdesign.com.au/infosec/owasp-zap-testing-cors-origin-reflection/';
 
         /* * * DON'T EDIT BELOW THIS LINE * * */
         (function() {
@@ -203,14 +241,11 @@
     <nav class="row pager">
       <div class="previous col-xs-6 col-sm-4">
         
-          <div class="meta-label"><a href="/programming/mob-programming/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
-          <div class="meta-value"><a href="/programming/mob-programming/">Two's company, three's a mob: Mob programming</a></div>
+          <div class="meta-label"><a href="/programming/wtforms-selectfield-custom-option-attributes/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/programming/wtforms-selectfield-custom-option-attributes/">WTForms SelectField with Custom Option Attributes</a></div>
         
       </div>
       <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
-        
-          <div class="meta-label"><a href="/programming/advanced-redux-in-xamarin-part1-action-creators/">Next post <span aria-hidden="true">&raquo;</span></a></div>
-          <div class="meta-value"><a href="/programming/advanced-redux-in-xamarin-part1-action-creators/">Advanced Redux in Xamarin Part 1: Action Creators</a></div>
         
       </div>
     </nav><!-- end .post_nav -->

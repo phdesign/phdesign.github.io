@@ -80,6 +80,8 @@
             
               <li><a href="/woodworking">woodworking</a></li>
             
+              <li><a href="/infosec">infosec</a></li>
+            
           </ul>
         </li>
         <li class="dropdown">
@@ -139,13 +141,13 @@
 
 <p>Now I’ve found the resolution and it’s so easy it’s stupid, just <strong>undo your changes</strong>. That’s right, go on, right click your solution and select Undo Pending Changes</p>
 
-<p><img src="/assets/img/blog/tfs-undo-unedited-1-crop.png" alt="Selecting Undo Pending Changes from the right click menu in Solution Explorer" /></p>
+<p><img src="/assets/img/blog/tfs-undo-checkout-of-unedited-files/tfs-undo-unedited-1-crop.png" alt="Selecting Undo Pending Changes from the right click menu in Solution Explorer" /></p>
 
 <p>You’ll see see the Undo Pending Changes dialog, <strong>make sure you only select edited files</strong> (e.g. uncheck add / delete actions), then go ahead and click Undo Changes.</p>
 
 <p>Now the catch is TFS will go ahead and undo the checkout for any unmodified files, when it hits a modified file it’ll prompt you with Confirm Undo Checkout, select <strong>No to All</strong>.</p>
 
-<p><img src="/assets/img/blog/tfs-undo-unedited-2.png" alt="Confirm Undo Changes prompt" /></p>
+<p><img src="/assets/img/blog/tfs-undo-checkout-of-unedited-files/tfs-undo-unedited-2.png" alt="Confirm Undo Changes prompt" /></p>
 
 <p>TFS will continue to undo all unmodified files but leave your modified files alone, now you’re left with only your modified files checked out. Hooraah.</p>
 

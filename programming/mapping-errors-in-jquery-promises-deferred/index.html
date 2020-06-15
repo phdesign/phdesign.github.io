@@ -80,6 +80,8 @@
             
               <li><a href="/woodworking">woodworking</a></li>
             
+              <li><a href="/infosec">infosec</a></li>
+            
           </ul>
         </li>
         <li class="dropdown">
@@ -173,7 +175,7 @@
 
 <p>The output of which would be:</p>
 
-<p><img src="/assets/img/blog/js_native_promises_error_handling.png" alt="Example output of Promises error handling" /></p>
+<p><img src="/assets/img/blog/mapping-errors-in-jquery-promises-deferred/js_native_promises_error_handling.png" alt="Example output of Promises error handling" /></p>
 
 <p>And a similar jQuery implementation:</p>
 
@@ -211,7 +213,7 @@
 
 <p>The output of which would be:</p>
 
-<p><img src="/assets/img/blog/jquery_promises_error_handling.png" alt="Example output of jQuery.Deferred error handling" /></p>
+<p><img src="/assets/img/blog/mapping-errors-in-jquery-promises-deferred/jquery_promises_error_handling.png" alt="Example output of jQuery.Deferred error handling" /></p>
 
 <p>Note how Chrome’s Promises recovered after the first catch handler was executed and called the ‘recovered’ function. jQuery does not. Another small difference is that Promise.reject() and Promise.resolve() may only return a single object, whereas jQuery passes all parameters to it’s reject or resolve functions onto the then or fail handlers.</p>
 
