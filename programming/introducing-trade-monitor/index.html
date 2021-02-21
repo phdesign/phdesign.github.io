@@ -13,11 +13,11 @@
   <meta name="author" content="Paul Heasley">
   
 
-  <title>Starting a promise chain to handle exceptions correctly | phdesign</title>
-  <meta name="description" content="Here’s a little promises quirk that I’ve overlooked for a while. Generally we all write promises like this: doSomething() .then(doSomethingElse) .then(doSome...">
+  <title>Introducing Trade Monitor - a free stock notification service | phdesign</title>
+  <meta name="description" content="As a novice investor the first thing I wanted was a way to setup alerts when stocks hit certain thresholds. It’s sounds really simple and I’m sure there’s a ...">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="canonical" href="http://phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly/">
+  <link rel="canonical" href="http://phdesign.com.au/programming/introducing-trade-monitor/">
   <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
   <link rel="shortcut icon" href="/favicon.ico">
   
@@ -113,18 +113,18 @@
   <div class="container">
 
     <div class="date-stamp">
-      <div class="month">Jan</div>
-      <div class="day">04</div>
+      <div class="month">Feb</div>
+      <div class="day">21</div>
     </div><!-- end .date-stamp -->
 
-    <h2 class="post-header">Starting a promise chain to handle exceptions correctly</h2>
+    <h2 class="post-header">Introducing Trade Monitor - a free stock notification service</h2>
 
     <div class="meta-label">
-      posted on <span class="meta-value muted">04 January 2017</span>
+      posted on <span class="meta-value muted">21 February 2021</span>
       
         in <span class="meta-value"><a href="/programming">programming</a></span>
       
-      with <span class="meta-value"><a href="http://phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly/#disqus_thread">0 Comments</a></span>
+      with <span class="meta-value"><a href="http://phdesign.com.au/programming/introducing-trade-monitor/#disqus_thread">0 Comments</a></span>
     </div><!-- end .meta-label -->
     <br />
 
@@ -132,57 +132,23 @@
     
     
     
-      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 4 years old and the content may no longer be relevant.</p>
-    
 
-    <p>Here’s a little promises quirk that I’ve overlooked for a while. Generally we all write promises like this:</p>
+    <p>As a novice investor the first thing I wanted was a way to setup alerts when stocks hit certain thresholds. It’s sounds really simple and I’m sure there’s a service out there for it, but I struggled to find a simple, free one. So I built one.</p>
 
-<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">doSomething</span><span class="p">()</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingElse</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingFurther</span><span class="p">)</span>
-  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">handleError</span><span class="p">);</span>
-</code></pre>
-</div>
+<!--more-->
 
-<p>And we know that any exception raised will skip to the catch handler. Except for the initial <code class="highlighter-rouge">doSomething()</code> call. If an exception is raised here it will be treated like a normal exception and stop executing all the rest of your code. So how do you deal with it? <!--more--> You could:</p>
+<p>Introducing <a href="https://trade-monitor.com/">Trade Monitor</a>. A simple online service to send you email notifications when a stock reaches a set price. Trade Monitor doesn’t require signing up for an account or providing any personal details, just enter the stock you want to monitor, the price limit and behaviour (e.g. if it passes the price going down, going up, or either way) and your email address. You’ll be asked to confirm your email and you’re all set. Once an alert has been triggered you’ll be sent an email and your details will be deleted.</p>
 
-<ol>
-  <li>Ensure that <code class="highlighter-rouge">doSomething</code> always returns a promise, e.g. wrap the whole thing in a <code class="highlighter-rouge">new Promise(function (resolve, reject) { .. })</code>. While this isn’t a bad practice it requires the calling code to assume the function has been implemented correctly, not something I’d rely on.</li>
-  <li>Wrap the start of the promise chain in a promise like this:
-    <div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="k">new</span> <span class="nx">Promise</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="nx">reject</span><span class="p">)</span> <span class="p">{</span>
- <span class="nx">resolve</span><span class="p">(</span><span class="nx">doSomething</span><span class="p">());</span>
-  <span class="p">})</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingElse</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingFurther</span><span class="p">)</span>
-  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">handleError</span><span class="p">);</span>
-</code></pre>
-    </div>
-  </li>
-  <li>Start the promise chain with a dummy promise like this (my preferred approach):
-    <div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">Promise</span><span class="p">.</span><span class="nx">resolve</span><span class="p">()</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomething</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingElse</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingFurther</span><span class="p">)</span>
-  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">handleError</span><span class="p">);</span>
-</code></pre>
-    </div>
-    <p>or in angular:</p>
-    <div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">$q</span><span class="p">.</span><span class="nx">when</span><span class="p">()</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomething</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingElse</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingFurther</span><span class="p">)</span>
-  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">handleError</span><span class="p">);</span>
-</code></pre>
-    </div>
-  </li>
-</ol>
+<p>Stock prices are provided by <a href="https://iextrading.com/developers">IEX</a>, for now only US stocks (NASDAQ, NYSE, IEX) are available. Stock prices are fetched every minute, it didn’t seem necessary to read them more frequently as email delivery is not usually instant anyway. For this reason Trade Monitor is better suited to long term investors, rather than day traders who need instant feedback, I’m sure there’s better solutions out there for them anyway.</p>
+
+<p>Try creating a <a href="https://iextrading.com/developers">stock alert notification</a> yourself.  It’s been fun building Trade Monitor, I hope others find it useful.</p>
+
+<p><a class="btn btn-primary margin-top-lg" href="https://trade-monitor.com" title="Create a free stock notification">Create stock alert</a></p>
 
 
     <ul class="post-tags">
       
-        <li><a href="/tag/javascript" title="View posts tagged with javascript">#javascript</a></li>
-      
-        <li><a href="/tag/promises" title="View posts tagged with promises">#promises</a></li>
+        <li><a href="/tag/trade-monitor" title="View posts tagged with trade-monitor">#trade-monitor</a></li>
       
     </ul>
 
@@ -200,9 +166,9 @@
       <script type="text/javascript">
         /* * * CONFIGURATION VARIABLES * * */
         var disqus_shortname = 'phdesign';
-        var disqus_identifier = 'http://phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly/';
-        var disqus_title = 'Starting a promise chain to handle exceptions correctly';
-        var disqus_url = 'http://phdesign.com.au/programming/starting-a-promise-chain-to-handle-exceptions-correctly/';
+        var disqus_identifier = 'http://phdesign.com.au/programming/introducing-trade-monitor/';
+        var disqus_title = 'Introducing Trade Monitor - a free stock notification service';
+        var disqus_url = 'http://phdesign.com.au/programming/introducing-trade-monitor/';
 
         /* * * DON'T EDIT BELOW THIS LINE * * */
         (function() {
@@ -229,14 +195,11 @@
     <nav class="row pager">
       <div class="previous col-xs-6 col-sm-4">
         
-          <div class="meta-label"><a href="/programming/auto-increment-project-version-from-travis/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
-          <div class="meta-value"><a href="/programming/auto-increment-project-version-from-travis/">Increment project version from Travis</a></div>
+          <div class="meta-label"><a href="/programming/duplicate-celery-logs-in-flask/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/programming/duplicate-celery-logs-in-flask/">Duplicate Celery logs in a Flask app</a></div>
         
       </div>
       <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
-        
-          <div class="meta-label"><a href="/programming/mob-programming/">Next post <span aria-hidden="true">&raquo;</span></a></div>
-          <div class="meta-value"><a href="/programming/mob-programming/">Two's company, three's a mob: Mob programming</a></div>
         
       </div>
     </nav><!-- end .post_nav -->

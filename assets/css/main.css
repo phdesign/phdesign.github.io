@@ -8381,6 +8381,9 @@ ul.alt {
 img {
   max-width: 100%; }
 
+.margin-top-lg {
+  margin-top: 40px; }
+
 /**
  * Syntax highlighting styles
  */
