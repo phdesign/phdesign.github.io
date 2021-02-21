@@ -134,6 +134,19 @@
     
     
 
+    
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-5982856679845951"
+     data-ad-slot="6503377131"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
     <p>I was surprised to run into this problem in my <a href="https://flask.palletsprojects.com/">Flask app</a>, I needed to pass a custom attribute to one of the options in a select list provided by WTForms (in my case I wanted to set the first option as <code class="highlighter-rouge">disabled</code>), but it turns out that this is a <a href="https://stackoverflow.com/questions/44379016/disabling-one-of-the-options-in-wtforms-selectfield/61762617#61762617">common</a> <a href="https://stackoverflow.com/questions/23460857/create-selectfield-options-with-custom-attributes-in-wtforms/61762730#61762730">problem</a> with lots of <a href="https://mail.python.org/pipermail/flask/2016-May/000490.html">work</a> <a href="https://github.com/wtforms/wtforms/pull/81">arounds</a>.</p>
 
 <p>Here’s a nice clean solution to pass those custom attributes, keeping the built-in <code class="highlighter-rouge">SelectField</code>, but using a custom widget which supports providing attributes for any of the options via a keyed dictionary.</p>
