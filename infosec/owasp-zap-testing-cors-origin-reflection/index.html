@@ -133,7 +133,7 @@
     
     
 
-    
+    <!--
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <ins class="adsbygoogle"
      style="display:block; text-align:center;"
@@ -145,7 +145,7 @@
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
-
+-->
     <p><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS">Cross-Origin Resource Sharing (CORS)</a> protects a user from having sensitive information leaked from one site to another. If the browser allowed any cross-domain XHR requests, sites would be able to steal information from other sites that you are logged into by making authenticated requests to them via JavaScript (the target site’s cookies will be sent with the request). But CORS can be easily misconfigured and result in vulnerabilities in your site, one particular misconfiguration is CORS origin reflection, where the <code class="highlighter-rouge">Origin</code> request header is processed through a whitelist (or regular expression) on the server and if allowed, is returned in an <code class="highlighter-rouge">Access-Control-Allow-Origin:</code> response header. Poor regex can result in allowing unintended domains through.</p>
 
 <p>In this post I’ll walk you through using OWASP ZAP to manually test a list of domain names passed as origins to a webserver, and evaluating whether they are reflected in the allowed CORS domains.</p>
