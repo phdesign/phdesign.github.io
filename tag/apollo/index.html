@@ -13,11 +13,11 @@
   <meta name="author" content="Paul Heasley">
   
 
-  <title>No iOS code signing key matches provisioning profile | phdesign</title>
-  <meta name="description" content="Recently my team have come up against this error a few times building a Xamarin app using Visual Studio 2017 both on the Mac and PC, and it took a bit to wor...">
+  <title>apollo | phdesign</title>
+  <meta name="description" content="Website of Paul Heasley, .NET Web Developer Technical advice, bits of software, maybe some woodworking">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="canonical" href="http://phdesign.com.au/programming/no-ios-code-signing-key-matches-provisioning-profile/">
+  <link rel="canonical" href="http://phdesign.com.au/tag/apollo/">
   <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
   <link rel="shortcut icon" href="/favicon.ico">
 
@@ -50,7 +50,7 @@
   
 </head>
 
-  <body class="post">
+  <body class="archive">
 
     <div class="header-background-image"></div>
     <header role="banner">
@@ -110,96 +110,32 @@
 
     </header>
     <main class="content" aria-label="Content">
-  	  <article>
-  <div class="container">
+  	  <div class="container">
 
-    <div class="date-stamp">
-      <div class="month">Jul</div>
-      <div class="day">06</div>
-    </div><!-- end .date-stamp -->
+  <div class="meta-label-lg">
+    Showing 1 posts  tagged with 
+    <span class="meta-value">#apollo</span>
+  </div><!-- end .meta-label-lg -->
 
-    <h2 class="post-header">No iOS code signing key matches provisioning profile</h2>
+</div>
 
-    <div class="meta-label">
-      posted on <span class="meta-value muted">06 July 2017</span>
-      
-        in <span class="meta-value"><a href="/programming">programming</a></span>
-      
-    </div><!-- end .meta-label -->
-    <br />
+  <article>
+    <div class="container">
 
-    
-    
-    
-    
-      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 4 years old and the content may no longer be relevant.</p>
-    
-
-    <!--
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<ins class="adsbygoogle"
-     style="display:block; text-align:center;"
-     data-ad-layout="in-article"
-     data-ad-format="fluid"
-     data-ad-client="ca-pub-5982856679845951"
-     data-ad-slot="6503377131"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
--->
-    <p>Recently my team have come up against this error a few times building a Xamarin app using Visual Studio 2017 both on the Mac and PC, and it took a bit to work out the fix.</p>
-
-<blockquote>
-  <p>No iOS code signing key matches specified provisioning profile ‘xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx’</p>
-</blockquote>
-
-<!--more-->
-
-<p>The simplest thing to try is open the properties window (or Options on Mac) of the iOS project, select the ‘iOS Bundle Signing’ tab and change the Signing Identity and Provisioning Profile back to Automatic. Save the project and close and reopen Visual Studio, now set the Signing Identity and Provisioning Profile back to the desired values and rebuild.</p>
-
-<p><img src="/assets/img/blog/no-ios-code-signing-key-matches-provisioning-profile/xamarin-ios-bundle-signing.png" alt="iOS Bundle Signing options for iOS Xamarin project" /></p>
-
-<p>However, if like us this doesn’t fix the problem, open the <code class="highlighter-rouge">ProjectName.iOS.csproj</code> file for editing (either in your favourite text editor or by unloading the project first in Visual Studio) and look for the <code class="highlighter-rouge">&lt;CodesignProvision&gt;</code> tag. In our case(s) we found there were two entries, which must have been what was confusing Visual Studio.</p>
-
-<p><img src="/assets/img/blog/no-ios-code-signing-key-matches-provisioning-profile/ios-csproj-duplicate-provisioning.png" alt="Duplicate CodesignProvision tags in iOS.csproj file" /></p>
-
-<p>To fix this, delete one of the entires (and for good measure we cleared the value out of the other entry), now reload the project, open the iOS Bundle Signing options and set the Signing Identity and Provisioning Profile to your desired values. You should now be able to build successfully.</p>
-
-
-    <ul class="post-tags">
-      
-        <li><a href="/tag/xamarin" title="View posts tagged with xamarin">#xamarin</a></li>
-      
-        <li><a href="/tag/ios" title="View posts tagged with ios">#ios</a></li>
-      
-        <li><a href="/tag/howto" title="View posts tagged with howto">#howto</a></li>
-      
-    </ul>
-
-  </div><!-- end .container -->
-</article>
-
-<div class="stripe">
-  <div class="container">
-
-    <nav class="row pager">
-      <div class="previous col-xs-6 col-sm-4">
+      <h3><a href="/programming/graphql-scalars-with-code-generator/" title="Read full article">Using GraphQL Scalars With Code Generator</a></h3>
+      <div class="meta-label">
+        posted on <span class="meta-value muted">18 August 2021</span>
         
-          <div class="meta-label"><a href="/programming/mob-programming/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
-          <div class="meta-value"><a href="/programming/mob-programming/">Two's company, three's a mob: Mob programming</a></div>
+          in <span class="meta-value"><a href="/programming">programming</a></span>
         
-      </div>
-      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
-        
-          <div class="meta-label"><a href="/programming/advanced-redux-in-xamarin-part1-action-creators/">Next post <span aria-hidden="true">&raquo;</span></a></div>
-          <div class="meta-value"><a href="/programming/advanced-redux-in-xamarin-part1-action-creators/">Advanced Redux in Xamarin Part 1: Action Creators</a></div>
-        
-      </div>
-    </nav><!-- end .post_nav -->
+        with <span class="meta-value"><a href="http://phdesign.com.au/programming/graphql-scalars-with-code-generator/#disqus_thread">0 Comments</a></span>
+      </div><!-- end .meta-label -->
 
-  </div><!-- end .container -->
-</div><!-- end .stripe -->
+    </div>
+  </article>
+
+
+
 
     </main><!-- end .content -->
 
