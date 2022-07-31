@@ -1,0 +1,621 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Paul Heasley">
+  
+
+  <title>React OAuth2 Authentication with Cloudentity | phdesign</title>
+  <meta name="description" content="In this tutorial we’re going to run through creating a react app that authenticates with a OAuth2 authorization server, in this case we’ll use Cloudentity. C...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/programming/react-oauth2-authentication-with-cloudentity/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-2414000-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-2414000-1');
+</script>
+
+
+  
+  <script data-ad-client="ca-pub-5982856679845951" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/programming">programming</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+              <li><a href="/woodworking">woodworking</a></li>
+            
+              <li><a href="/infosec">infosec</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/album-rsync">album-rsync</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+            <li><a href="/phreplace">phReplace</a></li>
+          </ul>
+        </li>
+        <li><a href="/presentations">Presentations</a></li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+    <main class="content" aria-label="Content">
+  	  <article>
+  <div class="container">
+
+    <div class="date-stamp">
+      <div class="month">Jul</div>
+      <div class="day">27</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">React OAuth2 Authentication with Cloudentity</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">27 July 2022</span>
+      
+        in <span class="meta-value"><a href="/programming">programming</a></span>
+      
+    </div><!-- end .meta-label -->
+    <br />
+
+    
+    
+    
+    
+
+    <!--
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-5982856679845951"
+     data-ad-slot="6503377131"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+-->
+    <p>In this tutorial we’re going to run through creating a react app that authenticates with a OAuth2 authorization server, in this case we’ll use Cloudentity. <a href="https://cloudentity.com/" target="_blank">Cloudentity</a> is an authentication and authorization provider that specialises in hyper-scalability. We’ll implement login using the <a href="https://oauth.net/2/grant-types/password/">Resource Owner Password Grant</a>, and demonstrate authenticating API calls.</p>
+
+<!--more-->
+
+<h2 id="create-react-app">Create React App</h2>
+
+<p>First, let’s start by starting a new <a href="https://create-react-app.dev/" target="_blank">Create React App</a> called <code class="highlighter-rouge">cloudentity-demo</code>.</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>npx create-react-app cloudentity-demo
+</code></pre>
+</div>
+
+<p>Once it completes, switch to the project folder and run it.</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code><span class="nb">cd </span>cloudentity-demo
+npm start
+</code></pre>
+</div>
+
+<p>If everything worked correctly, your browser should open up to http://localhost:3000 where a development webserver is  running.</p>
+
+<h2 id="add-home-and-login-pages">Add Home and Login pages</h2>
+
+<p>We’ll start by creating a couple of pages for our site, a home page and a login page. First let’s install some dependencies, we’ll be adding <a href="https://reactrouter.com/">React Router</a> for page routing and <a href="https://mui.com/">Mui</a> for styling.</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>npm install react-router-dom @mui/material @emotion/react @emotion/styled @mui/lab
+</code></pre>
+</div>
+
+<p>Now create a home page in <code class="highlighter-rouge">src/pages/Home.js</code>.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">Link</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">"react-router-dom"</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Button</span><span class="p">,</span> <span class="nx">Container</span><span class="p">,</span> <span class="nx">Stack</span><span class="p">,</span> <span class="nx">Typography</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">"@mui/material"</span>
+
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">HomePage</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">Container</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">Stack</span> <span class="nx">spacing</span><span class="o">=</span><span class="p">{</span><span class="mi">2</span><span class="p">}</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Typography</span> <span class="nx">variant</span><span class="o">=</span><span class="s2">"h2"</span><span class="o">&gt;</span><span class="nx">Cloudentity</span> <span class="nx">Client</span> <span class="nx">Demo</span><span class="o">&lt;</span><span class="sr">/Typography</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="nx">Button</span> <span class="nx">component</span><span class="o">=</span><span class="p">{</span><span class="nx">Link</span><span class="p">}</span> <span class="nx">variant</span><span class="o">=</span><span class="s2">"contained"</span> <span class="nx">to</span><span class="o">=</span><span class="s2">"/login"</span><span class="o">&gt;</span>
+          <span class="nx">Login</span>
+        <span class="o">&lt;</span><span class="sr">/Button</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/Stack</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/Container</span><span class="err">&gt;
+</span>  <span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>And a login page in <code class="highlighter-rouge">src/pages/Login.js</code></p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">Button</span><span class="p">,</span> <span class="nx">Container</span><span class="p">,</span> <span class="nx">Stack</span><span class="p">,</span> <span class="nx">TextField</span><span class="p">,</span> <span class="nx">Typography</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">"@mui/material"</span>
+
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">LoginPage</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">Container</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">form</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Stack</span> <span class="nx">spacing</span><span class="o">=</span><span class="p">{</span><span class="mi">2</span><span class="p">}</span><span class="o">&gt;</span>
+          <span class="o">&lt;</span><span class="nx">Typography</span> <span class="nx">variant</span><span class="o">=</span><span class="s2">"h2"</span><span class="o">&gt;</span><span class="nx">Login</span><span class="o">&lt;</span><span class="sr">/Typography</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="nx">TextField</span>
+            <span class="nx">fullWidth</span>
+            <span class="nx">id</span><span class="o">=</span><span class="s2">"username"</span>
+            <span class="nx">label</span><span class="o">=</span><span class="s2">"username"</span>
+            <span class="nx">name</span><span class="o">=</span><span class="s2">"username"</span>
+            <span class="nx">type</span><span class="o">=</span><span class="s2">"text"</span>
+            <span class="nx">variant</span><span class="o">=</span><span class="s2">"standard"</span>
+          <span class="o">/&gt;</span>
+          <span class="o">&lt;</span><span class="nx">TextField</span>
+            <span class="nx">fullWidth</span>
+            <span class="nx">id</span><span class="o">=</span><span class="s2">"password"</span>
+            <span class="nx">label</span><span class="o">=</span><span class="s2">"password"</span>
+            <span class="nx">name</span><span class="o">=</span><span class="s2">"password"</span>
+            <span class="nx">type</span><span class="o">=</span><span class="s2">"password"</span>
+            <span class="nx">variant</span><span class="o">=</span><span class="s2">"standard"</span>
+          <span class="o">/&gt;</span>
+          <span class="o">&lt;</span><span class="nx">Button</span> <span class="nx">color</span><span class="o">=</span><span class="s2">"primary"</span> <span class="nx">fullWidth</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"submit"</span> <span class="nx">variant</span><span class="o">=</span><span class="s2">"contained"</span><span class="o">&gt;</span>
+            <span class="nx">Login</span>
+          <span class="o">&lt;</span><span class="sr">/Button</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="sr">/Stack</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/form</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/Container</span><span class="err">&gt;
+</span>  <span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>And replace the contents of <code class="highlighter-rouge">src/App.js</code> with our page routing.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">BrowserRouter</span><span class="p">,</span> <span class="nx">Route</span><span class="p">,</span> <span class="nx">Routes</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">"react-router-dom"</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">HomePage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">"./pages/Home"</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">LoginPage</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">"./pages/Login"</span>
+
+<span class="kr">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">BrowserRouter</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">Routes</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Route</span> <span class="nx">path</span><span class="o">=</span><span class="s2">"/"</span> <span class="nx">element</span><span class="o">=</span><span class="p">{</span><span class="o">&lt;</span><span class="nx">HomePage</span> <span class="o">/&gt;</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span>        <span class="o">&lt;</span><span class="nx">Route</span> <span class="nx">path</span><span class="o">=</span><span class="s2">"/login"</span> <span class="nx">element</span><span class="o">=</span><span class="p">{</span><span class="o">&lt;</span><span class="nx">LoginPage</span> <span class="o">/&gt;</span><span class="p">}</span> <span class="sr">/</span><span class="err">&gt;
+</span>      <span class="o">&lt;</span><span class="sr">/Routes</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/BrowserRouter</span><span class="err">&gt;
+</span>  <span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kr">export</span> <span class="k">default</span> <span class="nx">App</span>
+</code></pre>
+</div>
+
+<p>Now run the application and ensure the site loads correctly.</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>npm start
+</code></pre>
+</div>
+
+<p>Try visting the home page at <a href="http://localhost:3000/" target="_blank">http://localhost:3000/</a> and the login page <a href="http://localhost:3000/login" target="_blank">http://localhost:3000/login</a>.</p>
+
+<p><img src="/assets/img/blog/react-oauth2-authentication-with-cloudentity/initial-login-page.png" alt="Initial Login Page" /></p>
+
+<h2 id="implementing-login">Implementing login</h2>
+
+<p>We’ll use Mulesoft’s <a href="https://github.com/mulesoft-labs/js-client-oauth2">client-oauth2</a> JS client. Install it with</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>npm install client-oauth2
+</code></pre>
+</div>
+
+<p>And we’ll update the login page to authenticate using the resource owner password grant. Note that this grant is deprecated and not recommended. Prefer the authorization code flow with PKCE when you can.</p>
+
+<p>Update <code class="highlighter-rouge">src/pages/Login.js</code> to create a new ClientOAuth2, add a form submit handler, and fetch a new access token when the form is submitted. You’ll note that we need to set a number of properties for the OAuth client, specifically client id, client secret, token uri and authorization uri. We’ll go through how to discover these values in Cloudentity shortly, but for now just set them to an empty string.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kr">import</span> <span class="nx">ClientOAuth2</span> <span class="nx">from</span> <span class="s2">"client-oauth2"</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Button</span><span class="p">,</span> <span class="nx">Container</span><span class="p">,</span> <span class="nx">Stack</span><span class="p">,</span> <span class="nx">TextField</span><span class="p">,</span> <span class="nx">Typography</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">"@mui/material"</span>
+
+<span class="kr">const</span> <span class="nx">auth</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ClientOAuth2</span><span class="p">({</span>
+  <span class="na">clientId</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+  <span class="na">clientSecret</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+  <span class="na">accessTokenUri</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+  <span class="na">authorizationUri</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+  <span class="na">scopes</span><span class="p">:</span> <span class="p">[</span><span class="s2">"email"</span><span class="p">,</span> <span class="s2">"offline_access"</span><span class="p">,</span> <span class="s2">"openid"</span><span class="p">],</span>
+<span class="p">})</span>
+
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">LoginPage</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">handleSubmit</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+    <span class="kr">const</span> <span class="nx">formData</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FormData</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">)</span>
+    <span class="kr">const</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">formData</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">"username"</span><span class="p">)</span>
+    <span class="kr">const</span> <span class="nx">password</span> <span class="o">=</span> <span class="nx">formData</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">"password"</span><span class="p">)</span>
+
+    <span class="kr">const</span> <span class="nx">token</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">auth</span><span class="p">.</span><span class="nx">owner</span><span class="p">.</span><span class="nx">getToken</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">)</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">token</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">Container</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">form</span> <span class="nx">onSubmit</span><span class="o">=</span><span class="p">{</span><span class="nx">handleSubmit</span><span class="p">}</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Stack</span> <span class="nx">spacing</span><span class="o">=</span><span class="p">{</span><span class="mi">2</span><span class="p">}</span><span class="o">&gt;</span>
+            <span class="p">...</span>
+</code></pre>
+</div>
+
+<p>Now try running the project with <code class="highlighter-rouge">npm start</code>. You should be presented with an error like the following</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>Compiled with problems:
+
+ERROR in ./node_modules/client-oauth2/src/client-oauth2.js 3:18-40
+
+Module not found: Error: Can't resolve 'querystring' in '/Users/paul/Projects/sandbox/cloudentity-demo/node_modules/client-oauth2/src'
+
+BREAKING CHANGE: webpack &lt; 5 used to include polyfills for node.js core modules by default.
+This is no longer the case. Verify if you need this module and configure a polyfill for it.
+</code></pre>
+</div>
+
+<p>Yikes, what’s going on here? It seems like client-oauth2 relies on the <code class="highlighter-rouge">querystring</code> function which doesn’t exist in our webpack bundle, because create react app is using webpack 5 which no longer includes some node.js polyfills. To fix this issue we’ll follow the guidance <a href="https://www.alchemy.com/blog/how-to-polyfill-node-core-modules-in-webpack-5">from this tutorial</a>, using <code class="highlighter-rouge">react-app-rewired</code> to allow us to modify webpack.config.</p>
+
+<h3 id="webpack-polyfill">Webpack polyfill</h3>
+
+<p>First, add <a href="https://github.com/timarney/react-app-rewired">react-app-rewired</a> and the <a href="https://github.com/SpainTrain/querystring-es3">querystring-es3</a> polyfill.</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>npm install react-app-rewired querystring-es3
+</code></pre>
+</div>
+
+<p>Now update our <code class="highlighter-rouge">package.json</code>, repalcing <code class="highlighter-rouge">react-scripts</code> with <code class="highlighter-rouge">react-app-rewired</code>, e.g.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-app-rewired eject"
+  },
+</code></pre>
+</div>
+
+<p>And finally add a file in the project root called <code class="highlighter-rouge">config-overrides.js</code>, and add the following webpack overrides.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>module.exports = function (config) {
+  return {
+    ...config,
+    resolve: {
+      ...config.resolve,
+      fallback: {
+        ...config.resolve.fallback,
+        querystring: require.resolve("querystring-es3"),
+      },
+    },
+  }
+}
+</code></pre>
+</div>
+
+<p>Now try running <code class="highlighter-rouge">npm start</code> again and check that the page renders correctly. You should be able to navigate to the login page, try entering any details and click Login. Check the dev tools and you should see that it tried to make an HTTP POST to http://localhost:3000/undefined, which means everything is working (we just haven’t configured the OAuth settings yet).</p>
+
+<h3 id="configuring-cloudentity">Configuring Cloudentity</h3>
+
+<p>In order to set the OAuth client configuration correctly, we’re going to need a Client setup in Cloudentity. If you have already, sign up for a free Cloudentity tenant here: https://authz.cloudentity.io/register.</p>
+
+<p>Once you have a tenant set up and a demo workspace, from the Admin Portal go to Applications &gt; Clients and click + Create Client.</p>
+
+<p>Select Application Type: Single Page and give your client a name.</p>
+
+<p><img src="/assets/img/blog/react-oauth2-authentication-with-cloudentity/cloudentity-create-client.png" alt="cloudentity-create-client" /></p>
+
+<p>Once you’ve created your client, click on the OAuth tab and change the Grant Types to “Password” and “Refresh token”.</p>
+
+<p><img src="/assets/img/blog/react-oauth2-authentication-with-cloudentity/cloudentity-grant-types.png" alt="cloudentity-grant-types" /></p>
+
+<p>Scroll down the page and change Token Endpoint Authentication Method to “Client Secret Basic”. Selecting this option means we need to send the Client Id and Client Secret using a basic Authorization header. This is the behaviour that <code class="highlighter-rouge">client-oauth2</code> expects. Save your changes.</p>
+
+<p><img src="/assets/img/blog/react-oauth2-authentication-with-cloudentity/cloudentity-token-authentication.png" alt="cloudentity-token-authentication" /></p>
+
+<p>Select the Scopes tab, expand the Profile service and ensure that “Offline access” is enabled. The client is now configured correctly.</p>
+
+<h3 id="configuring-the-oauth-client">Configuring the OAuth client</h3>
+
+<p>Go back to the Overview tab in Cloudentity and copy the values from the right hand pane into a new file in our project root called <code class="highlighter-rouge">.env.local</code>, like this.</p>
+
+<p><img src="/assets/img/blog/react-oauth2-authentication-with-cloudentity/cloudentity-client-config.png" alt="cloudentity-client-config" /></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>REACT_APP_CLIENT_ID=&lt;CLIENT ID&gt;
+REACT_APP_CLIENT_SECRET=&lt;CLIENT SECRET&gt;
+REACT_APP_TOKEN_URI=&lt;TOKEN URL&gt;
+REACT_APP_AUTHORIZATION_URI=&lt;AUTHORIZATION URL&gt;
+</code></pre>
+</div>
+
+<p>Create React App will automatically load our <code class="highlighter-rouge">.env.local</code> file and <a href="https://create-react-app.dev/docs/adding-custom-environment-variables/">make available to us any environment variables</a> that are prefixed with <code class="highlighter-rouge">REACT_APP_</code>. This allows us to configure different values for different environments.</p>
+
+<p>Finally, we can use these values in our <code class="highlighter-rouge">src/pages/Login.js</code> page.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kr">const</span> <span class="nx">auth</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ClientOAuth2</span><span class="p">({</span>
+  <span class="na">clientId</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">REACT_APP_CLIENT_ID</span><span class="p">,</span>
+  <span class="na">clientSecret</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">REACT_APP_CLIENT_SECRET</span><span class="p">,</span>
+  <span class="na">accessTokenUri</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">REACT_APP_TOKEN_URI</span><span class="p">,</span>
+  <span class="na">authorizationUri</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">REACT_APP_AUTHORIZATION_URI</span><span class="p">,</span>
+  <span class="na">scopes</span><span class="p">:</span> <span class="p">[</span><span class="s2">"email"</span><span class="p">,</span> <span class="s2">"offline_access"</span><span class="p">,</span> <span class="s2">"openid"</span><span class="p">],</span>
+<span class="p">})</span>
+</code></pre>
+</div>
+
+<p>Run <code class="highlighter-rouge">npm start</code> and try logging in. If it succeeds, you should see the token printed out in the dev tools console.</p>
+
+<h2 id="making-an-authenticated-call">Making an authenticated call</h2>
+
+<p>Next we want to make a call to a protected endpoint to prove that we’re signed in. For this demo we’ll call the <code class="highlighter-rouge">/userinfo</code> endpoint.</p>
+
+<p>We want to make this call from the home page, but we’ll need a central place to store the fetched token. For this purpose we’ll create a <a href="https://reactjs.org/docs/context.html">React Context</a> hook and move all the authentication logic here. Create a new file <code class="highlighter-rouge">src/hooks/use-auth.js</code> and move our auth client creation, and login call here.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kr">import</span> <span class="nx">ClientOAuth2</span> <span class="nx">from</span> <span class="s2">"client-oauth2"</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">createContext</span><span class="p">,</span> <span class="nx">useContext</span><span class="p">,</span> <span class="nx">useEffect</span><span class="p">,</span> <span class="nx">useState</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">"react"</span>
+
+<span class="kr">const</span> <span class="nx">AuthContext</span> <span class="o">=</span> <span class="nx">createContext</span><span class="p">()</span>
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">useAuth</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="nx">useContext</span><span class="p">(</span><span class="nx">AuthContext</span><span class="p">)</span>
+
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">AuthProvider</span> <span class="o">=</span> <span class="p">({</span> <span class="nx">children</span> <span class="p">})</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="nx">value</span> <span class="o">=</span> <span class="nx">useProvideAuth</span><span class="p">()</span>
+  <span class="k">return</span> <span class="o">&lt;</span><span class="nx">AuthContext</span><span class="p">.</span><span class="nx">Provider</span> <span class="nx">value</span><span class="o">=</span><span class="p">{</span><span class="nx">value</span><span class="p">}</span><span class="o">&gt;</span><span class="p">{</span><span class="nx">children</span><span class="p">}</span><span class="o">&lt;</span><span class="sr">/AuthContext.Provider</span><span class="err">&gt;
+</span><span class="p">}</span>
+
+<span class="kr">const</span> <span class="nx">useProvideAuth</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="p">[</span><span class="nx">auth</span><span class="p">,</span> <span class="nx">setAuth</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="kc">null</span><span class="p">)</span>
+  <span class="kr">const</span> <span class="p">[</span><span class="nx">token</span><span class="p">,</span> <span class="nx">setToken</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="kc">null</span><span class="p">)</span>
+
+  <span class="nx">useEffect</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">auth</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ClientOAuth2</span><span class="p">({</span>
+      <span class="na">clientId</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">REACT_APP_CLIENT_ID</span><span class="p">,</span>
+      <span class="na">clientSecret</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">REACT_APP_CLIENT_SECRET</span><span class="p">,</span>
+      <span class="na">accessTokenUri</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">REACT_APP_TOKEN_URI</span><span class="p">,</span>
+      <span class="na">authorizationUri</span><span class="p">:</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">REACT_APP_AUTHORIZATION_URI</span><span class="p">,</span>
+      <span class="na">scopes</span><span class="p">:</span> <span class="p">[</span><span class="s2">"email"</span><span class="p">,</span> <span class="s2">"offline_access"</span><span class="p">,</span> <span class="s2">"openid"</span><span class="p">],</span>
+    <span class="p">})</span>
+    <span class="nx">setAuth</span><span class="p">(</span><span class="nx">auth</span><span class="p">)</span>
+  <span class="p">},</span> <span class="p">[])</span>
+
+  <span class="kr">const</span> <span class="nx">login</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">newToken</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">auth</span><span class="p">.</span><span class="nx">owner</span><span class="p">.</span><span class="nx">getToken</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">)</span>
+    <span class="nx">setToken</span><span class="p">(</span><span class="nx">newToken</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="p">{</span> <span class="nx">login</span><span class="p">,</span> <span class="nx">token</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>And update <code class="highlighter-rouge">src/pages/Login.js</code> to use our hook, and navigate back to the home page after logging in.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">useNavigate</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">"react-router-dom"</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Button</span><span class="p">,</span> <span class="nx">Container</span><span class="p">,</span> <span class="nx">Stack</span><span class="p">,</span> <span class="nx">TextField</span><span class="p">,</span> <span class="nx">Typography</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">"@mui/material"</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">useAuth</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">"../hooks/use-auth"</span>
+
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">LoginPage</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="p">{</span> <span class="nx">login</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">useAuth</span><span class="p">()</span>
+  <span class="kr">const</span> <span class="nx">navigate</span> <span class="o">=</span> <span class="nx">useNavigate</span><span class="p">()</span>
+
+  <span class="kr">const</span> <span class="nx">handleSubmit</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+    <span class="kr">const</span> <span class="nx">formData</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FormData</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">)</span>
+    <span class="kr">const</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">formData</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">"username"</span><span class="p">)</span>
+    <span class="kr">const</span> <span class="nx">password</span> <span class="o">=</span> <span class="nx">formData</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">"password"</span><span class="p">)</span>
+
+    <span class="nx">await</span> <span class="nx">login</span><span class="p">(</span><span class="nx">username</span><span class="p">,</span> <span class="nx">password</span><span class="p">)</span>
+    <span class="nx">navigate</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+</code></pre>
+</div>
+
+<p>We’ll also need to wrap our components in <code class="highlighter-rouge">src/App.js</code>  in an <code class="highlighter-rouge">AuthProvider</code>.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="p">...</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">AuthProvider</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">"./hooks/use-auth"</span>
+
+<span class="kr">const</span> <span class="nx">App</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">AuthProvider</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">BrowserRouter</span><span class="o">&gt;</span>
+        <span class="p">...</span>
+      <span class="o">&lt;</span><span class="sr">/BrowserRouter</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/AuthProvider</span><span class="err">&gt;
+</span>  <span class="p">)</span>
+<span class="p">}</span>
+<span class="p">...</span>
+</code></pre>
+</div>
+
+<p>Now in our <code class="highlighter-rouge">src/pages/Home.js</code> page we can add a button to call the <code class="highlighter-rouge">userinfo</code> endpoint when we’re logged in.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kr">import</span> <span class="p">{</span> <span class="nx">Link</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">"react-router-dom"</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">Button</span><span class="p">,</span> <span class="nx">Container</span><span class="p">,</span> <span class="nx">Stack</span><span class="p">,</span> <span class="nx">Typography</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">"@mui/material"</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">useState</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">"react"</span>
+<span class="kr">import</span> <span class="p">{</span> <span class="nx">useAuth</span> <span class="p">}</span> <span class="nx">from</span> <span class="s2">"../hooks/use-auth"</span>
+
+<span class="kr">export</span> <span class="kr">const</span> <span class="nx">HomePage</span> <span class="o">=</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="kr">const</span> <span class="p">{</span> <span class="nx">token</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">useAuth</span><span class="p">()</span>
+  <span class="kr">const</span> <span class="p">[</span><span class="nx">userInfo</span><span class="p">,</span> <span class="nx">setUserInfo</span><span class="p">]</span> <span class="o">=</span> <span class="nx">useState</span><span class="p">(</span><span class="kc">null</span><span class="p">)</span>
+
+  <span class="kr">const</span> <span class="nx">handleClick</span> <span class="o">=</span> <span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">resp</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">fetch</span><span class="p">(</span>
+      <span class="s2">"https://&lt;tenantname&gt;.us.authz.cloudentity.io/&lt;tenantname&gt;/&lt;workspace&gt;/userinfo"</span><span class="p">,</span>
+      <span class="nx">token</span><span class="p">.</span><span class="nx">sign</span><span class="p">({})</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">resp</span><span class="p">.</span><span class="nx">ok</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="err">`</span><span class="nx">HTTP</span> <span class="nx">error</span><span class="o">!</span> <span class="na">Status</span><span class="p">:</span> <span class="nx">$</span><span class="p">{</span><span class="nx">resp</span><span class="p">.</span><span class="nx">status</span><span class="p">}</span><span class="err">`</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="kr">const</span> <span class="nx">userInfo</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">resp</span><span class="p">.</span><span class="nx">json</span><span class="p">()</span>
+    <span class="nx">setUserInfo</span><span class="p">(</span><span class="nx">userInfo</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="p">(</span>
+    <span class="o">&lt;</span><span class="nx">Container</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">Stack</span> <span class="nx">spacing</span><span class="o">=</span><span class="p">{</span><span class="mi">2</span><span class="p">}</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nx">Typography</span> <span class="nx">variant</span><span class="o">=</span><span class="s2">"h2"</span><span class="o">&gt;</span><span class="nx">Cloudentity</span> <span class="nx">Client</span> <span class="nx">Demo</span><span class="o">&lt;</span><span class="sr">/Typography</span><span class="err">&gt;
+</span>        <span class="p">{</span><span class="nx">token</span> <span class="p">?</span> <span class="p">(</span>
+          <span class="o">&lt;&gt;</span>
+            <span class="o">&lt;</span><span class="nx">Typography</span><span class="o">&gt;</span>
+              <span class="nx">Welcome</span> <span class="p">{</span><span class="nx">userInfo</span> <span class="p">?</span> <span class="nx">userInfo</span><span class="p">.</span><span class="nx">email</span> <span class="p">:</span> <span class="s2">"anonymous"</span><span class="p">}</span><span class="o">!</span>
+            <span class="o">&lt;</span><span class="sr">/Typography</span><span class="err">&gt;
+</span>            <span class="o">&lt;</span><span class="nx">Button</span> <span class="nx">variant</span><span class="o">=</span><span class="s2">"contained"</span> <span class="nx">onClick</span><span class="o">=</span><span class="p">{</span><span class="nx">handleClick</span><span class="p">}</span><span class="o">&gt;</span>
+              <span class="nx">Get</span> <span class="nx">user</span> <span class="nx">info</span>
+            <span class="o">&lt;</span><span class="sr">/Button</span><span class="err">&gt;
+</span>          <span class="o">&lt;</span><span class="sr">/</span><span class="err">&gt;
+</span>        <span class="p">)</span> <span class="p">:</span> <span class="p">(</span>
+          <span class="o">&lt;</span><span class="nx">Button</span> <span class="nx">component</span><span class="o">=</span><span class="p">{</span><span class="nx">Link</span><span class="p">}</span> <span class="nx">variant</span><span class="o">=</span><span class="s2">"contained"</span> <span class="nx">to</span><span class="o">=</span><span class="s2">"/login"</span><span class="o">&gt;</span>
+            <span class="nx">Login</span>
+          <span class="o">&lt;</span><span class="sr">/Button</span><span class="err">&gt;
+</span>        <span class="p">)}</span>
+      <span class="o">&lt;</span><span class="sr">/Stack</span><span class="err">&gt;
+</span>    <span class="o">&lt;</span><span class="sr">/Container</span><span class="err">&gt;
+</span>  <span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>Updating the API endpoint with your Cloudentity tenant details.</p>
+
+<p>Now if you visit the home page, it should prompt you to login.</p>
+
+<p><img src="/assets/img/blog/react-oauth2-authentication-with-cloudentity/home-unauthenticated.png" alt="home-unauthenticated" /></p>
+
+<p>After logging in, you’ll be redirected back to the homepage, where you can Get User Info.</p>
+
+<p><img src="/assets/img/blog/react-oauth2-authentication-with-cloudentity/home-authenticated.png" alt="home-authenticated" /></p>
+
+<p>And after fetching user info, the user’s email address should be displayed.</p>
+
+<p><img src="/assets/img/blog/react-oauth2-authentication-with-cloudentity/home-fetch-userinfo.png" alt="home-fetch-userinfo" /></p>
+
+<p>To logout, just refresh the page!</p>
+
+<p>A more complete authentication implementation would persist the access token in localStorage, and restore it when the page loads. Logging out involves deleting the persisted token, and calling the revoke token Cloudentity endpoint.</p>
+
+<p>A complete demo is available on GitHub here: <a href="https://github.com/phdesign/cloudentity-demo" target="_blank">https://github.com/phdesign/cloudentity-demo</a></p>
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tag/oauth2" title="View posts tagged with oauth2">#oauth2</a></li>
+      
+        <li><a href="/tag/cloudentity" title="View posts tagged with cloudentity">#cloudentity</a></li>
+      
+        <li><a href="/tag/react" title="View posts tagged with react">#react</a></li>
+      
+    </ul>
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/programming/graphql-scalars-with-code-generator/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/programming/graphql-scalars-with-code-generator/">Using GraphQL Scalars With Code Generator</a></div>
+        
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+      </div>
+    </nav><!-- end .post_nav -->
+
+  </div><!-- end .container -->
+</div><!-- end .stripe -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="/assets/js/main.js"></script>
+
+  </body>
+
+</html>

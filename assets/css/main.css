@@ -8718,35 +8718,6 @@ blockquote {
   .pagination > .active > span {
     padding: 6px 10px; }
 
-/* Search
-================================================== */
-.search {
-  margin-left: 20px; }
-  .search .form-control {
-    border-radius: 300px;
-    border: none;
-    outline-style: none;
-    box-shadow: none;
-    background-color: rgba(255, 255, 255, 0.8);
-    font-style: italic;
-    font-family: "Merriweather", "Helvetica Neue", Arial, sans-serif; }
-  .search .input-group-addon {
-    background-color: rgba(255, 255, 255, 0.8);
-    border: 0;
-    border-top-right-radius: 300px;
-    border-bottom-right-radius: 300px; }
-  .search .fa {
-    color: #646464; }
-
-#search-results {
-  position: relative;
-  margin-bottom: 0; }
-  #search-results .dropdown-menu {
-    left: inital;
-    right: 0; }
-    #search-results .dropdown-menu > li > a {
-      white-space: initial; }
-
 /* Widgets used by the sidebars
 ================================================== */
 @media only screen and (min-width: 768px) {
