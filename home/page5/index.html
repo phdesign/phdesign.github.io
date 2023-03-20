@@ -118,6 +118,34 @@
   <article class="stripe alt">
     <div class="container">
 
+      <h2 class="post-header"><a href="/programming/no-validation-messages-when-disabling-enabling-asp-net-validator-in-javascript/" title="Read full article">No Validation Messages when Disabling & Enabling ASP.Net Validator in Javascript</a></h2>
+
+      <div class="meta-label">
+        posted on <span class="meta-value muted">04 March 2010</span>
+        
+          in <span class="meta-value"><a href="/programming">programming</a></span>
+        
+      </div><!-- end .meta-label -->
+      <br />
+
+      <p>Need to validate a form field based on the value of another field in ASP.Net? The .Net Framework provides a javascript function to do just that:</p>
+
+<figure class="highlight"><pre><code class="language-c#" data-lang="c#"><span class="nf">ValidatorEnable</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">enable</span><span class="p">)</span></code></pre></figure>
+
+<p>This function takes the validator control (val) and a boolean to determine whether it should be enabled or disabled. The problem with this function is that it triggers the validator to validate itself immediately, showing any validation error messages before the user has submitted the form, which may not always be want you want.  The alternative is to set the validator’s enabled property to trigger this validator to validate itself when the user submits the form, and by using the Page_IsValid variable you can test whether the user has triggered a validation or not, then use ValidatorEnable function only after the validation has occurred when the user expects to see validation messages.</p>
+
+
+
+      <a class="btn btn-default btn-read-more" href="/programming/no-validation-messages-when-disabling-enabling-asp-net-validator-in-javascript/" title="Read full article">Read Article</a>
+
+    </div><!-- end .container -->
+  </article><!-- end .stripe -->
+
+  
+  
+  <article class="stripe">
+    <div class="container">
+
       <h2 class="post-header"><a href="/general/converting-topfield-pvr-recordings/" title="Read full article">Converting Topfield PVR Recordings</a></h2>
 
       <div class="meta-label">
@@ -139,7 +167,7 @@
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/create-a-pdf-using-the-net-reportviewer-control/" title="Read full article">Create a PDF using the .Net ReportViewer control</a></h2>
@@ -166,7 +194,7 @@
 
 
 
-<article class="stripe alt">
+<article class="stripe">
   <div class="container">
 
     <nav class="home-pagination">

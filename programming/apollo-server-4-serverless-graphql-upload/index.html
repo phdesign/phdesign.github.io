@@ -1,0 +1,309 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Paul Heasley">
+  
+
+  <title>Apollo Server 4 Serverless GraphQL Upload | phdesign</title>
+  <meta name="description" content="Apollo Server 4 changed the way we integrate with Serverless functions, the apollo-server-lambda project is no longer part of the core package, being replace...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/programming/apollo-server-4-serverless-graphql-upload/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MTPZZRZTVF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MTPZZRZTVF');
+</script>
+
+
+  
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/programming">programming</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+              <li><a href="/woodworking">woodworking</a></li>
+            
+              <li><a href="/infosec">infosec</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/album-rsync">album-rsync</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+            <li><a href="/phreplace">phReplace</a></li>
+          </ul>
+        </li>
+        <li><a href="/presentations">Presentations</a></li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+    <main class="content" aria-label="Content">
+  	  <article>
+  <div class="container">
+
+    <div class="date-stamp">
+      <div class="month">Mar</div>
+      <div class="day">20</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">Apollo Server 4 Serverless GraphQL Upload</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">20 March 2023</span>
+      
+        in <span class="meta-value"><a href="/programming">programming</a></span>
+      
+    </div><!-- end .meta-label -->
+    <br />
+
+    
+    
+    
+    
+
+    <p>Apollo Server 4 changed the way we integrate with Serverless functions, the <code class="highlighter-rouge">apollo-server-lambda</code> project is no longer part of the core package, being replaced with <a href="https://github.com/apollo-server-integrations/apollo-server-integration-aws-lambda"><code class="highlighter-rouge">@as-integrations/aws-lambda</code></a>. With this change it’s no longer obvious how we can use Express middleware like <a href="https://github.com/jaydenseric/graphql-upload"><code class="highlighter-rouge">graphql-upload</code></a> for serverless functions, but it is still possible using the <a href="https://github.com/vendia/serverless-express"><code class="highlighter-rouge">@vendia/serverless-express</code></a> project. This article will focus on AWS Lambda integrations, but the solution should be just as relevant for any of the cloud providers (using the appropriate <code class="highlighter-rouge">apollo-server-integrations</code> package).</p>
+
+<!--more-->
+
+<h2 id="use-a-signed-url-upload-instead">Use a signed URL upload instead</h2>
+
+<p>We’ll start with an obligatory statement that you probably shouldn’t be trying to upload files / images through a GraphQL mutation. The Apollo team have written up a great blog post on <a href="https://www.apollographql.com/blog/backend/file-uploads/file-upload-best-practices/">Apollo Server File Upload Best Practices</a>, in summary, when possible;</p>
+
+<ol>
+  <li>Use signed URL uploads to upload a file directly to a storage provider rather than through the GraphQL server, or;</li>
+  <li>Use a dedicated image service. Finally, it’s not recommended but if you really want to;</li>
+  <li>Upload the file with a Multipart GraphQL mutation (e.g. using <code class="highlighter-rouge">graphql-upload</code>)</li>
+</ol>
+
+<p>With that aside, if you have a good reason for wanting to do this, then I have a solution for you.</p>
+
+<h2 id="using-graphql-upload-with-apollo-server-4">Using graphql-upload with Apollo Server 4</h2>
+
+<p>In Apollo Server 3, the <code class="highlighter-rouge">apollo-server-lambda</code> package exposed an interface for using Express middleware that allowed us to use the <a href="https://github.com/jaydenseric/graphql-upload"><code class="highlighter-rouge">graphql-upload</code></a> package, e.g.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kr">export</span> <span class="kr">const</span> <span class="nx">handler</span> <span class="o">=</span> <span class="nx">server</span><span class="p">.</span><span class="nx">createHandler</span><span class="p">({</span>
+  <span class="nx">expressAppFromMiddleware</span><span class="p">(</span><span class="nx">middleware</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">Express</span><span class="p">()</span>
+    <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">graphqlUploadExpress</span><span class="p">())</span>
+    <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">middleware</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">app</span>
+  <span class="p">},</span>
+  <span class="na">expressGetMiddlewareOptions</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">cors</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">origin</span><span class="p">:</span> <span class="s2">"*"</span><span class="p">,</span>
+      <span class="na">credentials</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="na">bodyParserConfig</span><span class="p">:</span> <span class="p">{</span> <span class="na">limit</span><span class="p">:</span> <span class="s2">"50mb"</span> <span class="p">},</span>
+  <span class="p">},</span>
+<span class="p">})</span>
+</code></pre>
+</div>
+
+<p>This has been replaced with a cleaner and leaner adapter from ` @as-integrations/aws-lambda`.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kr">export</span> <span class="kr">const</span> <span class="nx">handler</span> <span class="o">=</span> <span class="nx">startServerAndCreateLambdaHandler</span><span class="p">(</span>
+  <span class="nx">server</span><span class="p">,</span>
+  <span class="nx">handlers</span><span class="p">.</span><span class="nx">createAPIGatewayProxyEventV2RequestHandler</span><span class="p">(),</span>
+<span class="p">);</span>
+</code></pre>
+</div>
+
+<p>But how can we use <code class="highlighter-rouge">graphqlUploadExpress</code> with this?! Well it appears that Apollo Server 3 used an adapter to convert their Express app integration to a lambda handler, so plugging in Express middleware was easy. It looks like we can revert back to this method by using the <a href="https://github.com/vendia/serverless-express"><code class="highlighter-rouge">@vendia/serverless-express</code></a> project that exposes an Express web app API for serverless functions running on AWS Lambda or Azure Functions.</p>
+
+<p>For this solution, we’ll use the <a href="https://github.com/vendia/serverless-express#async-setup-lambda-handler">Async setup Lambda handler</a> for <code class="highlighter-rouge">@vendia/serverless-express</code> because we need to <code class="highlighter-rouge">await</code> for the Apollo Server <code class="highlighter-rouge">server.start()</code> function. We’ll also use the <a href="https://www.apollographql.com/docs/apollo-server/api/express-middleware/">expressMiddleware function</a> from Apollo Server. Here’s the full example:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">()</span>
+
+<span class="kr">const</span> <span class="nx">server</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ApolloServer</span><span class="p">({</span>
+  <span class="nx">typeDefs</span><span class="p">,</span>
+  <span class="nx">resolvers</span><span class="p">,</span>
+<span class="p">})</span>
+
+<span class="kd">let</span> <span class="nx">serverlessExpressInstance</span>
+
+<span class="nx">async</span> <span class="kd">function</span> <span class="nx">setup</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">await</span> <span class="nx">server</span><span class="p">.</span><span class="nx">start</span><span class="p">()</span>
+  <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span>
+    <span class="s2">"/graphql"</span><span class="p">,</span>
+    <span class="nx">cors</span><span class="p">(),</span>
+    <span class="nx">bodyParser</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span> <span class="na">limit</span><span class="p">:</span> <span class="s2">"50mb"</span> <span class="p">}),</span>
+    <span class="nx">graphqlUploadExpress</span><span class="p">({</span> <span class="na">maxFileSize</span><span class="p">:</span> <span class="mi">50000000</span><span class="p">,</span> <span class="na">maxFiles</span><span class="p">:</span> <span class="mi">10</span> <span class="p">}),</span>
+    <span class="nx">expressMiddleware</span><span class="p">(</span><span class="nx">server</span><span class="p">,</span> <span class="p">{</span>
+      <span class="na">context</span><span class="p">:</span> <span class="nx">async</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span> <span class="cm">/* Your context function */</span> <span class="p">},</span>
+    <span class="p">})</span>
+  <span class="p">)</span>
+  <span class="nx">serverlessExpressInstance</span> <span class="o">=</span> <span class="nx">serverlessExpress</span><span class="p">({</span> <span class="nx">app</span> <span class="p">})</span>
+  <span class="k">return</span> <span class="nx">serverlessExpressInstance</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nx">exports</span><span class="p">.</span><span class="nx">handler</span> <span class="o">=</span> <span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">serverlessExpressInstance</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nx">serverlessExpressInstance</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span>
+
+  <span class="k">return</span> <span class="nx">setup</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">context</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<h2 id="preventing-csrf-errors">Preventing CSRF errors</h2>
+
+<p>The Apollo team have taken care to ensure that Apollo Server is secure by default, and this includes disabling “simple” HTTP operations that don’t require a CORS preflight check and may be vulnerable to CSRF attacks. You can read about <a href="https://www.apollographql.com/docs/apollo-server/security/cors/#preventing-cross-site-request-forgery-csrf">Preventing Cross-Site Request Forgery (CSRF) here.</a></p>
+
+<p>What this means is that when using the <code class="highlighter-rouge">graphql-upload</code> package you’re likely to run into the following error:</p>
+
+<div class="language-json highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"errors"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"This operation has been blocked as a potential Cross-Site Request Forgery (CSRF). Please either specify a 'content-type' header (with a type that is not one of application/x-www-form-urlencoded, multipart/form-data, text/plain) or provide a non-empty value for one of the following headers: x-apollo-operation-name, apollo-require-preflight\n"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"extensions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nt">"code"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BAD_REQUEST"</span><span class="p">,</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>The message is pretty self-explanatory, but essentially to enable uploads you will need to either;</p>
+
+<ol>
+  <li>Send an <code class="highlighter-rouge">Apollo-Require-Preflight</code> or <code class="highlighter-rouge">X-Apollo-Operation-Name</code> HTTP header with the request, or;</li>
+  <li>Disable CSRF protection with <code class="highlighter-rouge">new ApolloServer({ csrfPrevention: false })</code> (but this is a bad idea so don’t do this)</li>
+</ol>
+
+<p>The Apollo docs callout how to do this with the <a href="https://github.com/jaydenseric/apollo-upload-client"><code class="highlighter-rouge">apollo-upload-client</code></a> package:</p>
+
+<blockquote>
+  <p>For example, if you use the <a href="https://github.com/jaydenseric/apollo-upload-client"><code class="highlighter-rouge">apollo-upload-client</code></a> package with Apollo Client Web, pass <code class="highlighter-rouge"><span class="p">{</span><span class="err">headers:</span><span class="w"> </span><span class="err">{'Apollo-Require-Preflight':</span><span class="w"> </span><span class="err">'true'</span><span class="p">}</span><span class="err">}</span></code> to <code class="highlighter-rouge">createUploadLink</code>.</p>
+</blockquote>
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tag/graphql" title="View posts tagged with graphql">#graphql</a></li>
+      
+        <li><a href="/tag/apollo" title="View posts tagged with apollo">#apollo</a></li>
+      
+        <li><a href="/tag/serverless" title="View posts tagged with serverless">#serverless</a></li>
+      
+        <li><a href="/tag/lambda" title="View posts tagged with lambda">#lambda</a></li>
+      
+    </ul>
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/programming/react-oauth2-authentication-with-cloudentity/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/programming/react-oauth2-authentication-with-cloudentity/">React OAuth2 Authentication with Cloudentity</a></div>
+        
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+      </div>
+    </nav><!-- end .post_nav -->
+
+  </div><!-- end .container -->
+</div><!-- end .stripe -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+  </body>
+
+</html>
