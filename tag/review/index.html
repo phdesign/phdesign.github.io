@@ -13,11 +13,11 @@
   <meta name="author" content="Paul Heasley">
   
 
-  <title>TFS undo checkout of unedited files | phdesign</title>
-  <meta name="description" content="It bugs me when developers check in files to TFS that haven’t been modified. It’s easy to do, you open a file, edit it, change your mind and ctrl-z it. Now y...">
+  <title>review | phdesign</title>
+  <meta name="description" content="Website of Paul Heasley, .NET Web Developer Technical advice, bits of software, maybe some woodworking">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="canonical" href="http://phdesign.com.au/programming/tfs-undo-checkout-of-unedited-files/">
+  <link rel="canonical" href="http://phdesign.com.au/tag/review/">
   <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
   <link rel="shortcut icon" href="/favicon.ico">
 
@@ -48,7 +48,7 @@
   <![endif]-->
 </head>
 
-  <body class="post">
+  <body class="archive">
 
     <div class="header-background-image"></div>
     <header role="banner">
@@ -106,78 +106,32 @@
 
     </header>
     <main class="content" aria-label="Content">
-  	  <article>
-  <div class="container">
+  	  <div class="container">
 
-    <div class="date-stamp">
-      <div class="month">Apr</div>
-      <div class="day">13</div>
-    </div><!-- end .date-stamp -->
+  <div class="meta-label-lg">
+    Showing 1 posts  tagged with 
+    <span class="meta-value">#review</span>
+  </div><!-- end .meta-label-lg -->
 
-    <h2 class="post-header">TFS undo checkout of unedited files</h2>
+</div>
 
-    <div class="meta-label">
-      posted on <span class="meta-value muted">13 April 2012</span>
-      
-        in <span class="meta-value"><a href="/programming">programming</a></span>
-      
-    </div><!-- end .meta-label -->
-    <br />
+  <article>
+    <div class="container">
 
-    
-    
-    
-    
-      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 11 years old and the content may no longer be relevant.</p>
-    
-
-    <p>It bugs me when developers check in files to TFS that haven’t been modified. It’s easy to do, you open a file, edit it, change your mind and ctrl-z it. Now you have a checked out file with no changes and when you do your next check in you’ll probably check that file in too, unless you’re really on the ball and compare each file manually first. TFS makes no distinction between checked in files that were modified and those that weren’t, which makes the job of reviewing code that much harder.</p>
-
-<!--more-->
-
-<p>Now I’ve found the resolution and it’s so easy it’s stupid, just <strong>undo your changes</strong>. That’s right, go on, right click your solution and select Undo Pending Changes</p>
-
-<p><img src="/assets/img/blog/tfs-undo-checkout-of-unedited-files/tfs-undo-unedited-1-crop.png" alt="Selecting Undo Pending Changes from the right click menu in Solution Explorer" /></p>
-
-<p>You’ll see see the Undo Pending Changes dialog, <strong>make sure you only select edited files</strong> (e.g. uncheck add / delete actions), then go ahead and click Undo Changes.</p>
-
-<p>Now the catch is TFS will go ahead and undo the checkout for any unmodified files, when it hits a modified file it’ll prompt you with Confirm Undo Checkout, select <strong>No to All</strong>.</p>
-
-<p><img src="/assets/img/blog/tfs-undo-checkout-of-unedited-files/tfs-undo-unedited-2.png" alt="Confirm Undo Changes prompt" /></p>
-
-<p>TFS will continue to undo all unmodified files but leave your modified files alone, now you’re left with only your modified files checked out. Hooraah.</p>
-
-
-
-    <ul class="post-tags">
-      
-        <li><a href="/tag/tfs" title="View posts tagged with tfs">#tfs</a></li>
-      
-    </ul>
-
-  </div><!-- end .container -->
-</article>
-
-<div class="stripe">
-  <div class="container">
-
-    <nav class="row pager">
-      <div class="previous col-xs-6 col-sm-4">
+      <h3><a href="/programming/modern-typescript-by-ben-beattie-hood/" title="Read full article">Modern TypeScript by Ben Beattie-Hood</a></h3>
+      <div class="meta-label">
+        posted on <span class="meta-value muted">23 January 2024</span>
         
-          <div class="meta-label"><a href="/programming/create-branch-of-modified-working-copy-in-tfs/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
-          <div class="meta-value"><a href="/programming/create-branch-of-modified-working-copy-in-tfs/">Create branch of modified working copy in TFS</a></div>
+          in <span class="meta-value"><a href="/programming">programming</a></span>
         
-      </div>
-      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
-        
-          <div class="meta-label"><a href="/programming/backbone-spark/">Next post <span aria-hidden="true">&raquo;</span></a></div>
-          <div class="meta-value"><a href="/programming/backbone-spark/">Backbone.Spark: Ember style computed properties for Backbone.js</a></div>
-        
-      </div>
-    </nav><!-- end .post_nav -->
+        with <span class="meta-value"><a href="http://phdesign.com.au/programming/modern-typescript-by-ben-beattie-hood/#disqus_thread">0 Comments</a></span>
+      </div><!-- end .meta-label -->
 
-  </div><!-- end .container -->
-</div><!-- end .stripe -->
+    </div>
+  </article>
+
+
+
 
     </main><!-- end .content -->
 
