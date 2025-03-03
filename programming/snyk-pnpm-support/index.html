@@ -1,0 +1,319 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Paul Heasley">
+  
+
+  <title>Snyk pnpm support for vulnerability scanning | phdesign</title>
+  <meta name="description" content="Snyk is a great tool for dependency vulnerability scanning, but it lacks support for pnpm. In this post I share a workaround to scan pnpm projects and publis...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/programming/snyk-pnpm-support/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MTPZZRZTVF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MTPZZRZTVF');
+</script>
+
+
+  
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/programming">programming</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+              <li><a href="/woodworking">woodworking</a></li>
+            
+              <li><a href="/infosec">infosec</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/album-rsync">album-rsync</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+            <li><a href="/phreplace">phReplace</a></li>
+          </ul>
+        </li>
+        <li><a href="/presentations">Presentations</a></li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+    <main class="content" aria-label="Content">
+  	  <article>
+  <div class="container">
+
+    <div class="date-stamp">
+      <div class="month">Mar</div>
+      <div class="day">03</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">Snyk pnpm support for vulnerability scanning</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">03 March 2025</span>
+      
+        in <span class="meta-value"><a href="/programming">programming</a></span>
+      
+    </div><!-- end .meta-label -->
+    <br />
+
+    
+    
+    
+    
+
+    <p>Snyk is a great tool for dependency vulnerability scanning, but it lacks support for pnpm. In this post I share a workaround to scan pnpm projects and publish vulnerabilities to their Web UI using Snyk CLI and GitHub Actions (but you can adapt this to any CI tool).</p>
+
+<!--more-->
+
+<h2 id="introduction">Introduction</h2>
+
+<p>Snyk provides dependency vulnerability scanning for many languages and package managers. For JavaScript / TypeScript projects it supports npm and Yarn projects, but is <a href="https://docs.snyk.io/supported-languages-package-managers-and-frameworks/javascript/javascript-for-open-source#pnpm">currently lacking support for pnpm</a>. But why does the package manager matter? After all, Snyk can just read the dependencies and version from <code class="highlighter-rouge">package.json</code> right? Yes, it certainly can and it does. If you run Snyk over a pnpm project that’s exactly what it will do, but there’s a flaw in this process.</p>
+
+<h2 id="why-is-pnpm-support-important">Why is pnpm support important?</h2>
+
+<p>Like npm and Yarn, pnpm stores a frozen resolved dependency tree in a lock file, called <code class="highlighter-rouge">pnpm-lock.yaml</code>, which ensures your production builds are identical to the builds you developed and tested against.</p>
+
+<p>As Snyk doesn’t know how to parse the pnpm lock file, it just depends on the <code class="highlighter-rouge">package.json</code> dependencies and assumes all children are resolved to their latest version.</p>
+
+<p>For example, <code class="highlighter-rouge">tough-cookie</code> versions less than <code class="highlighter-rouge">4.1.3</code> are vulnerable to prototype pollution. Now imagine you have a depdendency on <code class="highlighter-rouge">client-oauth2@4.3.3</code>, without a lock file Snyk will build a dependency tree that looks like the below and assume you’re not vulnerable.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>client-oauth2 4.3.3
+└─┬ popsicle 12.1.2
+  └─┬ popsicle-cookie-jar 1.0.1
+    └── tough-cookie 4.1.3
+</code></pre>
+</div>
+
+<p>But in reality, your lock file might look like this, demonstrating that you are vulnerable.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>client-oauth2 4.3.3
+└─┬ popsicle 12.1.0
+  └─┬ popsicle-cookie-jar 1.0.0
+    └── tough-cookie 3.0.1
+</code></pre>
+</div>
+
+<p>You can see your direct dependency <code class="highlighter-rouge">client-oauth2</code> is the same version but you’ve previously resolved <code class="highlighter-rouge">popsicle-cookie-jar</code> to <code class="highlighter-rouge">1.0.0</code> which depdends on the vulnerable version of <code class="highlighter-rouge">tough-cookie</code>.</p>
+
+<p>Without pnpm lock file support, Synk is going to under-report your vulnerabilities.</p>
+
+<h2 id="enabling-cli-beta-support">Enabling CLI beta support</h2>
+
+<p>Snyk is working on pnpm support and have released an Early Access version for their CLI tool, but haven’t published a timeline for rolling it out to their Web UI</p>
+
+<p><img src="/assets/img/blog/snyk-pnpm-support/snyk-pnpm-early-access-docs.png" alt="Snyk pnpm Early Access support" style="max-width: 600px" /></p>
+
+<p>To enable pnpm support in the CLI, you’ll first need to opt-in to Early Access via Snyk Preview.</p>
+
+<ol>
+  <li>At either the Group or Organization level, select <strong>Settings</strong> &gt; <strong>Snyk Preview</strong>.</li>
+  <li>Find the Pnpm CLI Support feature.</li>
+  <li>Toggle <strong>Enable Pnpm CLI Support</strong> on.</li>
+</ol>
+
+<p><img src="/assets/img/blog/snyk-pnpm-support/enable-pnpm-preview.png" alt="Enabling pnpm CLI Preview feature" style="max-width: 800px" /></p>
+
+<h2 id="publishing-scan-results-via-ci">Publishing scan results via CI</h2>
+
+<p>Knowing that the CLI supports pnpm scanning, we can setup a regular CI task to run the scan and push the results to the Snyk Web UI, allowing you to leverage all the normal reporting and maintenance features. The frequency of scanning is up to you, to be thorough you could run it on every deployment, but if you’re deploying many times a day and changing dependencies infrequently, then a more cost-effective solution would be to run it daily. Here’s an example of GitHub Actions task for this</p>
+
+<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="s">name</span><span class="pi">:</span> <span class="s">Scan for vulnerable depedencies daily with Snyk</span>
+
+<span class="s">on</span><span class="pi">:</span>
+  <span class="s">workflow_dispatch</span><span class="pi">:</span>
+  <span class="s">schedule</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="s">cron</span><span class="pi">:</span> <span class="s2">"</span><span class="s">0</span><span class="nv"> </span><span class="s">0</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*"</span> <span class="c1"># Run every day at 10am (AEST)</span>
+
+<span class="s">jobs</span><span class="pi">:</span>
+  <span class="s">snyk</span><span class="pi">:</span>
+    <span class="s">name</span><span class="pi">:</span> <span class="s">Scan vulnerabilties with Snyk</span>
+    <span class="s">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="s">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="s">uses</span><span class="pi">:</span> <span class="s">actions/checkout@master</span>
+      <span class="pi">-</span> <span class="s">uses</span><span class="pi">:</span> <span class="s">snyk/actions/node@master</span>
+        <span class="s">with</span><span class="pi">:</span>
+          <span class="s">command</span><span class="pi">:</span> <span class="s">monitor</span>
+        <span class="s">env</span><span class="pi">:</span>
+          <span class="s">SNYK_TOKEN</span><span class="pi">:</span> <span class="s">$</span>
+</code></pre>
+</div>
+
+<p>Once you start pushing your CI scan results, you’ll want to disable any SCM integration projects to avoid duplicate reporting. I recommend just disabling the Snyk Open Source projects in the Web UI, that way you’ll still benefit from Snyk Code and Snyk Infrastructure as Code scans, and you’ll be able to easily re-enable the projects when Snyk rolls out full support for pnpm through their SCM cloud scanning.</p>
+
+<p>To disable SCM integration</p>
+
+<ol>
+  <li>At the Organization level, select <strong>Projects</strong>.</li>
+  <li>Select the SCM <strong>Target</strong>, which will be identified by the icon, CLI targets have a terminal looking icon, SCM targets should match your SCM provider.</li>
+  <li>Find the projects that you’re now scanning via CI (they should end in <code class="highlighter-rouge">package.json</code>), select them and click <strong>Deactivate selected projects</strong>.</li>
+</ol>
+
+<p><img src="/assets/img/blog/snyk-pnpm-support/disable-projects.png" alt="Disabling projects in Snyk" style="max-width: 400px" /></p>
+
+<h2 id="ignoring-vulnerabilities">Ignoring vulnerabilities</h2>
+
+<p>You can ignore false-positive or unfixible vulnerabilities from your CLI scan in the Web UI just like normal, this will exclude them from reporting. But what about all the vulnerabilities you’ve previously ignored? You’ll likely start seeing all these zombie vulnerabilities reappear, if it feels like a daunting task to manually ignore them again, then here’s some steps to export them from the old project and add to ignore rules in your <code class="highlighter-rouge">.snyk</code> configuration file.</p>
+
+<ol>
+  <li>
+    <p>At the Organization level, select <strong>Reports</strong>.</p>
+  </li>
+  <li>
+    <p>Change the <strong>Issue Status</strong> filter and select only Ignored.</p>
+  </li>
+  <li>
+    <p>Add a filter &gt; Projects &gt; Origin and select your SCM target.</p>
+  </li>
+  <li>
+    <p>In the Modify Columns drop down, select <strong>Problem ID</strong>.</p>
+  </li>
+  <li>
+    <p>Download CSV and for each record, add it to your Snyk project configuration via the CLI tool</p>
+    <div class="highlighter-rouge"><pre class="highlight"><code>snyk ignore --id=&lt;problem id&gt;
+</code></pre>
+    </div>
+  </li>
+</ol>
+
+<p>Or use this one-liner to add them all at once (requires <a href="https://csvkit.readthedocs.io/en/latest/">csv kit</a>)</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>csvcut ~/Downloads/snyk_issues_detail.csv -c 'PROBLEM_ID' | tail -n +2 | xargs -I {} snyk ignore --id='{}'
+</code></pre>
+</div>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>Although Snyk doesn’t support pnpm in it’s Web UI, you can use the Early Access Preview CLI support to scan for vulnerabilities, and by automating the process with GitHub Actions you can maintain regular checks and use Web UI reporting and ignore functionality.</p>
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tag/security" title="View posts tagged with security">#security</a></li>
+      
+        <li><a href="/tag/cicd" title="View posts tagged with cicd">#cicd</a></li>
+      
+        <li><a href="/tag/snyk" title="View posts tagged with snyk">#snyk</a></li>
+      
+    </ul>
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/programming/apollo-server-4-serverless-graphql-upload/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/programming/apollo-server-4-serverless-graphql-upload/">Apollo Server 4 Serverless GraphQL Upload</a></div>
+        
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+      </div>
+    </nav><!-- end .post_nav -->
+
+  </div><!-- end .container -->
+</div><!-- end .stripe -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+  </body>
+
+</html>

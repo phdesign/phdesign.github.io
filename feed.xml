@@ -1,19 +1,127 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://phdesign.com.au/feed.xml" rel="self" type="application/atom+xml" /><link href="http://phdesign.com.au/" rel="alternate" type="text/html" /><updated>2024-01-23T09:02:27+11:00</updated><id>http://phdesign.com.au/feed.xml</id><title type="html">phdesign</title><subtitle>Website of Paul Heasley, .NET Web Developer Technical advice, bits of software, maybe some woodworking
-</subtitle><entry><title type="html">Modern TypeScript by Ben Beattie-Hood</title><link href="http://phdesign.com.au/programming/modern-typescript-by-ben-beattie-hood/" rel="alternate" type="text/html" title="Modern TypeScript by Ben Beattie-Hood" /><published>2024-01-23T00:00:00+11:00</published><updated>2024-01-23T00:00:00+11:00</updated><id>http://phdesign.com.au/programming/modern-typescript-by-ben-beattie-hood</id><content type="html" xml:base="http://phdesign.com.au/programming/modern-typescript-by-ben-beattie-hood/">&lt;p&gt;This is a book review for Modern TypeScript: A Practical Guide to Accelerate Your Development Velocity by Ben Beattie-Hood. &lt;a href=&quot;https://www.amazon.com.au/Modern-TypeScript-Practical-Accelerate-Development/dp/1484297229&quot;&gt;Find it on Amazon here&lt;/a&gt;.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.4.3">Jekyll</generator><link href="http://phdesign.com.au/feed.xml" rel="self" type="application/atom+xml" /><link href="http://phdesign.com.au/" rel="alternate" type="text/html" /><updated>2025-03-03T21:36:42+11:00</updated><id>http://phdesign.com.au/feed.xml</id><title type="html">phdesign</title><subtitle>Website of Paul Heasley, .NET Web Developer Technical advice, bits of software, maybe some woodworking
+</subtitle><entry><title type="html">Snyk pnpm support for vulnerability scanning</title><link href="http://phdesign.com.au/programming/snyk-pnpm-support/" rel="alternate" type="text/html" title="Snyk pnpm support for vulnerability scanning" /><published>2025-03-03T00:00:00+11:00</published><updated>2025-03-03T00:00:00+11:00</updated><id>http://phdesign.com.au/programming/snyk-pnpm-support</id><content type="html" xml:base="http://phdesign.com.au/programming/snyk-pnpm-support/">&lt;p&gt;Snyk is a great tool for dependency vulnerability scanning, but it lacks support for pnpm. In this post I share a workaround to scan pnpm projects and publish vulnerabilities to their Web UI using Snyk CLI and GitHub Actions (but you can adapt this to any CI tool).&lt;/p&gt;
 
 &lt;!--more--&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/img/blog/modern-typescript-by-ben-beattie-hood/modern-typescript.jpg&quot; alt=&quot;Modern TypeScript by Ben Beattie-Hood&quot; style=&quot;display:block; margin: 3em auto;&quot; /&gt;&lt;/p&gt;
+&lt;h2 id=&quot;introduction&quot;&gt;Introduction&lt;/h2&gt;
 
-&lt;p&gt;In the ever-changing world of programming languages, staying up-to-date is crucial. “Modern TypeScript” by Ben Beattie-Hood stands out as a comprehensive guide that covers every aspect of TypeScript, from the basics of syntax to performance tuning and setting up your environment and tooling correctly. Ben Beattie-Hood dishes out his wealth of knowledge in clear, plain English that’s easy to follow.&lt;/p&gt;
+&lt;p&gt;Snyk provides dependency vulnerability scanning for many languages and package managers. For JavaScript / TypeScript projects it supports npm and Yarn projects, but is &lt;a href=&quot;https://docs.snyk.io/supported-languages-package-managers-and-frameworks/javascript/javascript-for-open-source#pnpm&quot;&gt;currently lacking support for pnpm&lt;/a&gt;. But why does the package manager matter? After all, Snyk can just read the dependencies and version from &lt;code class=&quot;highlighter-rouge&quot;&gt;package.json&lt;/code&gt; right? Yes, it certainly can and it does. If you run Snyk over a pnpm project that’s exactly what it will do, but there’s a flaw in this process.&lt;/p&gt;
 
-&lt;p&gt;This book goes beyond just TypeScript syntax; it delves into why having type-safe code matters. It touches on functional programming and stresses the importance of clean, concise code and fast feedback loops in your tooling.&lt;/p&gt;
+&lt;h2 id=&quot;why-is-pnpm-support-important&quot;&gt;Why is pnpm support important?&lt;/h2&gt;
 
-&lt;p&gt;The code samples in the book are easy to follow and by building up in simple steps, you’ll find yourself grasping deeply complex type solutions that would otherwise be daunting to decipher. “Modern TypeScript” peels back the cover on some advanced TypeScript solutions, giving you the confidence to crack open your node_modules folder and read through your dependent code as if it’s your own.&lt;/p&gt;
+&lt;p&gt;Like npm and Yarn, pnpm stores a frozen resolved dependency tree in a lock file, called &lt;code class=&quot;highlighter-rouge&quot;&gt;pnpm-lock.yaml&lt;/code&gt;, which ensures your production builds are identical to the builds you developed and tested against.&lt;/p&gt;
 
-&lt;p&gt;After reading this book, you’ll walk away with a Batman utility belt of helpers. You’ll understand how built-in utility types like Pick, Partial, and Exclude work, and when to use them. You’ll also learn a safer way to intersect types using ShallowMerge, and you’ll have the skills to adapt examples like JsonOf and UrlParameters to create your own complex type helpers.&lt;/p&gt;
+&lt;p&gt;As Snyk doesn’t know how to parse the pnpm lock file, it just depends on the &lt;code class=&quot;highlighter-rouge&quot;&gt;package.json&lt;/code&gt; dependencies and assumes all children are resolved to their latest version.&lt;/p&gt;
 
-&lt;p&gt;Move over StackOverflow; this is a complete, well-structured resource that you’ll find yourself coming back to daily.&lt;/p&gt;</content><author><name></name></author><category term="book" /><category term="review" /><category term="typescript" /><summary type="html">This is a book review for Modern TypeScript: A Practical Guide to Accelerate Your Development Velocity by Ben Beattie-Hood. Find it on Amazon here.</summary></entry><entry><title type="html">Apollo Server 4 Serverless GraphQL Upload</title><link href="http://phdesign.com.au/programming/apollo-server-4-serverless-graphql-upload/" rel="alternate" type="text/html" title="Apollo Server 4 Serverless GraphQL Upload" /><published>2023-03-20T00:00:00+11:00</published><updated>2023-03-20T00:00:00+11:00</updated><id>http://phdesign.com.au/programming/apollo-server-4-serverless-graphql-upload</id><content type="html" xml:base="http://phdesign.com.au/programming/apollo-server-4-serverless-graphql-upload/">&lt;p&gt;Apollo Server 4 changed the way we integrate with Serverless functions, the &lt;code class=&quot;highlighter-rouge&quot;&gt;apollo-server-lambda&lt;/code&gt; project is no longer part of the core package, being replaced with &lt;a href=&quot;https://github.com/apollo-server-integrations/apollo-server-integration-aws-lambda&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;@as-integrations/aws-lambda&lt;/code&gt;&lt;/a&gt;. With this change it’s no longer obvious how we can use Express middleware like &lt;a href=&quot;https://github.com/jaydenseric/graphql-upload&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;graphql-upload&lt;/code&gt;&lt;/a&gt; for serverless functions, but it is still possible using the &lt;a href=&quot;https://github.com/vendia/serverless-express&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;@vendia/serverless-express&lt;/code&gt;&lt;/a&gt; project. This article will focus on AWS Lambda integrations, but the solution should be just as relevant for any of the cloud providers (using the appropriate &lt;code class=&quot;highlighter-rouge&quot;&gt;apollo-server-integrations&lt;/code&gt; package).&lt;/p&gt;
+&lt;p&gt;For example, &lt;code class=&quot;highlighter-rouge&quot;&gt;tough-cookie&lt;/code&gt; versions less than &lt;code class=&quot;highlighter-rouge&quot;&gt;4.1.3&lt;/code&gt; are vulnerable to prototype pollution. Now imagine you have a depdendency on &lt;code class=&quot;highlighter-rouge&quot;&gt;client-oauth2@4.3.3&lt;/code&gt;, without a lock file Snyk will build a dependency tree that looks like the below and assume you’re not vulnerable.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;client-oauth2 4.3.3
+└─┬ popsicle 12.1.2
+  └─┬ popsicle-cookie-jar 1.0.1
+    └── tough-cookie 4.1.3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;But in reality, your lock file might look like this, demonstrating that you are vulnerable.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;client-oauth2 4.3.3
+└─┬ popsicle 12.1.0
+  └─┬ popsicle-cookie-jar 1.0.0
+    └── tough-cookie 3.0.1
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;You can see your direct dependency &lt;code class=&quot;highlighter-rouge&quot;&gt;client-oauth2&lt;/code&gt; is the same version but you’ve previously resolved &lt;code class=&quot;highlighter-rouge&quot;&gt;popsicle-cookie-jar&lt;/code&gt; to &lt;code class=&quot;highlighter-rouge&quot;&gt;1.0.0&lt;/code&gt; which depdends on the vulnerable version of &lt;code class=&quot;highlighter-rouge&quot;&gt;tough-cookie&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Without pnpm lock file support, Synk is going to under-report your vulnerabilities.&lt;/p&gt;
+
+&lt;h2 id=&quot;enabling-cli-beta-support&quot;&gt;Enabling CLI beta support&lt;/h2&gt;
+
+&lt;p&gt;Snyk is working on pnpm support and have released an Early Access version for their CLI tool, but haven’t published a timeline for rolling it out to their Web UI&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/snyk-pnpm-support/snyk-pnpm-early-access-docs.png&quot; alt=&quot;Snyk pnpm Early Access support&quot; style=&quot;max-width: 600px&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;To enable pnpm support in the CLI, you’ll first need to opt-in to Early Access via Snyk Preview.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;At either the Group or Organization level, select &lt;strong&gt;Settings&lt;/strong&gt; &amp;gt; &lt;strong&gt;Snyk Preview&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;Find the Pnpm CLI Support feature.&lt;/li&gt;
+  &lt;li&gt;Toggle &lt;strong&gt;Enable Pnpm CLI Support&lt;/strong&gt; on.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/snyk-pnpm-support/enable-pnpm-preview.png&quot; alt=&quot;Enabling pnpm CLI Preview feature&quot; style=&quot;max-width: 800px&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;publishing-scan-results-via-ci&quot;&gt;Publishing scan results via CI&lt;/h2&gt;
+
+&lt;p&gt;Knowing that the CLI supports pnpm scanning, we can setup a regular CI task to run the scan and push the results to the Snyk Web UI, allowing you to leverage all the normal reporting and maintenance features. The frequency of scanning is up to you, to be thorough you could run it on every deployment, but if you’re deploying many times a day and changing dependencies infrequently, then a more cost-effective solution would be to run it daily. Here’s an example of GitHub Actions task for this&lt;/p&gt;
+
+&lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;s&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Scan for vulnerable depedencies daily with Snyk&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;workflow_dispatch&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;schedule&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;cron&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;*&quot;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# Run every day at 10am (AEST)&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;s&quot;&gt;snyk&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Scan vulnerabilties with Snyk&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@master&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;snyk/actions/node@master&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;s&quot;&gt;command&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;monitor&lt;/span&gt;
+        &lt;span class=&quot;s&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;s&quot;&gt;SNYK_TOKEN&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Once you start pushing your CI scan results, you’ll want to disable any SCM integration projects to avoid duplicate reporting. I recommend just disabling the Snyk Open Source projects in the Web UI, that way you’ll still benefit from Snyk Code and Snyk Infrastructure as Code scans, and you’ll be able to easily re-enable the projects when Snyk rolls out full support for pnpm through their SCM cloud scanning.&lt;/p&gt;
+
+&lt;p&gt;To disable SCM integration&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;At the Organization level, select &lt;strong&gt;Projects&lt;/strong&gt;.&lt;/li&gt;
+  &lt;li&gt;Select the SCM &lt;strong&gt;Target&lt;/strong&gt;, which will be identified by the icon, CLI targets have a terminal looking icon, SCM targets should match your SCM provider.&lt;/li&gt;
+  &lt;li&gt;Find the projects that you’re now scanning via CI (they should end in &lt;code class=&quot;highlighter-rouge&quot;&gt;package.json&lt;/code&gt;), select them and click &lt;strong&gt;Deactivate selected projects&lt;/strong&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/img/blog/snyk-pnpm-support/disable-projects.png&quot; alt=&quot;Disabling projects in Snyk&quot; style=&quot;max-width: 400px&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;ignoring-vulnerabilities&quot;&gt;Ignoring vulnerabilities&lt;/h2&gt;
+
+&lt;p&gt;You can ignore false-positive or unfixible vulnerabilities from your CLI scan in the Web UI just like normal, this will exclude them from reporting. But what about all the vulnerabilities you’ve previously ignored? You’ll likely start seeing all these zombie vulnerabilities reappear, if it feels like a daunting task to manually ignore them again, then here’s some steps to export them from the old project and add to ignore rules in your &lt;code class=&quot;highlighter-rouge&quot;&gt;.snyk&lt;/code&gt; configuration file.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;At the Organization level, select &lt;strong&gt;Reports&lt;/strong&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Change the &lt;strong&gt;Issue Status&lt;/strong&gt; filter and select only Ignored.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Add a filter &amp;gt; Projects &amp;gt; Origin and select your SCM target.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;In the Modify Columns drop down, select &lt;strong&gt;Problem ID&lt;/strong&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Download CSV and for each record, add it to your Snyk project configuration via the CLI tool&lt;/p&gt;
+    &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;snyk ignore --id=&amp;lt;problem id&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+    &lt;/div&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Or use this one-liner to add them all at once (requires &lt;a href=&quot;https://csvkit.readthedocs.io/en/latest/&quot;&gt;csv kit&lt;/a&gt;)&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;csvcut ~/Downloads/snyk_issues_detail.csv -c 'PROBLEM_ID' | tail -n +2 | xargs -I {} snyk ignore --id='{}'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;Although Snyk doesn’t support pnpm in it’s Web UI, you can use the Early Access Preview CLI support to scan for vulnerabilities, and by automating the process with GitHub Actions you can maintain regular checks and use Web UI reporting and ignore functionality.&lt;/p&gt;</content><author><name></name></author><category term="security" /><category term="cicd" /><category term="snyk" /><summary type="html">Snyk is a great tool for dependency vulnerability scanning, but it lacks support for pnpm. In this post I share a workaround to scan pnpm projects and publish vulnerabilities to their Web UI using Snyk CLI and GitHub Actions (but you can adapt this to any CI tool).</summary></entry><entry><title type="html">Apollo Server 4 Serverless GraphQL Upload</title><link href="http://phdesign.com.au/programming/apollo-server-4-serverless-graphql-upload/" rel="alternate" type="text/html" title="Apollo Server 4 Serverless GraphQL Upload" /><published>2023-03-20T00:00:00+11:00</published><updated>2023-03-20T00:00:00+11:00</updated><id>http://phdesign.com.au/programming/apollo-server-4-serverless-graphql-upload</id><content type="html" xml:base="http://phdesign.com.au/programming/apollo-server-4-serverless-graphql-upload/">&lt;p&gt;Apollo Server 4 changed the way we integrate with Serverless functions, the &lt;code class=&quot;highlighter-rouge&quot;&gt;apollo-server-lambda&lt;/code&gt; project is no longer part of the core package, being replaced with &lt;a href=&quot;https://github.com/apollo-server-integrations/apollo-server-integration-aws-lambda&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;@as-integrations/aws-lambda&lt;/code&gt;&lt;/a&gt;. With this change it’s no longer obvious how we can use Express middleware like &lt;a href=&quot;https://github.com/jaydenseric/graphql-upload&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;graphql-upload&lt;/code&gt;&lt;/a&gt; for serverless functions, but it is still possible using the &lt;a href=&quot;https://github.com/vendia/serverless-express&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;@vendia/serverless-express&lt;/code&gt;&lt;/a&gt; project. This article will focus on AWS Lambda integrations, but the solution should be just as relevant for any of the cloud providers (using the appropriate &lt;code class=&quot;highlighter-rouge&quot;&gt;apollo-server-integrations&lt;/code&gt; package).&lt;/p&gt;
 
 &lt;!--more--&gt;
 
