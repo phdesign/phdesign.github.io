@@ -13,11 +13,11 @@
   <meta name="author" content="Paul Heasley">
   
 
-  <title>Registering phreplace DLL in Windows Vista | phdesign</title>
-  <meta name="description" content="phreplace is a VB6 DLL which is called from a vbscript plugin for PSPad. The script tests to see if the correct version of the DLL is registered on this comp...">
+  <title>The Importance of Pet Projects | phdesign</title>
+  <meta name="description" content="Pet projects, side projects, side hustles. For many engineers, having a creative outlet outside of their day-to-day work is essential for both professional g...">
 
   <link rel="stylesheet" href="/assets/css/main.css">
-  <link rel="canonical" href="http://phdesign.com.au/programming/registering-phreplace-dll-in-windows-vista/">
+  <link rel="canonical" href="http://phdesign.com.au/programming/the-importance-of-pet-projects/">
   <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
   <link rel="shortcut icon" href="/favicon.ico">
 
@@ -111,13 +111,13 @@
 
     <div class="date-stamp">
       <div class="month">Mar</div>
-      <div class="day">17</div>
+      <div class="day">24</div>
     </div><!-- end .date-stamp -->
 
-    <h2 class="post-header">Registering phreplace DLL in Windows Vista</h2>
+    <h2 class="post-header">The Importance of Pet Projects</h2>
 
     <div class="meta-label">
-      posted on <span class="meta-value muted">17 March 2010</span>
+      posted on <span class="meta-value muted">24 March 2025</span>
       
         in <span class="meta-value"><a href="/programming">programming</a></span>
       
@@ -128,44 +128,34 @@
     
     
     
-      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 15 years old and the content may no longer be relevant.</p>
-    
 
-    <p><a href="/phreplace">phreplace</a> is a VB6 DLL which is called from a vbscript plugin for <a href="http://www.pspad.com/" title="PSPad editor for developers">PSPad</a>. The script tests to see if the correct version of the DLL is registered on this computer, if not it registers it using regsvr32. This works fine in XP but not Vista where the script will error.</p>
-
-<p>A while ago a user pointed out to me <a href="http://www.experts-exchange.com/Programming/System/Windows__Programming/Q_21243930.html" title="Self Registering DLL's">this article on Experts Exchange</a> explaining why administrative rights are required to register a DLL in Windows Vista, in the hopes that we could automate the registration of phreplace in Vista.</p>
+    <p>Pet projects, side projects, side hustles. For many engineers, having a creative outlet outside of their day-to-day work is essential for both professional growth and maintaining a healthy state of mind. While I acknowledge that not every engineer has the time or desire to code outside of work, the concept of a pet project can be just as fulfilling when found within work itself.</p>
 
 <!--more-->
 
-<p>Feeling defeated, I decided to explain why I haven’t been able to do this yet.</p>
+<p>I heard some advice recently that engineering leaders shouldn’t encourage their engineers to work on side projects as not everyone is fortunate enough to have the spare time to write code beyond work hours. I can appreciate that, I’ve worked with talented engineers who never wrote code outside of work, and I didn’t diminish assessed their abilities or engagement. If anything, it often leaves them more rested and focused during work hours.</p>
 
-<p>The fundamental problem is that Vista requires administrative privledges to write to the registry key required to register DLLs:</p>
+<p>And while I live a relatively privileged life, being a father of 3 active boys who are all involved in extracurricular activity means I am very time poor. Still, I love my side projects. I find time to work on them when then kids have gone to bed, choosing to code instead of playing games or watching TV, or occasionally while doing both.</p>
 
-<p>HKEY_CLASSES_ROOT\</p>
+<p>For me, side projects are an outlet for perfectionism. While I expend a lot of energy during work hours ensuring I’m productive and working on the right things, side projects allow me to freely chase curiosity, even if that means spending nights solving a potentially pointless problem, only to discard the solution during a refactor. Very few of my side projects reach a production-ready state, and even fewer receive engagement. That’s okay, because they’re built for me and no one else. I have a sock drawer of abandoned projects, and I treasure each of them. They’re a learning tool and a creative outlet free from the constraints of work efficiency.</p>
 
-<p>However the user can register DLLs in their own section of the registry:</p>
+<p>Take my recent project, <a href="https://playdates.au/">Playdates</a>, for example. It started as a simple web scraper and cron job built for my personal use, a convenient way to keep track of my kids sport games, but evolved into a small platform built with some unfamiliar tech, in this case Python Lambdas and FastAPI instead of Node.js. I also used it as a chance to evaluate Grafana as an alternative to Datadog observability that I use at work. I wasted some time building a password-protected beta invite that ended up hindering signups, so I scrapped it entirely.</p>
 
-<p>HKEY_CURRENT_USER\SOFTWARE\Classes\</p>
+<p>And here’s the thing: my employer benefits from it. Time and time again, I find myself in situations where I can draw from recent experience in a side project to inform decisions at work. It’s a virtuous cycle, work projects inspire side projects, and side projects, in turn, provide insights that improve my work. An example of this is when I spent hours on a personal project solving how to do <a href="https://phdesign.com.au/programming/apollo-server-4-serverless-graphql-upload/">file uploads with Apollo Server 4 on a serverless stack</a>, and we hit the same challenge at work the next week.</p>
 
-<p>So all is well right? Well not if you’re using VB6, you see when you run regsvr32, it calls the methods DllRegisterSever and DllUnregisterSever  to add / remove entries from the registry, these methods are generated automatically by VB6 to register to HKEY_CLASSES_ROOT, and there is no way to change this.</p>
+<p>Pet projects don’t have to be something that’s only done on personal time. I encourage my team to find their own pet projects at work. You can experience many of the same benefits, learning, honing your craft, and diving deep into problems, by working on nice-to-have projects that might not be top business priorities but still contribute meaningfully to the organisation.</p>
 
-<p>Well, there is one way. Apparently the <a href="http://vb.mvps.org/tools/vbAdvance/" title="vbAdvance Visual Basic addon">vbAdvance</a> addon for VB6 allowed a user to customise DllRegisterServer / DllUnregisterServer, this sounds great, except that it doesn’t work. I tried modifying these methods according to the instruction, but the resulting DLL just wont register. I even tried registering the included example DLL in the download package, but this threw the same error.</p>
+<p>As long as the team is delivering on their core objectives, I believe it’s valuable for engineers to pursue problems they’re passionate about. Giving them a sense of ownership over what they work on boosts morale and motivation. It also provides room to experiment and solve problems properly before they become critical and burdened by time pressure. Establishing clear boundaries is important though, such as allowing a set number of hours per week or using it as a reward for meeting key priorities.</p>
 
-<p>I’m certain it must have worked at some stage, they wouldn’t have included an example that didn’t work, so I can’t figure out what’s different. Did it only work in Windows 98 or 2000?</p>
-
-<p>So in summary, for as long as I’m using VB6 I don’t think I can change where phreplace tries to register the DLL, the only other workaround is to use RegOverridePredefKey to tell the registry to redirect any calls to HKEY_CLASSES_ROOT to HKEY_CURRENT_USER\SOFTWARE\Classes, this would work but I don’t think it can be done with vbscript, so I would need to add another executable to phreplace to use in registering / unregistering the DLL from the registry, seems pretty messy.</p>
-
-<p>If you’ve got any tips for me (especially how I can customise DllRegisterServer) feel free to <a href="/contact">contact</a> me.</p>
+<p>To be clear, side projects shouldn’t be a requirement or an expectation of software engineers. But they are a helpful tool for learning, creativity, and developing mastery. While a lack of personal coding time shouldn’t reflect poorly on an engineer, someone who chooses to spend their spare time building rather than consuming demonstrates a deep passion for their craft. Pet projects at work can provide engineers with ownership and agency while still aligning with business goals.</p>
 
 
 
     <ul class="post-tags">
       
-        <li><a href="/tag/dll" title="View posts tagged with dll">#dll</a></li>
+        <li><a href="/tag/learning" title="View posts tagged with learning">#learning</a></li>
       
-        <li><a href="/tag/phreplace" title="View posts tagged with phreplace">#phreplace</a></li>
-      
-        <li><a href="/tag/vb6" title="View posts tagged with vb6">#vb6</a></li>
+        <li><a href="/tag/leadership" title="View posts tagged with leadership">#leadership</a></li>
       
     </ul>
 
@@ -178,14 +168,11 @@
     <nav class="row pager">
       <div class="previous col-xs-6 col-sm-4">
         
-          <div class="meta-label"><a href="/programming/no-validation-messages-when-disabling-enabling-asp-net-validator-in-javascript/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
-          <div class="meta-value"><a href="/programming/no-validation-messages-when-disabling-enabling-asp-net-validator-in-javascript/">No Validation Messages when Disabling & Enabling ASP.Net Validator in Javascript</a></div>
+          <div class="meta-label"><a href="/programming/snyk-pnpm-support/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/programming/snyk-pnpm-support/">Snyk pnpm support for vulnerability scanning</a></div>
         
       </div>
       <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
-        
-          <div class="meta-label"><a href="/programming/ie-autocomplete-doesnt-fire-onchange-event-handler/">Next post <span aria-hidden="true">&raquo;</span></a></div>
-          <div class="meta-value"><a href="/programming/ie-autocomplete-doesnt-fire-onchange-event-handler/">IE Autocomplete Doesn't Fire onchange Event Handler</a></div>
         
       </div>
     </nav><!-- end .post_nav -->

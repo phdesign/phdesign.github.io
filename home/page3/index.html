@@ -118,6 +118,39 @@
   <article class="stripe alt">
     <div class="container">
 
+      <h2 class="post-header"><a href="/programming/starting-a-promise-chain-to-handle-exceptions-correctly/" title="Read full article">Starting a promise chain to handle exceptions correctly</a></h2>
+
+      <div class="meta-label">
+        posted on <span class="meta-value muted">04 January 2017</span>
+        
+          in <span class="meta-value"><a href="/programming">programming</a></span>
+        
+      </div><!-- end .meta-label -->
+      <br />
+
+      <p>Here’s a little promises quirk that I’ve overlooked for a while. Generally we all write promises like this:</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">doSomething</span><span class="p">()</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingElse</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">doSomethingFurther</span><span class="p">)</span>
+  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">handleError</span><span class="p">);</span>
+</code></pre>
+</div>
+
+<p>And we know that any exception raised will skip to the catch handler. Except for the initial <code class="highlighter-rouge">doSomething()</code> call. If an exception is raised here it will be treated like a normal exception and stop executing all the rest of your code. So how do you deal with it?</p>
+
+
+
+      <a class="btn btn-default btn-read-more" href="/programming/starting-a-promise-chain-to-handle-exceptions-correctly/" title="Read full article">Read Article</a>
+
+    </div><!-- end .container -->
+  </article><!-- end .stripe -->
+
+  
+  
+  <article class="stripe">
+    <div class="container">
+
       <h2 class="post-header"><a href="/programming/auto-increment-project-version-from-travis/" title="Read full article">Increment project version from Travis</a></h2>
 
       <div class="meta-label">
@@ -139,7 +172,7 @@
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
       <h2 class="post-header"><a href="/general/adding-font-awesome-icons-to-google-slides/" title="Read full article">Adding font-awesome (or any SVG) to Google Slides</a></h2>
@@ -163,7 +196,7 @@
 
   
   
-  <article class="stripe alt">
+  <article class="stripe">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/using-grunt-with-pebble-build/" title="Read full article">Using Grunt with Pebble Build to create scalable PebbleKit JavaScript</a></h2>
@@ -185,7 +218,7 @@
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/github-pages-jekyll-and-grunt/" title="Read full article">Replace your CMS with GitHub Pages, Jekyll and Grunt</a></h2>
@@ -207,7 +240,7 @@
 
   
   
-  <article class="stripe alt">
+  <article class="stripe">
     <div class="container">
 
       <h2 class="post-header"><a href="/woodworking/pallet-wood-coffee-table/" title="Read full article">Pallet Wood Coffee Table</a></h2>
@@ -231,7 +264,7 @@
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/logging-objects-to-the-console-in-internet-explorer/" title="Read full article">Logging Objects to the Console in Internet Explorer</a></h2>
@@ -255,7 +288,7 @@
 
   
   
-  <article class="stripe alt">
+  <article class="stripe">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/catching-javascript-errors-with-promises/" title="Read full article">Catching JavaScript errors with Promises</a></h2>
@@ -279,7 +312,7 @@
 
   
   
-  <article class="stripe">
+  <article class="stripe alt">
     <div class="container">
 
       <h2 class="post-header"><a href="/programming/mapping-errors-in-jquery-promises-deferred/" title="Read full article">Mapping errors in jQuery promises / deferred</a></h2>
@@ -303,7 +336,7 @@
 
   
   
-  <article class="stripe alt">
+  <article class="stripe">
     <div class="container">
 
       <h2 class="post-header"><a href="/general/excel-templates-for-scrum-product-and-sprint-backlogs/" title="Read full article">Excel templates for Scrum Product and Sprint Backlogs</a></h2>
@@ -321,32 +354,6 @@
 
 
       <a class="btn btn-default btn-read-more" href="/general/excel-templates-for-scrum-product-and-sprint-backlogs/" title="Read full article">Read Article</a>
-
-    </div><!-- end .container -->
-  </article><!-- end .stripe -->
-
-  
-  
-  <article class="stripe">
-    <div class="container">
-
-      <h2 class="post-header"><a href="/programming/backbone-spark/" title="Read full article">Backbone.Spark: Ember style computed properties for Backbone.js</a></h2>
-
-      <div class="meta-label">
-        posted on <span class="meta-value muted">24 July 2012</span>
-        
-          in <span class="meta-value"><a href="/programming">programming</a></span>
-        
-      </div><!-- end .meta-label -->
-      <br />
-
-      <p>Backbone.Spark provides computed property support for Backbone.js, the goal of the extension is to make computed properties behave in the same way as a normal attribute so your other code doesn’t need to know the difference.</p>
-
-<p><a href="https://github.com/phdesign/Backbone.Spark" title="Backbone.Spark project on GitHub">The latest version of Backbone.Spark and examples can be found at GitHub</a></p>
-
-
-
-      <a class="btn btn-default btn-read-more" href="/programming/backbone-spark/" title="Read full article">Read Article</a>
 
     </div><!-- end .container -->
   </article><!-- end .stripe -->
