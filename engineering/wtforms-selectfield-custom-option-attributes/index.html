@@ -1,0 +1,274 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Paul Heasley">
+  
+
+  <title>WTForms SelectField with Custom Option Attributes | phdesign</title>
+  <meta name="description" content="I was surprised to run into this problem in my Flask app, I needed to pass a custom attribute to one of the options in a select list provided by WTForms (in ...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/engineering/wtforms-selectfield-custom-option-attributes/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MTPZZRZTVF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MTPZZRZTVF');
+</script>
+
+
+  
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/engineering">engineering</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+              <li><a href="/woodworking">woodworking</a></li>
+            
+              <li><a href="/infosec">infosec</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/album-rsync">album-rsync</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+            <li><a href="/phreplace">phReplace</a></li>
+          </ul>
+        </li>
+        <li><a href="/presentations">Presentations</a></li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+    <main class="content" aria-label="Content">
+  	  <article>
+  <div class="container">
+
+    <div class="date-stamp">
+      <div class="month">May</div>
+      <div class="day">14</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">WTForms SelectField with Custom Option Attributes</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">14 May 2020</span>
+      
+        in <span class="meta-value"><a href="/engineering">engineering</a></span>
+      
+    </div><!-- end .meta-label -->
+    <br />
+
+    
+    
+    
+    
+      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 4 years old and the content may no longer be relevant.</p>
+    
+
+    <p>I was surprised to run into this problem in my <a href="https://flask.palletsprojects.com/">Flask app</a>, I needed to pass a custom attribute to one of the options in a select list provided by WTForms (in my case I wanted to set the first option as <code class="highlighter-rouge">disabled</code>), but it turns out that this is a <a href="https://stackoverflow.com/questions/44379016/disabling-one-of-the-options-in-wtforms-selectfield/61762617#61762617">common</a> <a href="https://stackoverflow.com/questions/23460857/create-selectfield-options-with-custom-attributes-in-wtforms/61762730#61762730">problem</a> with lots of <a href="https://mail.python.org/pipermail/flask/2016-May/000490.html">work</a> <a href="https://github.com/wtforms/wtforms/pull/81">arounds</a>.</p>
+
+<p>Here’s a nice clean solution to pass those custom attributes, keeping the built-in <code class="highlighter-rouge">SelectField</code>, but using a custom widget which supports providing attributes for any of the options via a keyed dictionary.</p>
+
+<!--more-->
+
+<p>I want to generate markup equivalent to this <a href="https://getbootstrap.com/docs/4.5/components/forms/#custom-styles">boostrap 4 example</a>, where the first option is disabled.</p>
+
+<div class="language-html highlighter-rouge"><pre class="highlight"><code><span class="nt">&lt;select</span> <span class="na">class=</span><span class="s">"custom-select"</span> <span class="na">id=</span><span class="s">"validationCustom04"</span> <span class="na">required</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;option</span> <span class="na">selected</span> <span class="na">disabled</span> <span class="na">value=</span><span class="s">""</span><span class="nt">&gt;</span>Choose...<span class="nt">&lt;/option&gt;</span>
+    <span class="nt">&lt;option&gt;</span>...<span class="nt">&lt;/option&gt;</span>
+<span class="nt">&lt;/select&gt;</span>
+</code></pre>
+</div>
+
+<p>However there’s no simple way to set a <code class="highlighter-rouge">disabled</code> attribute on a specific option. So after reading through the <a href="https://github.com/wtforms/wtforms/blob/master/src/wtforms/widgets/core.py#L288">WTForms source code</a> I wrote this custom widget (which is the field ‘renderer’) that allows passing option attributes at render time.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">markupsafe</span> <span class="kn">import</span> <span class="n">Markup</span>
+<span class="kn">from</span> <span class="nn">wtforms.widgets.core</span> <span class="kn">import</span> <span class="n">html_params</span>
+
+
+<span class="k">class</span> <span class="nc">CustomSelect</span><span class="p">:</span>
+    <span class="s">"""
+    Renders a select field allowing custom attributes for options.
+    Expects the field to be an iterable object of Option fields.
+    The render function accepts a dictionary of option ids ("{field_id}-{option_index}")
+    which contain a dictionary of attributes to be passed to the option.
+
+    Example:
+    form.customselect(option_attr={"customselect-0": {"disabled": ""} })
+    """</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">multiple</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">multiple</span> <span class="o">=</span> <span class="n">multiple</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="n">option_attr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">option_attr</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">option_attr</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s">"id"</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="nb">id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">multiple</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s">"multiple"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">if</span> <span class="s">"required"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="s">"required"</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="s">"flags"</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s">"required"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">html</span> <span class="o">=</span> <span class="p">[</span><span class="s">"&lt;select </span><span class="si">%</span><span class="s">s&gt;"</span> <span class="o">%</span> <span class="n">html_params</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">field</span><span class="p">:</span>
+            <span class="n">attr</span> <span class="o">=</span> <span class="n">option_attr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">option</span><span class="o">.</span><span class="nb">id</span><span class="p">,</span> <span class="p">{})</span>
+            <span class="n">html</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">option</span><span class="p">(</span><span class="o">**</span><span class="n">attr</span><span class="p">))</span>
+        <span class="n">html</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s">"&lt;/select&gt;"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Markup</span><span class="p">(</span><span class="s">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">html</span><span class="p">))</span>
+</code></pre>
+</div>
+
+<p>To use it, you’ll need to first pass an instance of <code class="highlighter-rouge">CustomSelect</code> as the <code class="highlighter-rouge">widget</code> parameter when declaring the field.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">customselect</span> <span class="o">=</span> <span class="n">SelectField</span><span class="p">(</span>
+    <span class="s">"Custom Select"</span><span class="p">,</span>
+    <span class="n">choices</span><span class="o">=</span><span class="p">[(</span><span class="s">"option1"</span><span class="p">,</span> <span class="s">"Option 1"</span><span class="p">),</span> <span class="p">(</span><span class="s">"option2"</span><span class="p">,</span> <span class="s">"Option 2"</span><span class="p">)],</span>
+    <span class="n">widget</span><span class="o">=</span><span class="n">CustomSelect</span><span class="p">(),</span>
+<span class="p">)</span>
+</code></pre>
+</div>
+
+<p>Then, when calling the field to render in your template, you can pass a dictionary of option ids (in the format <code class="highlighter-rouge"><span class="p">{</span><span class="err">field_id</span><span class="p">}</span><span class="err">-</span><span class="p">{</span><span class="err">option_index</span><span class="p">}</span></code>) which defines a dictionary of attributes to be passed to the option.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">form</span><span class="o">.</span><span class="n">customselect</span><span class="p">(</span><span class="n">option_attr</span><span class="o">=</span><span class="p">{</span><span class="s">"customselect-0"</span><span class="p">:</span> <span class="p">{</span><span class="s">"disabled"</span><span class="p">:</span> <span class="s">""</span><span class="p">}</span> <span class="p">})</span>
+</code></pre>
+</div>
+
+<p>Or perhaps you want to pass a data attribute.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">form</span><span class="o">.</span><span class="n">customselect</span><span class="p">(</span><span class="n">option_attr</span><span class="o">=</span><span class="p">{</span><span class="s">"customselect-0"</span><span class="p">:</span> <span class="p">{</span><span class="s">"data-id"</span><span class="p">:</span> <span class="s">"value"</span><span class="p">}</span> <span class="p">})</span>
+</code></pre>
+</div>
+
+<p>Hope this is helpful.</p>
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tag/python" title="View posts tagged with python">#python</a></li>
+      
+        <li><a href="/tag/flask" title="View posts tagged with flask">#flask</a></li>
+      
+    </ul>
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/engineering/simple-ecs-service-communication/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/engineering/simple-ecs-service-communication/">Simple, Cost Effective ECS Service Communication</a></div>
+        
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+          <div class="meta-label"><a href="/infosec/owasp-zap-testing-cors-origin-reflection/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/infosec/owasp-zap-testing-cors-origin-reflection/">Using OWASP ZAP to test for CORS origin reflection exploits</a></div>
+        
+      </div>
+    </nav><!-- end .post_nav -->
+
+  </div><!-- end .container -->
+</div><!-- end .stripe -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+  </body>
+
+</html>

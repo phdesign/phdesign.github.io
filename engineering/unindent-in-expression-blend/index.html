@@ -1,0 +1,216 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Paul Heasley">
+  
+
+  <title>Unindent in Expression Blend | phdesign</title>
+  <meta name="description" content="Unindenting in Expression Blend drove me mad, I just couldn’t get it to work. Today I figured out why. The code I am copying from Visual Studio uses spaces f...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/engineering/unindent-in-expression-blend/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MTPZZRZTVF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MTPZZRZTVF');
+</script>
+
+
+  
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/engineering">engineering</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+              <li><a href="/woodworking">woodworking</a></li>
+            
+              <li><a href="/infosec">infosec</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/album-rsync">album-rsync</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+            <li><a href="/phreplace">phReplace</a></li>
+          </ul>
+        </li>
+        <li><a href="/presentations">Presentations</a></li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+    <main class="content" aria-label="Content">
+  	  <article>
+  <div class="container">
+
+    <div class="date-stamp">
+      <div class="month">Feb</div>
+      <div class="day">14</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">Unindent in Expression Blend</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">14 February 2011</span>
+      
+        in <span class="meta-value"><a href="/engineering">engineering</a></span>
+      
+    </div><!-- end .meta-label -->
+    <br />
+
+    
+    
+    
+    
+      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 14 years old and the content may no longer be relevant.</p>
+    
+
+    <p>Unindenting in Expression Blend drove me mad, I just couldn’t get it to work. Today I figured out why.</p>
+
+<p>The code I am copying from Visual Studio uses spaces for indentation, in Blend I was using tabs, this means when I paste code from VS, Blend doesn’t see any tabs to ‘unindent’.</p>
+
+<p>Simple solution - make sure your Visual Studio indentation settings match your Blend settings.</p>
+
+<!--more-->
+
+<p><img src="/assets/img/blog/unindent-in-expression-blend/blend-indent-settings.png" alt="Expression Blend indent settings" /></p>
+
+<p>1. Expression Blend indent settings</p>
+
+<p><img src="/assets/img/blog/unindent-in-expression-blend/vs-indent-settings.png" alt="Visual Studio indent settings" /></p>
+
+<p>2. Visual Studio indent settings</p>
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tag/blend" title="View posts tagged with blend">#blend</a></li>
+      
+        <li><a href="/tag/wpf" title="View posts tagged with wpf">#wpf</a></li>
+      
+        <li><a href="/tag/xaml" title="View posts tagged with xaml">#xaml</a></li>
+      
+    </ul>
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/engineering/wpf-radiobutton-binding-to-ischecked-property/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/engineering/wpf-radiobutton-binding-to-ischecked-property/">WPF RadioButton Binding to IsChecked Property</a></div>
+        
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+          <div class="meta-label"><a href="/engineering/using-linq-to-list-all-duplicates/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/engineering/using-linq-to-list-all-duplicates/">Using LINQ to list all duplicates</a></div>
+        
+      </div>
+    </nav><!-- end .post_nav -->
+
+  </div><!-- end .container -->
+</div><!-- end .stripe -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+  </body>
+
+</html>

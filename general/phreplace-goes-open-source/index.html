@@ -73,7 +73,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
             
-              <li><a href="/programming">programming</a></li>
+              <li><a href="/engineering">engineering</a></li>
             
               <li><a href="/general">general</a></li>
             
@@ -152,13 +152,12 @@
 <p>The first major change that I would like to see is support for Vista / Windows 7. At present the phreplace.vbs script intialises the application by checking to see if the phreplace.dll library is registered, if it isn’t it tries to register it with regsvr32. This works for Windows XP but standard users aren’t able to register libraries in Vista / Windows 7. So far I have come up with 3 solutions.</p>
 
 <ul>
-  <li>Override DllRegisterServer using <a href="http://vb.mvps.org/tools/vbAdvance/" title="Classic VB Tools: vbAdvance">vbAdvance</a>. I can’t get this library to work. See <a href="/programming/registering-phreplace-dll-in-windows-vista/">Registering phreplace DLL in Windows Vista</a>.</li>
-  <li>Create a separate utility similar to regsvr32 and include this with phreplace. I think this is messy. Again see <a href="/programming/registering-phreplace-dll-in-windows-vista/">Registering phreplace DLL in Windows Vista</a>.</li>
+  <li>Override DllRegisterServer using <a href="http://vb.mvps.org/tools/vbAdvance/" title="Classic VB Tools: vbAdvance">vbAdvance</a>. I can’t get this library to work. See <a href="/engineering/registering-phreplace-dll-in-windows-vista/">Registering phreplace DLL in Windows Vista</a>.</li>
+  <li>Create a separate utility similar to regsvr32 and include this with phreplace. I think this is messy. Again see <a href="/engineering/registering-phreplace-dll-in-windows-vista/">Registering phreplace DLL in Windows Vista</a>.</li>
   <li>Use the <a href="http://msdn.microsoft.com/en-us/library/ms973913.aspx" title="Registration-Free COM">Registration-Free COM</a> solution of adding a manifest file for PSPad which references the phreplace.dll library so that we don’t have to register it in the registry at all. This solution works for XP, see the <a href="https://www.assembla.com/code/phreplace/subversion/nodes/branches/reg-free-com?rev=5" title="reg-free-com branch of phreplace source code.">reg-free-com branch of the source code</a>, but doesn’t seem to work for Vista. My theory is that perhaps Vista handles vbscript differently, so it doesn’t inherit the PSPad manifest. If someone could get this working I think this is the most elegant solution.</li>
 </ul>
 
 <p>I look forward to seeing user contributions to this project.</p>
-
 
 
     <ul class="post-tags">
@@ -178,14 +177,14 @@
     <nav class="row pager">
       <div class="previous col-xs-6 col-sm-4">
         
-          <div class="meta-label"><a href="/programming/ie-autocomplete-doesnt-fire-onchange-event-handler/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
-          <div class="meta-value"><a href="/programming/ie-autocomplete-doesnt-fire-onchange-event-handler/">IE Autocomplete Doesn't Fire onchange Event Handler</a></div>
+          <div class="meta-label"><a href="/engineering/ie-autocomplete-doesnt-fire-onchange-event-handler/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/engineering/ie-autocomplete-doesnt-fire-onchange-event-handler/">IE Autocomplete Doesn't Fire onchange Event Handler</a></div>
         
       </div>
       <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
         
-          <div class="meta-label"><a href="/programming/logging-messages-in-dot-net/">Next post <span aria-hidden="true">&raquo;</span></a></div>
-          <div class="meta-value"><a href="/programming/logging-messages-in-dot-net/">Logging Messages in Dot Net</a></div>
+          <div class="meta-label"><a href="/engineering/logging-messages-in-dot-net/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/engineering/logging-messages-in-dot-net/">Logging Messages in Dot Net</a></div>
         
       </div>
     </nav><!-- end .post_nav -->

@@ -1,0 +1,310 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Paul Heasley">
+  
+
+  <title>Duplicate Celery logs in a Flask app | phdesign</title>
+  <meta name="description" content="Celery and Flask go together like tacos and Tuesdays, so I was surprised to run into some incompatibility in the way they setup and use loggers which caused ...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/engineering/duplicate-celery-logs-in-flask/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MTPZZRZTVF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MTPZZRZTVF');
+</script>
+
+
+  
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/engineering">engineering</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+              <li><a href="/woodworking">woodworking</a></li>
+            
+              <li><a href="/infosec">infosec</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/album-rsync">album-rsync</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+            <li><a href="/phreplace">phReplace</a></li>
+          </ul>
+        </li>
+        <li><a href="/presentations">Presentations</a></li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+    <main class="content" aria-label="Content">
+  	  <article>
+  <div class="container">
+
+    <div class="date-stamp">
+      <div class="month">Sep</div>
+      <div class="day">30</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">Duplicate Celery logs in a Flask app</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">30 September 2020</span>
+      
+        in <span class="meta-value"><a href="/engineering">engineering</a></span>
+      
+    </div><!-- end .meta-label -->
+    <br />
+
+    
+    
+    
+    
+      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 4 years old and the content may no longer be relevant.</p>
+    
+
+    <p><a href="https://docs.celeryproject.org/en/stable/userguide/application.html">Celery</a> and <a href="https://flask.palletsprojects.com/en/1.1.x/">Flask</a> go together like tacos and Tuesdays, so I was surprised to run into some incompatibility in the way they setup and use loggers which caused Celery to dump duplicate logs. Perhaps it was just the way I had structured my project, using a <a href="https://flask.palletsprojects.com/en/1.1.x/patterns/appfactories/">Flask application factory</a> and Celery tasks in a <code class="highlighter-rouge">tasks</code> folder, but that seems pretty standard. Or maybe it’s how I’m setting the log level? But I digress.</p>
+
+<!--more-->
+
+<p>The problem is that Celery is producing duplicate logs, like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[2020-09-30 07:48:54,638: WARNING/ForkPoolWorker-3] [2020-09-30 07:48:54,637] INFO in cleaner: Cleaning up 0 expired alerts
+[2020-09-30 07:48:54,637: INFO/ForkPoolWorker-3] Cleaning up 0 expired alerts
+[2020-09-30 07:48:57,050: WARNING/ForkPoolWorker-5] [2020-09-30 07:48:57,049] DEBUG in alerts: Evaluating 2 alerts
+[2020-09-30 07:48:57,049: DEBUG/ForkPoolWorker-5] Evaluating 2 alerts
+</code></pre>
+</div>
+
+<p>After stepping through the code in Celery’s <a href="https://github.com/celery/celery/blob/master/celery/app/log.py">app/log.py</a> and Flask’s <a href="https://github.com/pallets/flask/blob/master/src/flask/logging.py">logging.py</a> it turns out that Celery is trying to reconfigure the logger hierarchy, including adding a catch all root logger, but the standard python logging library updates the heirarchy whenever a new logger is added, based on the logger name (e.g. <code class="highlighter-rouge">myapp.tasks.alerts</code>), and Flask lazy loads it’s logger so it clobbers some of the Celery setup.</p>
+
+<p>Let’s cover that in more detail.</p>
+
+<p>Within my Celery task module, I get the logger as a global variable.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># @myapp/tasks/alerts.py</span>
+<span class="kn">from</span> <span class="nn">celery.utils.log</span> <span class="kn">import</span> <span class="n">get_task_logger</span>
+
+<span class="n">logger</span> <span class="o">=</span> <span class="n">get_task_logger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>Celery’s <code class="highlighter-rouge">get_task_logger()</code> function essentially wraps the standard <code class="highlighter-rouge">logging.getLogger()</code> call and then changes the parent to be the “celery.task” logger (<a href="https://github.com/celery/celery/blob/ea37db1410c83271e06d78a564983cba3732a1b1/celery/utils/log.py#L108">source</a>).</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># @celery/utils/log.py</span>
+<span class="k">def</span> <span class="nf">get_task_logger</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="s">"""Get logger for task module by name."""</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">RESERVED_LOGGER_NAMES</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="nb">RuntimeError</span><span class="p">(</span><span class="n">f</span><span class="s">'Logger name {name!r} is reserved!'</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_using_logger_parent</span><span class="p">(</span><span class="n">task_logger</span><span class="p">,</span> <span class="n">get_logger</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+</code></pre>
+</div>
+
+<p>Celery gives the new logger a <code class="highlighter-rouge">logging.NullHandler</code>, so anything written to this loger will propagate up to the parent logger (“celery.task”) to be handled. This logger uses a custom Celery <code class="highlighter-rouge">TaskFormatter</code> which print out helpful information about the task name and id that it was running in. This is what we want.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[2020-09-30 18:53:48,142: DEBUG/ForkPoolWorker-3] myapp.tasks.alerts.evaluate_alerts[4ea6cd37-932f-4286-89f2-1aa4ba5ee2ed]: Evaluating 2 alerts
+</code></pre>
+</div>
+
+<p>So if nothing else happened, our logger would be wired up to Celery’s “celery.task” logger and it would print once with the task id. Unfortunately this wasn’t happening for me, and the reason was because in my Flask <code class="highlighter-rouge">create_app()</code> function, I was setting the logging level.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">create_app</span><span class="p">(</span><span class="n">test_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Flask</span><span class="p">:</span>
+    <span class="o">...</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">"LOG_LEVEL"</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">))</span>
+</code></pre>
+</div>
+
+<p>Why would this matter? Because <code class="highlighter-rouge">app.logger</code> is a lazy loaded property, meaning now that I access it, it initialises the Flask logger, using the name of our project.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># @flask/app.py</span>
+<span class="nd">@locked_cached_property</span>
+<span class="k">def</span> <span class="nf">logger</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">create_logger</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<span class="c"># @flask/logging.py</span>
+<span class="k">def</span> <span class="nf">create_logger</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">app</span><span class="o">.</span><span class="n">debug</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">logger</span><span class="o">.</span><span class="n">level</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">has_level_handler</span><span class="p">(</span><span class="n">logger</span><span class="p">):</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">default_handler</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">logger</span>
+</code></pre>
+</div>
+
+<p>Now, inside python’s <code class="highlighter-rouge">logging.getLogger</code>, it updates the loggers parent, and tries to update any existing loggers that should now be the children of this new logger based on the naming convention.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># @logging/__init__.py</span>
+<span class="k">def</span> <span class="nf">getLogger</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="o">...</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_fixupChildren</span><span class="p">(</span><span class="n">ph</span><span class="p">,</span> <span class="n">rv</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_fixupParents</span><span class="p">(</span><span class="n">rv</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>So, when we create a new flask logger called <code class="highlighter-rouge">"myapp"</code>, our task logger <code class="highlighter-rouge">"myapp.tasks.alerts"</code>, which used to have <code class="highlighter-rouge">"celery.task"</code> as it’s parent, now gets updated to have our new flask logger as it’s parent, so we lose the task id and name. But why do we get 2 logs? Well, Celery helpfully created a root logger as a catch all, and by default loggers propagate their log events to the parents as well, so both our Flask app logger, and the root logger see the event and write it. This doesn’t happen with the “celery.task” logger because it’s configured not to propagate events. Here’s a tree view to visualise it.</p>
+
+<p>What we want</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>myapp.tasks.alerts(NullHandler, propagate=True)
+└─── celery.task(StreamHandler, propagate=False) *Writes log and stops
+    └─── celery(StreamHandler, propagate=False)
+        └─── root(StreamHandler, propagate=False)
+</code></pre>
+</div>
+
+<p>What we ended up with</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>myapp.tasks.alerts(NullHandler, propagate=True)
+└─── myapp(StreamHandler, propagate=True) *Writes log and propagates
+    └─── root(StreamHandler, propagate=False) *Writes log
+</code></pre>
+</div>
+
+<p>So, what’s the solution? Well I messed around with trying to reset my task loggers back to have “celery.task” as a parent, but it was overridden again. The simple solution I ended up with was just giving my task loggers a name that wasn’t part of the heirarchy.</p>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="n">logger</span> <span class="o">=</span> <span class="n">get_task_logger</span><span class="p">(</span><span class="s">"alerts"</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>Yeah, that simple.</p>
+
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tag/python" title="View posts tagged with python">#python</a></li>
+      
+        <li><a href="/tag/flask" title="View posts tagged with flask">#flask</a></li>
+      
+        <li><a href="/tag/celery" title="View posts tagged with celery">#celery</a></li>
+      
+    </ul>
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/infosec/owasp-zap-testing-cors-origin-reflection/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/infosec/owasp-zap-testing-cors-origin-reflection/">Using OWASP ZAP to test for CORS origin reflection exploits</a></div>
+        
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+          <div class="meta-label"><a href="/engineering/introducing-trade-monitor/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/engineering/introducing-trade-monitor/">Introducing Trade Monitor - a free stock notification service</a></div>
+        
+      </div>
+    </nav><!-- end .post_nav -->
+
+  </div><!-- end .container -->
+</div><!-- end .stripe -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+  </body>
+
+</html>

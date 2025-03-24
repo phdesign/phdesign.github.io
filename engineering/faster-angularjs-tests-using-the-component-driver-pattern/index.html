@@ -1,0 +1,269 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Paul Heasley">
+  
+
+  <title>Faster AngularJS tests using the component driver pattern | phdesign</title>
+  <meta name="description" content="When writing tests I prefer to test multiple functions and their interactions at once, rather than constraining a test to a single function or unit. This ens...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/engineering/faster-angularjs-tests-using-the-component-driver-pattern/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MTPZZRZTVF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MTPZZRZTVF');
+</script>
+
+
+  
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/engineering">engineering</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+              <li><a href="/woodworking">woodworking</a></li>
+            
+              <li><a href="/infosec">infosec</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/album-rsync">album-rsync</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+            <li><a href="/phreplace">phReplace</a></li>
+          </ul>
+        </li>
+        <li><a href="/presentations">Presentations</a></li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+    <main class="content" aria-label="Content">
+  	  <article>
+  <div class="container">
+
+    <div class="date-stamp">
+      <div class="month">Feb</div>
+      <div class="day">13</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">Faster AngularJS tests using the component driver pattern</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">13 February 2018</span>
+      
+        in <span class="meta-value"><a href="/engineering">engineering</a></span>
+      
+    </div><!-- end .meta-label -->
+    <br />
+
+    
+    
+    
+    
+      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 7 years old and the content may no longer be relevant.</p>
+    
+
+    <p>When writing tests I prefer to test multiple functions and their interactions at once, rather than constraining a test to a single function or unit. This ensures that the test operates in more realistic way, and avoids maintaining unnecessary tests over code paths that can’t be reached.</p>
+
+<p>Protractor e2e tests for AngularJS interact directly with the DOM and usually provide more value than unit tests. I’m not interested in whether a controller behaves a certain way, I’m more interested in what happens when a user clicks a certain button on a page. But protractor tests are slow. In the largest AngularJS project I manage, there are over 300 protractor tests that take up to 15 minutes to complete, that’s a very slow feedback loop. In order to bring the test time down I’m turning back to AngularJS unit tests, using the component driver pattern to still inspect and interact with DOM elements.</p>
+
+<!--more-->
+
+<h2 id="the-component-driver-test-pattern">The component driver test pattern</h2>
+
+<p>Based on the techniques described in <a href="https://medium.com/@carmelc_20450/testing-angular-components-you-dont-know-what-you-re-missing-149a1cae6668" target="_blank">Testing angular components — you don’t know what you’re missing</a>, the component driver pattern reorganises test code so that rendering an AngularJS component and inspecting or interacting with it is abstracted from the test function into a component driver class, making it much easier to read and follow.</p>
+
+<p>The component driver class should contain a <code class="highlighter-rouge">render</code> function which uses AngularJS’s $compile to convert a template into a jqLite / jQuery element. Other functions of the driver are written specifically for interacting with this component, e.g. <code class="highlighter-rouge">getFirstName</code>, <code class="highlighter-rouge">setDescription</code>, <code class="highlighter-rouge">clickNextButton</code>. Please excuse my ES5 here, you should use the class syntax where available.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">TodoItemDriver</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">$compile</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">$compile</span> <span class="o">=</span> <span class="nx">$compile</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="nx">TodoItemDriver</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">render</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">scope</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">element</span> <span class="o">=</span> <span class="nx">angular</span><span class="p">.</span><span class="nx">element</span><span class="p">(</span><span class="s1">'&lt;todo-item todo="todo"&gt;&lt;/todo-item&gt;'</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">element</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">$compile</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">element</span><span class="p">)(</span><span class="nx">scope</span><span class="p">);</span>
+        <span class="nx">scope</span><span class="p">.</span><span class="nx">$digest</span><span class="p">();</span>
+    <span class="p">},</span>
+
+    <span class="na">getTitle</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'label'</span><span class="p">).</span><span class="nx">text</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>The test code then gets reduced to creating the driver, setting any scope variables to pass to the component, rendering the component and inspecting it.</p>
+
+<div class="language-javascript highlighter-rouge"><pre class="highlight"><code><span class="nx">beforeEach</span><span class="p">(</span><span class="nx">inject</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">$rootScope</span><span class="p">,</span> <span class="nx">_$compile_</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">$scope</span> <span class="o">=</span> <span class="nx">$rootScope</span><span class="p">.</span><span class="nx">$new</span><span class="p">();</span>
+    <span class="nx">component</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">TodoItemDriver</span><span class="p">(</span><span class="nx">_$compile_</span><span class="p">);</span>
+
+    <span class="nx">$scope</span><span class="p">.</span><span class="nx">todo</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="na">uid</span><span class="p">:</span> <span class="s1">'102c2049-4a69-49d7-9395-24189e99a141'</span><span class="p">,</span>
+        <span class="na">title</span><span class="p">:</span> <span class="s1">'  test todo '</span><span class="p">,</span>
+    <span class="p">};</span>
+<span class="p">}));</span>
+
+<span class="nx">it</span><span class="p">(</span><span class="s1">'should display the trimmed Todo title'</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="nx">component</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="nx">$scope</span><span class="p">);</span>
+    <span class="nx">expect</span><span class="p">(</span><span class="nx">component</span><span class="p">.</span><span class="nx">getTitle</span><span class="p">()).</span><span class="nx">to</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">'test todo'</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<h2 id="css-styles">CSS styles</h2>
+
+<p>One thing to consider with this type of testing is that CSS styles are going to be incomplete as we are only rendering a small part of the DOM. Prefer to test that an element has a class, e.g. ‘ng-hide’, rather than that a specific style has been applied.</p>
+
+<h2 id="stateless-components">Stateless components</h2>
+
+<p>A stateless component is one whose rendered output is only dependant on its input bindings / scope, this means it doesn’t take service dependencies to fetch state from localStorage or APIs. Obviously some area of the system needs to manage state, but it’s good practice to write your components to be stateless if possible, which makes them much easier to test. All you should need to test is that given a certain scope, the rendered output / element is as expected.</p>
+
+<h2 id="vertical-testing">Vertical testing</h2>
+
+<p>As much as possible I encourage testing multiple areas of the system and their interactions. Don’t test the view, the controller and the service in isolation, instead interact with the view and check that the service responds accordingly. Only mock out the edges of your application (e.g. API calls, localStore, etc…). This style of testing is sometimes called <a href="https://martinfowler.com/bliki/SubcutaneousTest.html" target="_blank">Subcutaneous Testing</a>, or for a less squeamish sounding name, Vertical Testing.</p>
+
+<p>Vertical testing can reduce the number of tests and the amount of test maintenance required. You don’t really care whether a view uses a particular controller right? You care whether the correct operations occur when something interacts with the system.</p>
+
+<h2 id="in-closing">In closing…</h2>
+
+<p>There are still situations where isolated unit tests make sense, and also where Protractor tests are more appropriate (expecially when testing interactions between multiple components from different areas of the DOM), but the majority of scenarios should be tested using the component driver pattern to get the best balance of performance and maintainability.</p>
+
+<p>A reference project is available at <a href="https://github.com/phdesign/todo-better-angular" target="_blank">https://github.com/phdesign/todo-better-angular</a></p>
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tag/angular" title="View posts tagged with angular">#angular</a></li>
+      
+        <li><a href="/tag/testing" title="View posts tagged with testing">#testing</a></li>
+      
+        <li><a href="/tag/javascript" title="View posts tagged with javascript">#javascript</a></li>
+      
+    </ul>
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/engineering/write-angularjs-like-its-2018/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/engineering/write-angularjs-like-its-2018/">Write AngularJS like it's 2018</a></div>
+        
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+          <div class="meta-label"><a href="/engineering/using-css-modules-with-angular-typescript-and-bootstrap/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/engineering/using-css-modules-with-angular-typescript-and-bootstrap/">Using CSS Modules with Angular, TypeScript and Bootstrap</a></div>
+        
+      </div>
+    </nav><!-- end .post_nav -->
+
+  </div><!-- end .container -->
+</div><!-- end .stripe -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+  </body>
+
+</html>

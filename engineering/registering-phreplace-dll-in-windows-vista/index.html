@@ -1,0 +1,226 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Paul Heasley">
+  
+
+  <title>Registering phreplace DLL in Windows Vista | phdesign</title>
+  <meta name="description" content="phreplace is a VB6 DLL which is called from a vbscript plugin for PSPad. The script tests to see if the correct version of the DLL is registered on this comp...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/engineering/registering-phreplace-dll-in-windows-vista/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MTPZZRZTVF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MTPZZRZTVF');
+</script>
+
+
+  
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/engineering">engineering</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+              <li><a href="/woodworking">woodworking</a></li>
+            
+              <li><a href="/infosec">infosec</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/album-rsync">album-rsync</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+            <li><a href="/phreplace">phReplace</a></li>
+          </ul>
+        </li>
+        <li><a href="/presentations">Presentations</a></li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+    <main class="content" aria-label="Content">
+  	  <article>
+  <div class="container">
+
+    <div class="date-stamp">
+      <div class="month">Mar</div>
+      <div class="day">17</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">Registering phreplace DLL in Windows Vista</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">17 March 2010</span>
+      
+        in <span class="meta-value"><a href="/engineering">engineering</a></span>
+      
+    </div><!-- end .meta-label -->
+    <br />
+
+    
+    
+    
+    
+      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 15 years old and the content may no longer be relevant.</p>
+    
+
+    <p><a href="/phreplace">phreplace</a> is a VB6 DLL which is called from a vbscript plugin for <a href="http://www.pspad.com/" title="PSPad editor for developers">PSPad</a>. The script tests to see if the correct version of the DLL is registered on this computer, if not it registers it using regsvr32. This works fine in XP but not Vista where the script will error.</p>
+
+<p>A while ago a user pointed out to me <a href="http://www.experts-exchange.com/Programming/System/Windows__Programming/Q_21243930.html" title="Self Registering DLL's">this article on Experts Exchange</a> explaining why administrative rights are required to register a DLL in Windows Vista, in the hopes that we could automate the registration of phreplace in Vista.</p>
+
+<!--more-->
+
+<p>Feeling defeated, I decided to explain why I haven’t been able to do this yet.</p>
+
+<p>The fundamental problem is that Vista requires administrative privledges to write to the registry key required to register DLLs:</p>
+
+<p>HKEY_CLASSES_ROOT\</p>
+
+<p>However the user can register DLLs in their own section of the registry:</p>
+
+<p>HKEY_CURRENT_USER\SOFTWARE\Classes\</p>
+
+<p>So all is well right? Well not if you’re using VB6, you see when you run regsvr32, it calls the methods DllRegisterSever and DllUnregisterSever  to add / remove entries from the registry, these methods are generated automatically by VB6 to register to HKEY_CLASSES_ROOT, and there is no way to change this.</p>
+
+<p>Well, there is one way. Apparently the <a href="http://vb.mvps.org/tools/vbAdvance/" title="vbAdvance Visual Basic addon">vbAdvance</a> addon for VB6 allowed a user to customise DllRegisterServer / DllUnregisterServer, this sounds great, except that it doesn’t work. I tried modifying these methods according to the instruction, but the resulting DLL just wont register. I even tried registering the included example DLL in the download package, but this threw the same error.</p>
+
+<p>I’m certain it must have worked at some stage, they wouldn’t have included an example that didn’t work, so I can’t figure out what’s different. Did it only work in Windows 98 or 2000?</p>
+
+<p>So in summary, for as long as I’m using VB6 I don’t think I can change where phreplace tries to register the DLL, the only other workaround is to use RegOverridePredefKey to tell the registry to redirect any calls to HKEY_CLASSES_ROOT to HKEY_CURRENT_USER\SOFTWARE\Classes, this would work but I don’t think it can be done with vbscript, so I would need to add another executable to phreplace to use in registering / unregistering the DLL from the registry, seems pretty messy.</p>
+
+<p>If you’ve got any tips for me (especially how I can customise DllRegisterServer) feel free to <a href="/contact">contact</a> me.</p>
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tag/dll" title="View posts tagged with dll">#dll</a></li>
+      
+        <li><a href="/tag/phreplace" title="View posts tagged with phreplace">#phreplace</a></li>
+      
+        <li><a href="/tag/vb6" title="View posts tagged with vb6">#vb6</a></li>
+      
+    </ul>
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/engineering/no-validation-messages-when-disabling-enabling-asp-net-validator-in-javascript/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/engineering/no-validation-messages-when-disabling-enabling-asp-net-validator-in-javascript/">No Validation Messages when Disabling & Enabling ASP.Net Validator in Javascript</a></div>
+        
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+          <div class="meta-label"><a href="/engineering/ie-autocomplete-doesnt-fire-onchange-event-handler/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/engineering/ie-autocomplete-doesnt-fire-onchange-event-handler/">IE Autocomplete Doesn't Fire onchange Event Handler</a></div>
+        
+      </div>
+    </nav><!-- end .post_nav -->
+
+  </div><!-- end .container -->
+</div><!-- end .stripe -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+  </body>
+
+</html>

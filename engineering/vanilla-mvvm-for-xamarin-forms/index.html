@@ -1,0 +1,434 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Paul Heasley">
+  
+
+  <title>Vanilla MVVM for Xamarin Forms | phdesign</title>
+  <meta name="description" content="Want to do MVVM without the frameworks? Xamarin Forms provides everything we need to implement the pattern and make our ViewModels testable. Note that some n...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/engineering/vanilla-mvvm-for-xamarin-forms/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MTPZZRZTVF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MTPZZRZTVF');
+</script>
+
+
+  
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/engineering">engineering</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+              <li><a href="/woodworking">woodworking</a></li>
+            
+              <li><a href="/infosec">infosec</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/album-rsync">album-rsync</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+            <li><a href="/phreplace">phReplace</a></li>
+          </ul>
+        </li>
+        <li><a href="/presentations">Presentations</a></li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+    <main class="content" aria-label="Content">
+  	  <article>
+  <div class="container">
+
+    <div class="date-stamp">
+      <div class="month">Dec</div>
+      <div class="day">19</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">Vanilla MVVM for Xamarin Forms</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">19 December 2017</span>
+      
+        in <span class="meta-value"><a href="/engineering">engineering</a></span>
+      
+    </div><!-- end .meta-label -->
+    <br />
+
+    
+    
+    
+    
+      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 7 years old and the content may no longer be relevant.</p>
+    
+
+    <p>Want to do MVVM without the frameworks? Xamarin Forms provides everything we need to implement the pattern and make our ViewModels testable.</p>
+
+<p><em>Note that some naming, patterns and code have been borrowed from the excellent <a href="https://github.com/rid00z/FreshMvvm" target="_blank">FreshMVVM</a> framework. This is a great lightweight framework to get started with if you don’t want to roll your own.</em></p>
+
+<p>Simply put, MVVM helps us to abstract any UI logic out of the View and into a ViewModel to make it testable, while the data and business logic remains in the Model.</p>
+
+<p>To avoid boilerplate code we’re going to create a couple of base classes, one for our Views, and one for our ViewModels.</p>
+
+<!--more-->
+
+<h2 id="viewmodelbase">ViewModelBase</h2>
+
+<p>The basic implementation of <code class="highlighter-rouge">ViewModelBase</code> needs to implement <code class="highlighter-rouge">INotifyPropertyChanged</code> to enable bindings, needs to enable navigation and ideally provides hooks into the page lifecycle. Here’s a simple implementation:</p>
+
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">abstract</span> <span class="k">class</span> <span class="nc">ViewModelBase</span> <span class="p">:</span> <span class="n">INotifyPropertyChanged</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">event</span> <span class="n">PropertyChangedEventHandler</span> <span class="n">PropertyChanged</span><span class="p">;</span>
+    
+    <span class="k">public</span> <span class="kt">string</span> <span class="n">Title</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    <span class="k">public</span> <span class="n">INavigation</span> <span class="n">Navigation</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="k">protected</span> <span class="nf">ViewModelBase</span><span class="p">(</span><span class="n">INavigation</span> <span class="n">navigation</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Navigation</span> <span class="p">=</span> <span class="n">navigation</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">public</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">Init</span><span class="p">(</span><span class="kt">object</span> <span class="n">initData</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="k">void</span> <span class="nf">WireEvents</span><span class="p">(</span><span class="n">Page</span> <span class="n">page</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">page</span><span class="p">.</span><span class="n">Appearing</span> <span class="p">+=</span> <span class="n">ViewIsAppearing</span><span class="p">;</span>
+        <span class="n">page</span><span class="p">.</span><span class="n">Disappearing</span> <span class="p">+=</span> <span class="n">ViewIsDisappearing</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">protected</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">ViewIsDisappearing</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="k">protected</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">ViewIsAppearing</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="k">protected</span> <span class="k">virtual</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">PushPage</span><span class="p">(</span><span class="n">ContentPage</span> <span class="n">page</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">await</span> <span class="n">Navigation</span><span class="p">.</span><span class="nf">PushAsync</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">protected</span> <span class="k">virtual</span> <span class="k">async</span> <span class="n">Task</span> <span class="nf">PopPage</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">await</span> <span class="n">Navigation</span><span class="p">.</span><span class="nf">PopAsync</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>Seeing <code class="highlighter-rouge">ContentPage</code> here may ring some alarm bells. This is a code smell, one of the rules of MVVM is that the ViewModel should know nothing about the View in order to be easily testable, and ContentPage is a View. In my experience, this is an acceptable trade-off for reducing complexity, and is still easy to test. If you don’t like it, use an MVVM Framework to abstract away the navigation.</p>
+
+<p>For navigation, we accept a Xamarin.Forms.INavigation object. This is easily mockable in our tests and is future proof. If Xamarin extends that interface in the future we won’t need any changes to use it.</p>
+
+<p>Borrowing from FreshMVVM, our <code class="highlighter-rouge">Init()</code> method allows us to pass custom data to the ViewModel. You’re going to have to cast it from an object, but if that makes you uneasy then it wouldn’t be too hard to extend this example to support a generic interface for the initialisation data.</p>
+
+<p>I’ve thrown in a <code class="highlighter-rouge">Title</code> property here, it’s not really needed but demonstrates that you should be adding any common properties to this class that your ViewModels will need. Note that while Title is bindable, we’re not emitting a PropertyChanged event, this is because I use <a href="https://github.com/Fody/PropertyChanged" target="_blank">Fody.PropertyChanged</a> to automatically add that boilerplate code when compiling.</p>
+
+<p>Lastly, and again borrowing from FreshMVVM, we’re going to allow the ViewModel access to some of the page lifecycle events through the <code class="highlighter-rouge">WireEvents</code> method.</p>
+
+<h2 id="contentpagebase">ContentPageBase</h2>
+
+<p>Our base class for the View will allow us to wire up all the page events and the bindings and pass the navigation object.</p>
+
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">ContentPageBase</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span> <span class="p">:</span> <span class="n">ContentPage</span> <span class="k">where</span> <span class="n">T</span> <span class="p">:</span> <span class="n">ViewModelBase</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="n">T</span> <span class="n">ViewModel</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+    
+    <span class="k">protected</span> <span class="nf">ContentPageBase</span><span class="p">(</span><span class="kt">object</span> <span class="n">initData</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// The BindingContext = ViewModel call is left to the derived Page to do, 
+</span>        <span class="c1">// Xamarin best practice says to bind it after InitializeComponent() so we can't do it here.
+</span>        <span class="k">using</span> <span class="p">(</span><span class="kt">var</span> <span class="n">scope</span> <span class="p">=</span> <span class="n">App</span><span class="p">.</span><span class="n">Container</span><span class="p">.</span><span class="nf">BeginLifetimeScope</span><span class="p">(</span><span class="n">builder</span> <span class="p">=&gt;</span>
+            <span class="n">builder</span><span class="p">.</span><span class="nf">RegisterInstance</span><span class="p">(</span><span class="n">Navigation</span><span class="p">).</span><span class="n">As</span><span class="p">&lt;</span><span class="n">INavigation</span><span class="p">&gt;()))</span>
+        <span class="p">{</span>
+            <span class="n">ViewModel</span> <span class="p">=</span> <span class="n">scope</span><span class="p">.</span><span class="n">Resolve</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;();</span>
+            <span class="n">ViewModel</span><span class="p">.</span><span class="nf">WireEvents</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+            <span class="n">ViewModel</span><span class="p">.</span><span class="nf">Init</span><span class="p">(</span><span class="n">initData</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">protected</span> <span class="nf">ContentPageBase</span><span class="p">()</span> <span class="p">:</span> <span class="k">this</span><span class="p">(</span><span class="k">null</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>Xamarin Forms provides a BindingContext for it’s views, allowing us to delegate bindings to a separate class. We’re going to take advantage of this and provide a custom base ContentPage class that will setup our ViewModel for every page.</p>
+
+<p>Note that the ContentPageBase is generic, it accepts the associated ViewModel as a type. We then use dependency injection to resolve the ViewModel, here I’m using Autofac and I register the current Navigation instance for this scope. To do this however we need access to IoC container, again it’s not pretty but I expose the container as a property on the App object (<code class="highlighter-rouge">App.Container</code>).</p>
+
+<p>To use this as our base class for Views, change the <code class="highlighter-rouge">ContentPage</code> in  XAML to <code class="highlighter-rouge">ContentPageBase</code> and provide the ViewModel as the generic type argument. E.g.</p>
+
+<div class="language-xml highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="utf-8" ?&gt;</span>
+<span class="nt">&lt;mvvm:ContentPageBase</span> <span class="na">xmlns=</span><span class="s">"http://xamarin.com/schemas/2014/forms"</span>
+    <span class="err">...</span>
+    <span class="na">xmlns:vm=</span><span class="s">"clr-namespace:MyApp.ViewModels;assembly=MyApp"</span>
+    <span class="na">xmlns:mvvm=</span><span class="s">"clr-namespace:MyApp.Mvvm;assembly=MyApp"</span>
+    <span class="na">x:Class=</span><span class="s">"MyApp.Views.AboutPage"</span>
+    <span class="na">x:TypeArguments=</span><span class="s">"vm:AboutViewModel"</span><span class="nt">&gt;</span>
+...
+<span class="nt">&lt;/mvvm:ContentPageBase&gt;</span>
+</code></pre>
+</div>
+
+<p>Finally, we need to wire up the BindingContext in the code behind. Ideally I’d do this in the ContentPageBase but if you set BindingContext before InitializeComponent is called, weird things can happen. Note that specifying the base class is optional in the code behind (e.g. <code class="highlighter-rouge">: ContentPageBase&lt;AboutViewModel&gt;</code>).</p>
+
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">partial</span> <span class="k">class</span> <span class="nc">AboutPage</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="nf">AboutPage</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="nf">InitializeComponent</span><span class="p">();</span>
+        <span class="n">BindingContext</span> <span class="p">=</span> <span class="n">ViewModel</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<h2 id="viewmodel-resolution">ViewModel Resolution</h2>
+
+<p>All MVVM frameworks rely on dependency injection to resolve the ViewModel for a particular view. In ContentPageBase you saw us retrieve the ViewModel from <code class="highlighter-rouge">App.Container</code>, so we need to register all the ViewModels into the container.</p>
+
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">partial</span> <span class="k">class</span> <span class="nc">App</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="n">IContainer</span> <span class="n">Container</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="c1">/// &lt;summary&gt;
+</span>    <span class="c1">/// This default parameterless constructor is needed for Xamarin previewer
+</span>    <span class="c1">/// &lt;/summary&gt;
+</span>    <span class="k">public</span> <span class="nf">App</span><span class="p">()</span> <span class="p">:</span> <span class="k">this</span><span class="p">(</span><span class="k">new</span> <span class="nf">Bootstrapper</span><span class="p">())</span>
+    <span class="p">{</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="nf">App</span><span class="p">(</span><span class="n">Bootstrapper</span> <span class="n">bootstrapper</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nf">InitializeComponent</span><span class="p">();</span>
+        <span class="n">Container</span> <span class="p">=</span> <span class="n">bootstrapper</span><span class="p">.</span><span class="nf">CreateContainer</span><span class="p">();</span>
+        <span class="n">MainPage</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">NavigationPage</span><span class="p">(</span><span class="k">new</span> <span class="nf">AboutPage</span><span class="p">());</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>Here I’m passing the IoC builder, <code class="highlighter-rouge">Bootstrapper</code>,  into the app, which allows the platform specific projects (Android / iOS etc…) to extend the Bootstrapper and register any platform specific dependencies.</p>
+
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">Bootstrapper</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="n">IContainer</span> <span class="nf">CreateContainer</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="kt">var</span> <span class="n">builder</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">ContainerBuilder</span><span class="p">();</span>
+        <span class="nf">RegisterDepenencies</span><span class="p">(</span><span class="n">builder</span><span class="p">);</span>
+        <span class="k">return</span> <span class="n">builder</span><span class="p">.</span><span class="nf">Build</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">protected</span> <span class="k">virtual</span> <span class="k">void</span> <span class="nf">RegisterDepenencies</span><span class="p">(</span><span class="n">ContainerBuilder</span> <span class="n">builder</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">builder</span><span class="p">.</span><span class="n">RegisterType</span><span class="p">&lt;</span><span class="n">SomeRepository</span><span class="p">&gt;().</span><span class="n">As</span><span class="p">&lt;</span><span class="n">ISomeRepository</span><span class="p">&gt;().</span><span class="nf">InstancePerLifetimeScope</span><span class="p">();</span>
+        <span class="nf">RegisterViewModels</span><span class="p">(</span><span class="n">builder</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">RegisterViewModels</span><span class="p">(</span><span class="n">ContainerBuilder</span> <span class="n">builder</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">var</span> <span class="n">assembly</span> <span class="p">=</span> <span class="k">typeof</span><span class="p">(</span><span class="n">ViewModelBase</span><span class="p">).</span><span class="nf">GetTypeInfo</span><span class="p">().</span><span class="n">Assembly</span><span class="p">;</span>
+        <span class="kt">var</span> <span class="n">viewModelTypes</span> <span class="p">=</span> <span class="n">assembly</span><span class="p">.</span><span class="nf">GetLoadableTypes</span><span class="p">()</span>
+            <span class="p">.</span><span class="nf">Where</span><span class="p">(</span><span class="n">x</span> <span class="p">=&gt;</span> <span class="n">x</span><span class="p">.</span><span class="n">IsAssignableTo</span><span class="p">&lt;</span><span class="n">ViewModelBase</span><span class="p">&gt;()</span> <span class="p">&amp;&amp;</span> <span class="n">x</span> <span class="p">!=</span> <span class="k">typeof</span><span class="p">(</span><span class="n">ViewModelBase</span><span class="p">));</span>
+        <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">type</span> <span class="k">in</span> <span class="n">viewModelTypes</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">builder</span><span class="p">.</span><span class="nf">RegisterType</span><span class="p">(</span><span class="n">type</span><span class="p">).</span><span class="nf">AsSelf</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>The Bootstrapper uses reflection to register all our ViewModels, conveniently just looking up any class that implements ViewModelBase.</p>
+
+<h2 id="project-structure">Project Structure</h2>
+
+<p>Your project structure may look something like this:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>MyApp/
+│   
+├─── Models/
+|   └─── About.cs
+├─── Mvvm/
+│   ├─── ContentPageBase.cs
+│   └─── ViewModelBase.cs
+├─── Pages/
+│   └─── AboutPage.xaml
+├─── ViewModels/
+│   └─── AboutViewModel.cs
+│
+├─── App.xaml
+└─── Bootstrapper.cs
+</code></pre>
+</div>
+
+<h2 id="testing-the-viewmodels">Testing the ViewModels</h2>
+
+<p>Testing a ViewModel is as simple as newing it up. If you want to test the navigation, simply mock out INavigation. Using Xamarin.Forms.Mocks you can even use the Device library, e.g. <code class="highlighter-rouge">Device.BeginInvokeOnMainThread</code>.</p>
+
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="na">[SetUp]</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">SetUp</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Xamarin</span><span class="p">.</span><span class="n">Forms</span><span class="p">.</span><span class="n">Mocks</span><span class="p">.</span><span class="n">MockForms</span><span class="p">.</span><span class="nf">Init</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="na">[Test]</span>
+<span class="k">public</span> <span class="k">void</span> <span class="nf">HomePage_ShouldNavigateToAboutPage_WhenAboutButtonIsPressed</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">//Arrange
+</span>    <span class="kt">var</span> <span class="n">navigation</span> <span class="p">=</span> <span class="n">Substitute</span><span class="p">.</span><span class="n">For</span><span class="p">&lt;</span><span class="n">INavigation</span><span class="p">&gt;();</span>
+    <span class="kt">var</span> <span class="n">page</span> <span class="p">=</span> <span class="n">Substitute</span><span class="p">.</span><span class="n">For</span><span class="p">&lt;</span><span class="n">Page</span><span class="p">&gt;();</span>
+    <span class="kt">var</span> <span class="n">viewModel</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">HomeViewModel</span><span class="p">(</span><span class="n">navigation</span><span class="p">);</span>
+
+    <span class="n">viewModel</span><span class="p">.</span><span class="nf">WireEvents</span><span class="p">(</span><span class="n">page</span><span class="p">);</span>
+    <span class="n">viewModel</span><span class="p">.</span><span class="nf">Init</span><span class="p">();</span>
+
+    <span class="c1">//Act
+</span>    <span class="n">viewModel</span><span class="p">.</span><span class="nf">ShowAboutPage</span><span class="p">();</span>
+
+    <span class="c1">//Assert
+</span>    <span class="n">navigation</span><span class="p">.</span><span class="nf">Received</span><span class="p">().</span><span class="nf">PushPage</span><span class="p">(</span><span class="n">Arg</span><span class="p">.</span><span class="n">Any</span><span class="p">&lt;</span><span class="n">AboutPage</span><span class="p">&gt;());</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tag/xamarin" title="View posts tagged with xamarin">#xamarin</a></li>
+      
+        <li><a href="/tag/mvvm" title="View posts tagged with mvvm">#mvvm</a></li>
+      
+        <li><a href="/tag/howto" title="View posts tagged with howto">#howto</a></li>
+      
+    </ul>
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/engineering/advanced-redux-in-xamarin-part3-database-middleware/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/engineering/advanced-redux-in-xamarin-part3-database-middleware/">Advanced Redux in Xamarin Part 3: Database Middleware</a></div>
+        
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+          <div class="meta-label"><a href="/engineering/write-angularjs-like-its-2018/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/engineering/write-angularjs-like-its-2018/">Write AngularJS like it's 2018</a></div>
+        
+      </div>
+    </nav><!-- end .post_nav -->
+
+  </div><!-- end .container -->
+</div><!-- end .stripe -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+  </body>
+
+</html>

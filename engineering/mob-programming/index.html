@@ -1,0 +1,262 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Paul Heasley">
+  
+
+  <title>Two's company, three's a mob: Mob programming | phdesign</title>
+  <meta name="description" content="First there came pair programming, a development disciple that promised team collaboration, improved quality, inbuilt mentoring and redundancy. Now the devel...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/engineering/mob-programming/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MTPZZRZTVF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MTPZZRZTVF');
+</script>
+
+
+  
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/engineering">engineering</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+              <li><a href="/woodworking">woodworking</a></li>
+            
+              <li><a href="/infosec">infosec</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/album-rsync">album-rsync</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+            <li><a href="/phreplace">phReplace</a></li>
+          </ul>
+        </li>
+        <li><a href="/presentations">Presentations</a></li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+    <main class="content" aria-label="Content">
+  	  <article>
+  <div class="container">
+
+    <div class="date-stamp">
+      <div class="month">Apr</div>
+      <div class="day">26</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">Two's company, three's a mob: Mob programming</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">26 April 2017</span>
+      
+        in <span class="meta-value"><a href="/engineering">engineering</a></span>
+      
+    </div><!-- end .meta-label -->
+    <br />
+
+    
+    
+    
+    
+      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 7 years old and the content may no longer be relevant.</p>
+    
+
+    <div class="alert alert-info" role="alert">
+  This post is adapted from <a class="alert-link" href="http://phdesign.com.au/presentation-mob-programming" target="_blank">a presentation</a> I gave at <a class="alert-link" href="http://dddbynight.dddmelbourne.com/" target="_blank">DDD By Night</a> on 24 November 2016.
+</div>
+
+<p>First there came pair programming, a development disciple that promised team collaboration, improved quality, inbuilt mentoring and redundancy. Now the development community is taking it to the next level - mob programming. Mob programming, or mobbing, is where the entire team works together on a single problem, sharing one PC, one keyboard and one mouse.</p>
+
+<h2 id="history">History</h2>
+
+<p>Around 5 years ago a development team at Hunter Industries in San Diego who were trying to improve their agile, TDD and peer programming techniques were holding a solution design workshop in a meeting room when someone remoted back into their PC and they started writing code together while talking over the problem. Eventually they were kicked out of that room but found another and continued to carry on, and in this way they continued to jump between meeting rooms for the next 2 weeks, programming as a team and everyday holding a mini retrospective and agreeing that this process was working for them and they should keep doing it.</p>
+
+<p>This technique continued to gain traction until now its practiced world wide as an effective team development process called mob programming and has a dedicated conference held in Boston.</p>
+
+<h2 id="the-mechanics">The mechanics</h2>
+
+<p>So how does it work? Simply put the whole team sit in front of a large TV or projector (or 2) and take turns passing control of the keyboard and mouse around while working together to solve the problem at hand.</p>
+
+<h4 id="driver--navigator-model">Driver / Navigator model</h4>
+
+<p>This constant moving of the keyboard is key to an effective mobbing session, it follows the driver / navigator model borrowed from strong pair programming which says “For an idea to go from your head into the computer it must go through someone else’s hands.” In mob programming there is one driver and the rest of the team are navigators. The driver sits behind the keyboard and types code, but that’s all they’re supposed to do, they’re discouraged from thinking how to solve the problem too much and they shouldn’t be typing anything without being directed to by a navigator. The navigators discuss the idea being coded and guide the driver in creating the code. This concept is critical to engagement of the team, if the driver starts thinking too much and typing their own ideas they’ll leave the others behind, but having to clearly explain to the driver what to type, the navigators have to communicate and discuss the solution out loud. Drivers are rotated on a short interval, this could be 5, 10 or 15 minutes. Shorter works better when starting out.</p>
+
+<h4 id="equipment-setup">Equipment setup</h4>
+
+<p>A mob can be anywhere from 3 to 12 members and dedicated equipment is helpful. Meeting room hopping will quickly become tiresome and interrupt flow, so it’s a good idea to setup a space with a couple of big TV screens or projectors, a single PC and any number of preferred keyboards or mice for those that like their mechanical clackers or splayed keyboards. At PageUp we’ll often use this space although we find the contrast too low from the projector so we play with different IDE themes to improve the readability.</p>
+
+<h4 id="administrative-tasks">Administrative tasks</h4>
+
+<p>During mobbing people aren’t tied down for the whole day. Individuals are free to take short breaks to get coffee, go to the bathroom, check their personal emails or whatever else needs to be done. The mobbing doesn’t need to stop because one person leaves.</p>
+
+<p>In fact it can be helpful when working with new technology to go back to your own PC to do some research, or even better if you have a laptop handy bring that to the mobbing session. Ideally if you need to Google a solution this can be done as a mob, but there have been times we’ve paused the mobbing to all go away and research / spike a problem and regroup later.</p>
+
+<p>If someone gets interrupted by an email, phone call or a walk up, some teams will even mob on that. Again it keeps everyone across what is being asked for and how we propose to solve it.</p>
+
+<h2 id="the-benefits">The benefits</h2>
+
+<p>So why mob?</p>
+
+<h4 id="team-cohesion--redundancy">Team cohesion &amp; redundancy</h4>
+
+<p>Well firstly it improves team cohesion. Mob programming necessitates that the team communicate effectively to get things done. This ensures that everyone in the team is across the current code and creates redundancy in the team. If one team member is off sick it will have little impact on the output. If a new team member is added they will be able to contribute immediately and will quickly learn from the others without distraction.</p>
+
+<h4 id="upskilling">Upskilling</h4>
+
+<p>Mobbing encourage learning. It upskills existing team members as they learn new patterns, new architectures, new ways of thinking and tips to move around the IDE quicker. I find the first thing a new mobbing team learns is each other’s shortcuts. Nothing bothers a developer more than watching someone else fumble through menus when there’s a snappy keyboard shortcut to complete the task.</p>
+
+<h4 id="quality-control">Quality control</h4>
+
+<p>Mobbing also provides improved quality control, having 5 eyes on the code will reduce typos and 5 minds on the problem will think through the majority of the scenarios.</p>
+
+<p>My team have been using mob testing lately as a twist on sprint reviews or showcases. The idea being that as we test and explore the product together, we spot more inconsistencies and decide how to resolve them as we find them. We also think through many more scenarios than we would on our own and by regularly passing control of the keyboard everyone is kept engaged in the process.</p>
+
+<p>And mobbing isn’t just for developers. Product owners, business analysts and testers are encouraged to be involved in the process. They can sit with the team and be apart of the discussion going on.</p>
+
+<h2 id="common-fallicies">Common fallicies</h2>
+
+<p>There’s some comment arguments against mob programming, the first one is that productivity will drop.</p>
+
+<p>Yes, the number of stories you deliver per sprint will probably decrease, but the number of stories delivered isn’t an accurate measure of productivity. Delivering working, fit for purpose software is a better measure. The quality of your code will improve when the whole team is focused on it which will mean less support and rework later. Better code is also easier to build upon and means future functionality can be implemented quicker. The quality of the solution will improve, by which I mean the team will discuss and agree on the requirements and how it will work. It won’t get to done and someone says that’s not how I expected it to work. And difficult problems won’t hold up the team as much. How often do you find yourself working alone through a problem, only to have someone else look at it with a new lens and say “what if we did it this way”. It can unlock the whole issue and allow you to move forward. This process is expedited if the whole team if focused on a problem at once.</p>
+
+<h2 id="more-information">More information</h2>
+
+<p>So, if you’re interested in mob programming, I’d highly recommend watching <a href="https://www.youtube.com/watch?v=p_pvslS4gEI" target="_blank">this youtube video which shows a mob programming team in action</a> over a whole day. Woody Zuill, who was the agile coach from the original mob programming team also maintains a blog at <a href="http://mobprogramming.org" target="_blank">mobprogramming.org</a> which provides useful tips, and you can read the <a href="https://www.agilealliance.org/wp-content/uploads/2015/12/ExperienceReport.2014.Zuill_.pdf" target="_blank">original report of the technical and findings in the PDF here</a>.</p>
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tag/pairing" title="View posts tagged with pairing">#pairing</a></li>
+      
+        <li><a href="/tag/practices" title="View posts tagged with practices">#practices</a></li>
+      
+        <li><a href="/tag/agile" title="View posts tagged with agile">#agile</a></li>
+      
+    </ul>
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/engineering/starting-a-promise-chain-to-handle-exceptions-correctly/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/engineering/starting-a-promise-chain-to-handle-exceptions-correctly/">Starting a promise chain to handle exceptions correctly</a></div>
+        
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+          <div class="meta-label"><a href="/engineering/No-iOS-code-signing-key-matches-provisioning-profile/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/engineering/No-iOS-code-signing-key-matches-provisioning-profile/">No iOS code signing key matches provisioning profile</a></div>
+        
+      </div>
+    </nav><!-- end .post_nav -->
+
+  </div><!-- end .container -->
+</div><!-- end .stripe -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+  </body>
+
+</html>

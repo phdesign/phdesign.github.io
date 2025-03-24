@@ -1,0 +1,367 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Paul Heasley">
+  
+
+  <title>Advanced Redux in Xamarin Part 3: Database Middleware | phdesign</title>
+  <meta name="description" content="In this final post in the series on advanced Redux in Xamarin, we&#39;ll look at how to integrate a local database with Redux, we&#39;ll write Middleware that interc...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/engineering/advanced-redux-in-xamarin-part3-database-middleware/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MTPZZRZTVF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MTPZZRZTVF');
+</script>
+
+
+  
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/engineering">engineering</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+              <li><a href="/woodworking">woodworking</a></li>
+            
+              <li><a href="/infosec">infosec</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/album-rsync">album-rsync</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+            <li><a href="/phreplace">phReplace</a></li>
+          </ul>
+        </li>
+        <li><a href="/presentations">Presentations</a></li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+    <main class="content" aria-label="Content">
+  	  <article>
+  <div class="container">
+
+    <div class="date-stamp">
+      <div class="month">Jul</div>
+      <div class="day">21</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">Advanced Redux in Xamarin Part 3: Database Middleware</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">21 July 2017</span>
+      
+        in <span class="meta-value"><a href="/engineering">engineering</a></span>
+      
+    </div><!-- end .meta-label -->
+    <br />
+
+    
+    
+    
+    
+      <p class="deprecated alert alert-warning"><b>Warning:</b> Please consider that this post is over 7 years old and the content may no longer be relevant.</p>
+    
+
+    <div class="alert alert-info" role="alert">
+<a href="https://github.com/phdesign/TodoRedux" title="View project on GitHub" target="_blank">Want to skip to the code? View the sample project on GitHub.</a>
+</div>
+
+<p>In this final post in the series on advanced Redux in Xamarin, we’ll look at how to integrate a local database with Redux, we’ll write Middleware that intercepts CRUD Actions and applies them to our database.</p>
+
+<!--more-->
+
+<p>In the <a href="../advanced-redux-in-xamarin-part2-persistent-actions-middleware">previous post in this series</a> we covered what Middleware is in Redux and we wrote Middleware to store all Actions as they are dispatched, then reloaded those actions on app startup. This approach can be useful where storage costs are cheap, but for a Xamarin app this every growing list of Actions is going to consume unnecessary device storage.</p>
+
+<h4 id="saving-new-items">Saving new items</h4>
+
+<p>Using our Middleware pattern again with LiteDb, we’re going to save a new todo item to our database whenever we receive an AddTodoAction.</p>
+
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">DatabaseMiddleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span>
+<span class="p">{</span>
+    <span class="k">private</span> <span class="n">LiteCollection</span><span class="p">&lt;</span><span class="n">TodoItem</span><span class="p">&gt;</span> <span class="n">_todoCollection</span><span class="p">;</span>
+
+    <span class="k">public</span> <span class="nf">DatabaseMiddleware</span><span class="p">(</span><span class="n">String</span> <span class="n">databaseName</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">var</span> <span class="n">db</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">LiteDatabase</span><span class="p">(</span><span class="n">databaseName</span><span class="p">);</span>
+        <span class="n">_todoCollection</span> <span class="p">=</span> <span class="n">db</span><span class="p">.</span><span class="n">GetCollection</span><span class="p">&lt;</span><span class="n">TodoItem</span><span class="p">&gt;(</span><span class="s">"Todos"</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">public</span> <span class="n">Middleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="nf">CreateMiddleware</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">store</span> <span class="p">=&gt;</span> <span class="n">next</span> <span class="p">=&gt;</span> <span class="n">action</span> <span class="p">=&gt;</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">action</span> <span class="k">is</span> <span class="n">AddTodoAction</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="nf">AddAction</span><span class="p">((</span><span class="n">AddTodoAction</span><span class="p">)</span><span class="n">action</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="nf">next</span><span class="p">(</span><span class="n">action</span><span class="p">);</span>
+        <span class="p">};</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">void</span> <span class="nf">AddAction</span><span class="p">(</span><span class="n">AddTodoAction</span> <span class="n">action</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">_todoCollection</span><span class="p">.</span><span class="nf">Insert</span><span class="p">(</span><span class="k">new</span> <span class="n">TodoItem</span>
+        <span class="p">{</span>
+            <span class="n">Id</span> <span class="p">=</span> <span class="n">action</span><span class="p">.</span><span class="n">Id</span><span class="p">,</span>
+            <span class="n">Text</span> <span class="p">=</span> <span class="n">action</span><span class="p">.</span><span class="n">Text</span>
+        <span class="p">});</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>And we wire that up in <code class="highlighter-rouge">App.xaml.cs</code> like this</p>
+
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="kt">var</span> <span class="n">dbPath</span> <span class="p">=</span> <span class="n">DependencyService</span><span class="p">.</span><span class="n">Get</span><span class="p">&lt;</span><span class="n">IFileHelper</span><span class="p">&gt;().</span><span class="nf">GetLocalFilePath</span><span class="p">(</span><span class="s">"todo.db"</span><span class="p">);</span>
+<span class="n">Store</span> <span class="p">=</span> <span class="k">new</span> <span class="n">Store</span><span class="p">&lt;</span><span class="n">ApplicationState</span><span class="p">&gt;(</span>
+        <span class="n">Reducers</span><span class="p">.</span><span class="n">Reducers</span><span class="p">.</span><span class="n">ReduceApplication</span><span class="p">,</span> 
+        <span class="k">new</span> <span class="nf">ApplicationState</span><span class="p">(),</span>
+        <span class="k">new</span> <span class="n">DatabaseMiddleware</span><span class="p">&lt;</span><span class="n">ApplicationState</span><span class="p">&gt;(</span><span class="n">dbPath</span><span class="p">).</span><span class="nf">CreateMiddleware</span><span class="p">());</span>
+</code></pre>
+</div>
+
+<h4 id="restoring-items">Restoring items</h4>
+
+<p>The next step is to restore the current state of the database on app startup. We’re going to do this by introducing a <code class="highlighter-rouge">FetchTodosAction</code>. Our <code class="highlighter-rouge">DatabaseMiddleware</code> will listen for this event, and populate it with all the current todos from the database, and our Reducer will reset our ApplicationState accordingly.</p>
+
+<p>We’ll add the logic to <code class="highlighter-rouge">DatabaseMiddleware</code> to load all the todos from the database</p>
+
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="n">Middleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="nf">CreateMiddleware</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">store</span> <span class="p">=&gt;</span> <span class="n">next</span> <span class="p">=&gt;</span> <span class="n">action</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">action</span> <span class="k">is</span> <span class="n">AddTodoAction</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nf">AddAction</span><span class="p">((</span><span class="n">AddTodoAction</span><span class="p">)</span><span class="n">action</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">action</span> <span class="k">is</span> <span class="n">FetchTodosAction</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nf">FetchTodos</span><span class="p">((</span><span class="n">FetchTodosAction</span><span class="p">)</span><span class="n">action</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nf">next</span><span class="p">(</span><span class="n">action</span><span class="p">);</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">private</span> <span class="k">void</span> <span class="nf">FetchTodos</span><span class="p">(</span><span class="n">FetchTodosAction</span> <span class="n">action</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">action</span><span class="p">.</span><span class="n">Todos</span> <span class="p">=</span> <span class="n">_todoCollection</span><span class="p">.</span><span class="nf">FindAll</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>We’ll create a <code class="highlighter-rouge">FetchTodoAction</code></p>
+
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="k">class</span> <span class="nc">FetchTodosAction</span> <span class="p">:</span> <span class="n">IAction</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="n">IEnumerable</span><span class="p">&lt;</span><span class="n">TodoItem</span><span class="p">&gt;</span> <span class="n">Todos</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">internal</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>We’ll need to handle the <code class="highlighter-rouge">FetchTodoAction</code> in our Reducer by resetting the todos collection</p>
+
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">private</span> <span class="k">static</span> <span class="n">ImmutableArray</span><span class="p">&lt;</span><span class="n">TodoItem</span><span class="p">&gt;</span> <span class="nf">FetchTodosReducer</span><span class="p">(</span><span class="n">ImmutableArray</span><span class="p">&lt;</span><span class="n">TodoItem</span><span class="p">&gt;</span> <span class="n">previousState</span><span class="p">,</span> <span class="n">FetchTodosAction</span> <span class="n">action</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">ImmutableArray</span><span class="p">.</span><span class="nf">CreateRange</span><span class="p">(</span><span class="n">action</span><span class="p">.</span><span class="n">Todos</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>And we’ll dispatch the <code class="highlighter-rouge">FetchTodoAction</code> on app startup</p>
+
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="n">Store</span><span class="p">.</span><span class="nf">Dispatch</span><span class="p">(</span><span class="k">new</span> <span class="nf">FetchTodosAction</span><span class="p">());</span>
+</code></pre>
+</div>
+
+<h4 id="updating-and-deleting-items">Updating and deleting items</h4>
+
+<p>The final piece of the puzzle is to intercept the update and remove actions and apply them appropriately to the database. This requires just extending the <code class="highlighter-rouge">DatabaseMiddleware</code></p>
+
+<div class="language-c# highlighter-rouge"><pre class="highlight"><code><span class="k">public</span> <span class="n">Middleware</span><span class="p">&lt;</span><span class="n">TState</span><span class="p">&gt;</span> <span class="nf">CreateMiddleware</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">store</span> <span class="p">=&gt;</span> <span class="n">next</span> <span class="p">=&gt;</span> <span class="n">action</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">action</span> <span class="k">is</span> <span class="n">AddTodoAction</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nf">AddAction</span><span class="p">((</span><span class="n">AddTodoAction</span><span class="p">)</span><span class="n">action</span><span class="p">);</span>
+        <span class="p">}</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">action</span> <span class="k">is</span> <span class="n">RemoveTodoAction</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nf">RemoveAction</span><span class="p">((</span><span class="n">RemoveTodoAction</span><span class="p">)</span><span class="n">action</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">action</span> <span class="k">is</span> <span class="n">UpdateTodoAction</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="nf">UpdateAction</span><span class="p">((</span><span class="n">UpdateTodoAction</span><span class="p">)</span><span class="n">action</span><span class="p">);</span>
+		<span class="p">}</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">action</span> <span class="k">is</span> <span class="n">FetchTodosAction</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="nf">FetchTodos</span><span class="p">((</span><span class="n">FetchTodosAction</span><span class="p">)</span><span class="n">action</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nf">next</span><span class="p">(</span><span class="n">action</span><span class="p">);</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+
+<span class="k">private</span> <span class="k">void</span> <span class="nf">UpdateAction</span><span class="p">(</span><span class="n">UpdateTodoAction</span> <span class="n">action</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="n">_todoCollection</span><span class="p">.</span><span class="nf">Update</span><span class="p">(</span><span class="k">new</span> <span class="n">TodoItem</span>
+	<span class="p">{</span>
+		<span class="n">Id</span> <span class="p">=</span> <span class="n">action</span><span class="p">.</span><span class="n">Id</span><span class="p">,</span>
+		<span class="n">Text</span> <span class="p">=</span> <span class="n">action</span><span class="p">.</span><span class="n">Text</span>
+	<span class="p">});</span>
+<span class="p">}</span>
+
+<span class="k">private</span> <span class="k">void</span> <span class="nf">RemoveAction</span><span class="p">(</span><span class="n">RemoveTodoAction</span> <span class="n">action</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">_todoCollection</span><span class="p">.</span><span class="nf">Delete</span><span class="p">(</span><span class="n">action</span><span class="p">.</span><span class="n">Id</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre>
+</div>
+
+<p>And we’re done. Our system now applies actions to a database and reloads them on application start.</p>
+
+<h3 id="caution-ordering-of-middleware">Caution: Ordering of Middleware</h3>
+
+<p>One thing to consider with this solution is how the order of Middleware will be applied. If you have other Middleware that takes an Action, makes a server request then fires one or more Actions, do you want this to happen before or after the database middleware? It will depend on your scenario but if that server request is sending our item changes, we probably want to listen to the result of that operation and only persist those operations that were successful, so the database middleware would come last.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>We’ve come to the end of this series on advanced Redux in Xamarin, I hope it was helpful. We’ve covered how to use Action Creators for async operations (e.g. server requests), we’ve built Middleware that persisted all our Actions and replayed them at app startup, and we’ve built Middleware that will read our Actions and apply them to a local database, reloading the database state at startup.</p>
+
+<p>At <a href="https://www.pageuppeople.com" target="_blank">PageUp</a> we’ve  been using these techniques in the development of our Xamarin App, using SQLite instead of LiteDb and pairing Redux with <a href="https://github.com/rid00z/FreshMvvm" target="_blank">FreshMvvm</a>, we feel it’s improved the application architecture and made the app easy to reason about.</p>
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tag/xamarin" title="View posts tagged with xamarin">#xamarin</a></li>
+      
+        <li><a href="/tag/redux" title="View posts tagged with redux">#redux</a></li>
+      
+        <li><a href="/tag/howto" title="View posts tagged with howto">#howto</a></li>
+      
+    </ul>
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/engineering/advanced-redux-in-xamarin-part2-persistent-actions-middleware/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/engineering/advanced-redux-in-xamarin-part2-persistent-actions-middleware/">Advanced Redux in Xamarin Part 2: Persistent Actions Middleware</a></div>
+        
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+          <div class="meta-label"><a href="/engineering/vanilla-mvvm-for-xamarin-forms/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/engineering/vanilla-mvvm-for-xamarin-forms/">Vanilla MVVM for Xamarin Forms</a></div>
+        
+      </div>
+    </nav><!-- end .post_nav -->
+
+  </div><!-- end .container -->
+</div><!-- end .stripe -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+  </body>
+
+</html>

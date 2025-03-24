@@ -1,0 +1,281 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Paul Heasley">
+  
+
+  <title>Using GraphQL Scalars With Code Generator | phdesign</title>
+  <meta name="description" content="Here’s one that might be obvious for GraphQL veterans, but I wasted some time Googling for an answer that didn’t seem clear. I’m trying to use GraphQL Code G...">
+
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="canonical" href="http://phdesign.com.au/engineering/graphql-scalars-with-code-generator/">
+  <link rel="alternate" type="application/rss+xml" title="phdesign" href="/feed.xml">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MTPZZRZTVF"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-MTPZZRZTVF');
+</script>
+
+
+  
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+  <body class="post">
+
+    <div class="header-background-image"></div>
+    <header role="banner">
+      <div class="header-top">
+        
+<nav class="navbar navbar-default">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/" title="phdesign homepage">ph<span class="brand-muted">design</span></a>
+    </div><!-- end .navbar-header -->
+
+    <div class="collapse navbar-collapse" id="navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home <span class="sr-only">(current)</span></a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Blog <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            
+              <li><a href="/engineering">engineering</a></li>
+            
+              <li><a href="/general">general</a></li>
+            
+              <li><a href="/woodworking">woodworking</a></li>
+            
+              <li><a href="/infosec">infosec</a></li>
+            
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Projects <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="/album-rsync">album-rsync</a></li>
+            <li><a href="/npptoolbucket">NppToolBucket</a></li>
+            <li><a href="/betternote">BetterNote</a></li>
+            <li><a href="/phreplace">phReplace</a></li>
+          </ul>
+        </li>
+        <li><a href="/presentations">Presentations</a></li>
+        <li><a href="/contact">Contact me</a></li>
+      </ul>
+
+    </div><!-- end .navbar-collapse -->
+  </div><!-- end .container -->
+</nav>
+
+      </div><!-- end .header-top -->
+
+      
+
+    </header>
+    <main class="content" aria-label="Content">
+  	  <article>
+  <div class="container">
+
+    <div class="date-stamp">
+      <div class="month">Aug</div>
+      <div class="day">18</div>
+    </div><!-- end .date-stamp -->
+
+    <h2 class="post-header">Using GraphQL Scalars With Code Generator</h2>
+
+    <div class="meta-label">
+      posted on <span class="meta-value muted">18 August 2021</span>
+      
+        in <span class="meta-value"><a href="/engineering">engineering</a></span>
+      
+    </div><!-- end .meta-label -->
+    <br />
+
+    
+    
+    
+    
+
+    <p>Here’s one that might be obvious for GraphQL veterans, but I wasted some time Googling for an answer that didn’t seem clear. I’m trying to use <a href="https://www.graphql-code-generator.com/" target="_blank">GraphQL Code Generator</a> with a schema that was using <a href="https://www.graphql-scalars.dev/" target="_blank">GraphQL Scalars</a> and received the error:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>Failed to load schema from ./src/schema/**/*.ts:
+Unknown type: "Date".
+</code></pre>
+</div>
+
+<!--more-->
+
+<p>Following the docs for the <a href="https://www.graphql-scalars.dev/docs/usage/apollo-server" target="_blank">Apollo Server Recipe</a> I’m importing the custom scalars like this:</p>
+
+<div class="language-typescript highlighter-rouge"><pre class="highlight"><code><span class="k">import</span> <span class="p">{</span> <span class="nx">makeExecutableSchema</span> <span class="p">}</span> <span class="k">from</span> <span class="s2">"@graphql-tools/schema"</span><span class="p">;</span>
+<span class="k">import</span> <span class="p">{</span> <span class="nx">DateResolver</span><span class="p">,</span> <span class="nx">DateTypeDefinition</span> <span class="p">}</span> <span class="k">from</span> <span class="s2">"graphql-scalars"</span><span class="p">;</span>
+<span class="p">...</span>
+
+<span class="kd">const</span> <span class="nx">schema</span> <span class="o">=</span> <span class="nx">makeExecutableSchema</span><span class="p">({</span>
+  <span class="na">typeDefs</span><span class="p">:</span> <span class="p">[</span><span class="nx">typeDefs</span><span class="p">,</span> <span class="nx">DateTypeDefinition</span><span class="p">],</span>
+  <span class="na">resolvers</span><span class="p">:</span> <span class="p">{</span>
+    <span class="p">...</span><span class="nx">resolvers</span><span class="p">,</span>
+    <span class="na">Date</span><span class="p">:</span> <span class="nx">DateResolver</span><span class="p">,</span>
+  <span class="p">},</span>
+<span class="p">});</span>
+</code></pre>
+</div>
+
+<p>And in my schema file I’m using the <code class="highlighter-rouge">Date</code> scalar like this:</p>
+
+<pre><code class="language-graphql">type Person {
+    id: ID!
+    ...
+    birthDate: Date
+    deathDate: Date
+}
+</code></pre>
+
+<p>Now the problem is that the codegen tool parses GraphQL from files individually, so when it reads my schema file, it sees the <code class="highlighter-rouge">Date</code> object but doesn’t know what it is, because I’m not declaring the custom scalar until I stitch together the schemas later.</p>
+
+<h3 id="require-final-schema">Require final schema</h3>
+
+<p>One solution to this to reconfigure how GraphQL Code Generator reads your schema. <a href="https://www.graphql-code-generator.com/docs/getting-started/schema-field#javascript-export" target="_blank">By deafult it uses an AST parser</a> to read each file and extract any graphql strings. However we can <a href="https://www.graphql-code-generator.com/docs/getting-started/schema-field#javascript-export" target="_blank">reconfigure it to just require our file</a> that exports a schema object.</p>
+
+<div class="language-yaml highlighter-rouge"><pre class="highlight"><code><span class="s">schema</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">./src/schema/index.ts</span><span class="pi">:</span>
+      <span class="s">noPluck</span><span class="pi">:</span> <span class="s">true</span>
+<span class="nn">...</span>
+
+<span class="s">require</span><span class="pi">:</span>
+  <span class="pi">-</span> <span class="s">ts-node/register</span>
+</code></pre>
+</div>
+
+<p><code class="highlighter-rouge">noPluck: true</code> is telling GraphQL Code Generator to not try and parse the file for a GraphQL string, but just require the file and find the schema export. Note that as I’m using TypeScript we need to tell codegen how to read TypeScript, by requiring <a href="https://github.com/TypeStrong/ts-node" target="_blank">ts-node</a>.</p>
+
+<p>With this solution, the watch feature doesn’t work because it only watches the <code class="highlighter-rouge">index.ts</code> file for changes, not all our schema files, so we need to tell it what to watch:</p>
+
+<div class="language-bash highlighter-rouge"><pre class="highlight"><code>graphql-codegen --watch <span class="s2">"src/schema/**/*.ts"</span>
+</code></pre>
+</div>
+
+<p>This worked well until I ran into an issue with my development process. Becuase I’m keeping resolvers in the same file as my schema (following <a href="https://www.apollographql.com/blog/backend/schema-design/modularizing-your-graphql-schema-code/" target="_blank">this modular GraphQL design pattern</a>), when I change a schema and update the resolver, the build fails because the code is using outdated generated TypeScript types, and because the build fails the codegen tool can’t run to generate the types I need. A solution would be to update the schema first, and ensure the codegen tool runs before updating any TypeScript. But there’s a simpler solution.</p>
+
+<h3 id="define-the-custom-scalar-in-every-schema">Define the custom scalar in every schema</h3>
+
+<p>Having now realised the benefit of using AST parsing for the GraphQL Code Generator is that my TypeScript code doesn’t need to be valid, I gave in to a much easier way, just declare the custom scalar in each schema file.</p>
+
+<pre><code class="language-graphql">scalar Date
+...
+</code></pre>
+
+<p>The downside of this approach is needing to remember to declare each scalar that you use, I’d prefer to just <code class="highlighter-rouge">import { DateTypeDefinition } from "graphql-scalars";</code>, but it seems a small price to pay.</p>
+
+<p>I also noticed that the generated types don’t have the code docs from <code class="highlighter-rouge">graphql-scalars</code> like with the required approach above. e.g. this comment is now missing:</p>
+
+<div class="language-typescript highlighter-rouge"><pre class="highlight"><code><span class="k">export</span> <span class="kd">type</span> <span class="nx">Scalars</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="na">Boolean</span><span class="p">:</span> <span class="kr">boolean</span><span class="p">;</span>
+  <span class="nl">Int</span><span class="p">:</span> <span class="kr">number</span><span class="p">;</span>
+  <span class="nl">Float</span><span class="p">:</span> <span class="kr">number</span><span class="p">;</span>
+  <span class="cm">/** A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */</span>
+  <span class="nl">Date</span><span class="p">:</span> <span class="kr">any</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre>
+</div>
+
+
+    <ul class="post-tags">
+      
+        <li><a href="/tag/apollo" title="View posts tagged with apollo">#apollo</a></li>
+      
+        <li><a href="/tag/graphql" title="View posts tagged with graphql">#graphql</a></li>
+      
+        <li><a href="/tag/nodejs" title="View posts tagged with nodejs">#nodejs</a></li>
+      
+    </ul>
+
+  </div><!-- end .container -->
+</article>
+
+<div class="stripe">
+  <div class="container">
+
+    <nav class="row pager">
+      <div class="previous col-xs-6 col-sm-4">
+        
+          <div class="meta-label"><a href="/engineering/introducing-trade-monitor/"><span aria-hidden="true">&laquo;</span> Previous post</a></div>
+          <div class="meta-value"><a href="/engineering/introducing-trade-monitor/">Introducing Trade Monitor - a free stock notification service</a></div>
+        
+      </div>
+      <div class="next col-xs-6 col-sm-4 col-sm-offset-4">
+        
+          <div class="meta-label"><a href="/engineering/react-oauth2-authentication-with-cloudentity/">Next post <span aria-hidden="true">&raquo;</span></a></div>
+          <div class="meta-value"><a href="/engineering/react-oauth2-authentication-with-cloudentity/">React OAuth2 Authentication with Cloudentity</a></div>
+        
+      </div>
+    </nav><!-- end .post_nav -->
+
+  </div><!-- end .container -->
+</div><!-- end .stripe -->
+
+    </main><!-- end .content -->
+
+    
+<footer role="contentinfo">
+  <div class="container">
+
+    <ul class="social-icons">
+      <li><a href="https://twitter.com/pheasley" title="Follow me on Twitter"><i class="fa fa-twitter"></i></a></li>
+      <li><a href="https://github.com/phdesign" title="See my code on GitHub"><i class="fa fa-github"></i></a></li>
+      <li><a href="https://au.linkedin.com/in/pheasley" title="Connect with me on LinkedIn"><i class="fa fa-linkedin"></i></a></li>
+      <li><a href="https://www.pinterest.com/paulheasley/" title="Follow me on Pinterest"><i class="fa fa-pinterest"></i></a></li>
+      <li><a href="https://instagram.com/phdesign/" title="Me on Instagram"><i class="fa fa-instagram"></i></a></li>
+    </ul>
+
+    <p class="footer-copyright">
+      &copy; 2015 Paul Heasley. All rights reserved. <br>
+      Based on a <a href="http://guuthemes.com/" title="Much of the design of this site was based on a GuuThemes theme, big credit to their team for their beautiful art and clean code">GuuTheme</a>.
+    </p>
+
+  </div><!-- end .container -->
+</footer>
+
+    
+<!-- JS (Javascript Files)
+================================================== -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+  </body>
+
+</html>
